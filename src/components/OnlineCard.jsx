@@ -1,6 +1,6 @@
 import {Button, Stack} from "@mui/material";
 
-export default function Online() {
+export default function OnlineCard() {
 
     return (
         <Stack direction="column" spacing={0.5}>

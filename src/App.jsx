@@ -1,11 +1,12 @@
 import './App.css'
-import Online from "./components/Online.jsx";
+import OnlineCard from "./components/OnlineCard.jsx";
+import {Container} from "@mui/material";
 
 export default function App() {
 
   return (
-      <div>
-          <Online/>
-      </div>
+      <Container>
+          <OnlineCard/>
+      </Container>
   )
 }
