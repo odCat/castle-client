@@ -7,7 +7,7 @@ export default function App() {
 
   return (
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-          <Container sx={{ flex: 1 }}>
+          <Container sx={{ display: "flex", flexDirection: "column", justifyContent: "center", flex: 1 }}>
               <OnlineCard />
           </Container>
 
