@@ -1,14 +1,14 @@
-import {Container, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 
 export default function Copyright() {
     return (
-        <Container align="bottom" maxWidth={false} disableGutter>
+        <Box component="footer">
             <Typography variant="body2" align="center">
                 {"Copyright © "}
                 {new Date().getFullYear() + " "}
                 {"Mihai Gătejescu"}
             </Typography>
-        </Container>
+        </Box>
     );
 }

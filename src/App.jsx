@@ -3,6 +3,7 @@ import OnlineCard from "./components/OnlineCard.jsx";
 import Copyright from "./components/Copyright.jsx";
 import {Box, Container} from "@mui/material";
 
+
 export default function App() {
 
   return (
@@ -11,9 +12,7 @@ export default function App() {
               <OnlineCard />
           </Container>
 
-          <Box component="footer" sx={{ mt: "auto" }}>
-              <Copyright />
-          </Box>
+          <Copyright />
       </Box>
   )
 }
