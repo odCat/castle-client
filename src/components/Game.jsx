@@ -30,7 +30,7 @@ export default function Game() {
 
     function onSquareClick({ square, piece }) {
 
-        if (!piece && possibleMoves) {
+        if (possibleMoves.length !== 0) {
             for (const move of possibleMoves) {
                 if (square === move.to) {
                     game.move({from: move.from, to: move.to})
