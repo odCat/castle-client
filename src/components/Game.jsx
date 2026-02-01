@@ -1,24 +1,35 @@
-import {Chessboard} from "react-chessboard";
+import {Chessboard, chessColumnToColumnIndex, defaultPieces} from "react-chessboard";
 import {Chess} from 'chess.js'
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
+import {Button} from "@mui/material";
 
 
 export default function Game() {
 
-    const { gameId } = useParams();
+    const { gameId: _gameId } = useParams();
     const chessRef = useRef(new Chess());
-    const game = chessRef.current;
 
-    const [chessPosition, setChessPosition] = useState(game.fen());
+    const [chessPosition, setChessPosition] = useState(() => new Chess().fen());
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
+    const [promotionMove, setPromotionMove] = useState(null);
 
     function onPieceDrop({ sourceSquare, targetSquare }) {
+        const game = chessRef.current;
+
         if (!targetSquare)
             return false;
+
+        if (game.get(sourceSquare).type === "p" && (targetSquare[1] === "8" || targetSquare[1] === "1")) {
+            setPromotionMove({ sourceSquare, targetSquare, turn: game.turn() });
+            setSquareOptions({});
+            setPossibleMoves([]);
+            return true;
+        }
+
         try {
-            game.move({ from: sourceSquare, to: targetSquare  });
+            game.move({ from: sourceSquare, to: targetSquare });
             setChessPosition(game.fen());
             setSquareOptions({});
             setPossibleMoves([]);
@@ -29,22 +40,33 @@ export default function Game() {
     }
 
     function onSquareClick({ square, piece }) {
+        const game = chessRef.current;
 
         if (possibleMoves.length !== 0) {
             for (const move of possibleMoves) {
                 if (square === move.to) {
-                    game.move({from: move.from, to: move.to})
+                    if (game.get(move.from).type === "p" && (square[1] === "8" || square[1] === "1")) {
+                        setPromotionMove({ sourceSquare: move.from, targetSquare: square, turn: game.turn() });
+                        setSquareOptions({});
+                        setPossibleMoves([]);
+                        return;
+                    }
+                    game.move({ from: move.from, to: move.to })
                     setChessPosition(game.fen());
                 }
             }
             setSquareOptions({});
             setPossibleMoves([]);
+            setPromotionMove(null);
+            return;
+        } else if (piece === null) {
+            setPromotionMove(null);
             return;
         }
 
         const moves = game.moves({ square: square, verbose: true });
 
-        if (piece === null || moves.length === 0) {
+        if (moves.length === 0) {
             setSquareOptions({});
             return;
         }
@@ -74,6 +96,42 @@ export default function Game() {
         return (rank + file) % 2 === 0 ? "dark" : "light";
     }
 
+    function promote(piece) {
+        const game = chessRef.current;
+
+        console.log("Promoting...");
+        console.log(promotionMove);
+        console.log(piece);
+
+        try {
+            game.move({
+                from: promotionMove.sourceSquare,
+                to: promotionMove.targetSquare,
+                promotion: piece
+            });
+            setChessPosition(game.fen());
+        } catch {
+            // do nothing
+        }
+        setPromotionMove(null);
+        console.log("After promotion");
+        console.log(promotionMove);
+    }
+
+    // calculate the left position of the promotion square
+    const squareWidth =
+        document
+            .querySelector(`[data-column="a"][data-row="1"]`)
+            ?.getBoundingClientRect()?.width ?? 0;
+    const promotionSquareLeft = promotionMove?.targetSquare
+        ? squareWidth *
+        chessColumnToColumnIndex(
+            promotionMove.targetSquare.match(/^[a-z]+/)?.[0] ?? '',
+            8, // number of columns
+            'white', // board orientation
+        )
+        : 0;
+
     const chessboardOptions = {
         boardStyle: { width: "648px" },
         alphaNotationStyle: { fontWeight: 500 },
@@ -96,8 +154,62 @@ export default function Game() {
     };
 
     return (
-        <>
+        <div>
+            {promotionMove ? (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: promotionSquareLeft,
+                        backgroundColor: 'white',
+                        width: squareWidth,
+                        zIndex: 1001,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.5)',
+                    }}
+                >
+                    {(['q', 'r', 'n', 'b']).map((piece) => (
+                        <button
+                            key={piece}
+                            onClick={() => {
+                                promote(piece);
+                            }}
+                            onContextMenu={(e) => {
+                                e.preventDefault();
+                            }}
+                            style={{
+                                width: '100%',
+                                aspectRatio: '1',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: 0,
+                                border: 'none',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
+                        </button>
+                    ))}
+                </div>
+            ) : null}
             <Chessboard options={chessboardOptions} />
-        </>
+
+            <Button variant="contained" onClick={() => {
+                chessRef.current.undo();
+                setChessPosition(chessRef.current.fen());
+                setSquareOptions({});
+                setPromotionMove(null);
+                console.log(chessRef.current.fen());
+            }}>Undo</Button>
+            <Button variant="contained" onClick={() => {
+                chessRef.current.load("rnbqkb1r/pP3ppp/5n2/8/2B5/5N2/PPPp1PPP/RNBQ1RK1 w kq - 0 8");
+                setChessPosition(chessRef.current.fen());
+            }}>
+                Set Position
+            </Button>
+
+        </div>
     )
 }
