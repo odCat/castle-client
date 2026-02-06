@@ -140,6 +140,7 @@ export default function Game() {
         lightSquareStyle: { backgroundColor: "#ffffff" },
         darkSquareStyle: { backgroundColor: "#578cc1" },
 
+        allowDragOffBoard: false,
         draggingPieceGhostStyle: { opacity: 0 },
         dropSquareStyle: { boxShadow: 'inset 0px 0px 0px 0px black', },
         draggingPieceStyle: { transform: "scale(1)" },
