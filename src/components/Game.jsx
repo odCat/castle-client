@@ -99,10 +99,6 @@ export default function Game() {
     function promote(piece) {
         const game = chessRef.current;
 
-        console.log("Promoting...");
-        console.log(promotionMove);
-        console.log(piece);
-
         try {
             game.move({
                 from: promotionMove.sourceSquare,
@@ -114,8 +110,6 @@ export default function Game() {
             // do nothing
         }
         setPromotionMove(null);
-        console.log("After promotion");
-        console.log(promotionMove);
     }
 
     // calculate the left position of the promotion square
