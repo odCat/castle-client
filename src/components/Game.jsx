@@ -8,7 +8,7 @@ import {Button} from "@mui/material";
 export default function Game() {
 
     const { gameId: _gameId } = useParams();
-    const chessRef = useRef(new Chess());
+    const chessGameRef = useRef(new Chess());
 
     const [chessPosition, setChessPosition] = useState(() => new Chess().fen());
     const [squareOptions, setSquareOptions] = useState({});
@@ -20,7 +20,7 @@ export default function Game() {
     }
 
     function getAndSetPossibleMoves(square) {
-        const game = chessRef.current;
+        const game = chessGameRef.current;
 
         const moves = game.moves({ square: square, verbose: true });
 
@@ -49,7 +49,7 @@ export default function Game() {
 
     function onPieceDrop({ sourceSquare, targetSquare })
     {
-        const game = chessRef.current;
+        const game = chessGameRef.current;
 
         if (!targetSquare)
             return false;
@@ -74,7 +74,7 @@ export default function Game() {
 
     function onSquareClick({ square, piece })
     {
-        const game = chessRef.current;
+        const game = chessGameRef.current;
 
         if (possibleMoves.length !== 0) {
             for (const move of possibleMoves) {
@@ -102,7 +102,7 @@ export default function Game() {
     }
 
     function isPromotionMove(sourceSquare, targetSquare) {
-        const game = chessRef.current;
+        const game = chessGameRef.current;
         return game.get(sourceSquare).type === "p" && (targetSquare[1] === "8" || targetSquare[1] === "1");
     }
 
@@ -114,7 +114,7 @@ export default function Game() {
     }
 
     function promote(piece) {
-        const game = chessRef.current;
+        const game = chessGameRef.current;
 
         try {
             game.move({
@@ -212,15 +212,15 @@ export default function Game() {
             </div>
 
             <Button variant="contained" onClick={() => {
-                chessRef.current.undo();
-                setChessPosition(chessRef.current.fen());
+                chessGameRef.current.undo();
+                setChessPosition(chessGameRef.current.fen());
                 setSquareOptions({});
                 setPromotionMove(null);
-                console.log(chessRef.current.fen());
+                console.log(chessGameRef.current.fen());
             }}>Undo</Button>
             <Button variant="contained" onClick={() => {
-                chessRef.current.load("rnbqkb1r/pP3ppp/5n2/8/2B5/5N2/PPPp1PPP/RNBQ1RK1 w kq - 0 8");
-                setChessPosition(chessRef.current.fen());
+                chessGameRef.current.load("rnbqkb1r/pP3ppp/5n2/8/2B5/5N2/PPPp1PPP/RNBQ1RK1 w kq - 0 8");
+                setChessPosition(chessGameRef.current.fen());
             }}>
                 Set Position
             </Button>
