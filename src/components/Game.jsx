@@ -15,8 +15,11 @@ export default function Game() {
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [promotionMove, setPromotionMove] = useState(null);
 
-    function onPieceDrag({ square })
-    {
+    function onPieceDrag({ square }) {
+        getAndSetPossibleMoves(square);
+    }
+
+    function getAndSetPossibleMoves(square) {
         const game = chessRef.current;
 
         const moves = game.moves({ square: square, verbose: true });
@@ -95,29 +98,7 @@ export default function Game() {
             return;
         }
 
-        const moves = game.moves({ square: square, verbose: true });
-
-        if (moves.length === 0) {
-            setSquareOptions({});
-            return;
-        }
-
-        setPossibleMoves(moves);
-        const updatedSquares = {};
-        for (const move of moves) {
-            const color = getSquareColor(move.to) === "dark" ? "rgb(60,97,134)" : "rgb(168,170,178)";
-
-            updatedSquares[move.to] = {
-                background:
-                    game.get(move.to) &&
-                    game.get(move.to)?.color !== game.get(square)?.color
-                        ? "radial-gradient(circle, " + color + " 85%, transparent 85%)" // larger circle for capturing
-                        : "radial-gradient(circle, " + color + " 20%, transparent 20%)", // smaller circle for moving
-                borderRadius: '50%',
-            };
-        }
-        updatedSquares[square] = { boxShadow: 'inset 0px 0px 0px 1px black' };
-        setSquareOptions(updatedSquares);
+        getAndSetPossibleMoves(square);
     }
 
     function isPromotionMove(sourceSquare, targetSquare) {
