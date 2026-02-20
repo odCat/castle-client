@@ -1,8 +1,9 @@
+import "./ChessGame.css"
+import {Button} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
-import {Button} from "@mui/material";
 
 
 export default function ChessGame() {
@@ -169,39 +170,15 @@ export default function ChessGame() {
                 <Chessboard options={chessboardOptions} />
 
                 {promotionMove ? (
-                    <div id="promotionMenu"
-                        style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            backgroundColor: "white",
-                            height: squareSizeLength,
-                            zIndex: 10,
-                            display: "flex",
-                            flexDirection: "row",
-                            boxShadow: "inset 0px 0px 0px 2px black",
-                        }}
-                    >
+                    <div id="promotionMenu" style={{ height: squareSizeLength }}>
                         {(["q", "r", "n", "b"]).map((piece) => (
-                            <button id="promotionOption"
+                            <button id="promotionOptions"
                                 key={piece}
                                 onClick={() => {
                                     promote(piece);
                                 }}
                                 onContextMenu={(e) => {
                                     e.preventDefault();
-                                }}
-                                style={{
-                                    width: "100%",
-                                    aspectRatio: "1",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    padding: 0,
-                                    border: "none",
-                                    cursor: "pointer",
-                                    backgroundColor: "transparent",
                                 }}
                             >
                                 {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
