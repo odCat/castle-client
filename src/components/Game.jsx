@@ -1,4 +1,4 @@
-import {Chessboard, chessColumnToColumnIndex, defaultPieces} from "react-chessboard";
+import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from 'chess.js'
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
@@ -117,19 +117,10 @@ export default function Game() {
         setPromotionMove(null);
     }
 
-    // calculate the left position of the promotion square
-    const squareWidth =
+    const squareSizeLength =
         document
             .querySelector(`[data-column="a"][data-row="1"]`)
             ?.getBoundingClientRect()?.width ?? 0;
-    const promotionSquareLeft = promotionMove?.targetSquare
-        ? squareWidth *
-        chessColumnToColumnIndex(
-            promotionMove.targetSquare.match(/^[a-z]+/)?.[0] ?? '',
-            8, // number of columns
-            'white', // board orientation
-        )
-        : 0;
 
     const chessboardOptions = {
         boardStyle: { width: "648px" },
@@ -155,46 +146,57 @@ export default function Game() {
 
     return (
         <div>
-            {promotionMove ? (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: promotionSquareLeft,
-                        backgroundColor: 'white',
-                        width: squareWidth,
-                        zIndex: 1001,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.5)',
-                    }}
-                >
-                    {(['q', 'r', 'n', 'b']).map((piece) => (
-                        <button
-                            key={piece}
-                            onClick={() => {
-                                promote(piece);
-                            }}
-                            onContextMenu={(e) => {
-                                e.preventDefault();
-                            }}
-                            style={{
-                                width: '100%',
-                                aspectRatio: '1',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: 0,
-                                border: 'none',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
-                        </button>
-                    ))}
-                </div>
-            ) : null}
-            <Chessboard options={chessboardOptions} />
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    position: 'relative',
+                }}
+            >
+                <Chessboard options={chessboardOptions} />
+
+                {promotionMove ? (
+                    <div id="promotionMenu"
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            backgroundColor: 'white',
+                            height: squareSizeLength,
+                            zIndex: 10,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            boxShadow: 'inset 0px 0px 0px 2px black',
+                        }}
+                    >
+                        {(['q', 'r', 'n', 'b']).map((piece) => (
+                            <button id="promotionOption"
+                                key={piece}
+                                onClick={() => {
+                                    promote(piece);
+                                }}
+                                onContextMenu={(e) => {
+                                    e.preventDefault();
+                                }}
+                                style={{
+                                    width: '100%',
+                                    aspectRatio: '1',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 0,
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    backgroundColor: 'transparent',
+                                }}
+                            >
+                                {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
+                            </button>
+                        ))}
+                    </div>
+                ) : null}
+            </div>
 
             <Button variant="contained" onClick={() => {
                 chessRef.current.undo();
