@@ -21,7 +21,7 @@ export default function Game() {
         if (!targetSquare)
             return false;
 
-        if (game.get(sourceSquare).type === "p" && (targetSquare[1] === "8" || targetSquare[1] === "1")) {
+        if (isPromotionMove(sourceSquare, targetSquare)) {
             setPromotionMove({ sourceSquare, targetSquare, turn: game.turn() });
             setSquareOptions({});
             setPossibleMoves([]);
@@ -45,7 +45,7 @@ export default function Game() {
         if (possibleMoves.length !== 0) {
             for (const move of possibleMoves) {
                 if (square === move.to) {
-                    if (game.get(move.from).type === "p" && (square[1] === "8" || square[1] === "1")) {
+                    if (isPromotionMove(move.from, move.to)) {
                         setPromotionMove({ sourceSquare: move.from, targetSquare: square, turn: game.turn() });
                         setSquareOptions({});
                         setPossibleMoves([]);
@@ -87,6 +87,11 @@ export default function Game() {
         }
         updatedSquares[square] = { boxShadow: 'inset 0px 0px 0px 1px black' };
         setSquareOptions(updatedSquares);
+    }
+
+    function isPromotionMove(sourceSquare, targetSquare) {
+        const game = chessRef.current;
+        return game.get(sourceSquare).type === "p" && (targetSquare[1] === "8" || targetSquare[1] === "1");
     }
 
     function getSquareColor(square) {
