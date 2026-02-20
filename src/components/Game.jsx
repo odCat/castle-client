@@ -1,5 +1,5 @@
 import {Chessboard, defaultPieces} from "react-chessboard";
-import {Chess} from 'chess.js'
+import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
 import {Button} from "@mui/material";
@@ -40,10 +40,10 @@ export default function Game() {
                     game.get(move.to)?.color !== game.get(square)?.color
                         ? "radial-gradient(circle, " + color + " 85%, transparent 85%)" // larger circle for capturing
                         : "radial-gradient(circle, " + color + " 20%, transparent 20%)", // smaller circle for moving
-                borderRadius: '50%',
+                borderRadius: "50%",
             };
         }
-        updatedSquares[square] = { boxShadow: 'inset 0px 0px 0px 1px black' };
+        updatedSquares[square] = { boxShadow: "inset 0px 0px 0px 1px black" };
         setSquareOptions(updatedSquares);
     }
 
@@ -144,7 +144,7 @@ export default function Game() {
 
         allowDragOffBoard: false,
         draggingPieceGhostStyle: { opacity: 0 },
-        dropSquareStyle: { boxShadow: 'inset 0px 0px 0px 0px black', },
+        dropSquareStyle: { boxShadow: "inset 0px 0px 0px 0px black", },
         draggingPieceStyle: { transform: "scale(1)" },
         dragActivationDistance: 1,
         showAnimations: false,
@@ -161,9 +161,9 @@ export default function Game() {
         <div>
             <div
                 style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    position: 'relative',
+                    display: "flex",
+                    justifyContent: "center",
+                    position: "relative",
                 }}
             >
                 <Chessboard options={chessboardOptions} />
@@ -171,19 +171,19 @@ export default function Game() {
                 {promotionMove ? (
                     <div id="promotionMenu"
                         style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            backgroundColor: 'white',
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            backgroundColor: "white",
                             height: squareSizeLength,
                             zIndex: 10,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            boxShadow: 'inset 0px 0px 0px 2px black',
+                            display: "flex",
+                            flexDirection: "row",
+                            boxShadow: "inset 0px 0px 0px 2px black",
                         }}
                     >
-                        {(['q', 'r', 'n', 'b']).map((piece) => (
+                        {(["q", "r", "n", "b"]).map((piece) => (
                             <button id="promotionOption"
                                 key={piece}
                                 onClick={() => {
@@ -193,15 +193,15 @@ export default function Game() {
                                     e.preventDefault();
                                 }}
                                 style={{
-                                    width: '100%',
-                                    aspectRatio: '1',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
+                                    width: "100%",
+                                    aspectRatio: "1",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                     padding: 0,
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    backgroundColor: 'transparent',
+                                    border: "none",
+                                    cursor: "pointer",
+                                    backgroundColor: "transparent",
                                 }}
                             >
                                 {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
