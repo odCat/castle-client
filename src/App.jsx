@@ -5,7 +5,7 @@ import Copyright from "./components/Copyright.jsx";
 import {Box, Container} from "@mui/material";
 import {Route, Routes} from "react-router";
 import RegisterCard from "./components/RegisterCard.jsx";
-import Game from "./components/Game.jsx";
+import ChessGame from "./components/ChessGame.jsx";
 
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
                     <Route path="/" element={<OnlineCard />} />
                     <Route path="/register" element={<RegisterCard />} />
                     <Route path="/login" element={<LoginCard />} />
-                    <Route path="/game/:gameId" element={<Game />} />
+                    <Route path="/game/:gameId" element={<ChessGame />} />
                 </Routes>
             </Container>
 
