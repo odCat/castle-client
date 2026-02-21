@@ -55,7 +55,7 @@ export default function ChessGame() {
         if (!targetSquare)
             return false;
 
-        if (game.turn() === game.get(sourceSquare).color && isPromotionMove(sourceSquare, targetSquare)) {
+        if (isValidMove(sourceSquare, targetSquare) && isPromotionMove(sourceSquare, targetSquare)) {
             setPromotionMove({ sourceSquare, targetSquare, turn: game.turn() });
             setSquareOptions({});
             setPossibleMoves([]);
@@ -67,6 +67,17 @@ export default function ChessGame() {
             setChessPosition(game.fen());
             setSquareOptions({});
             setPossibleMoves([]);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    function isValidMove(source, target) {
+        const game = chessGameRef.current;
+        try {
+            game.move({from: source, to: target, promotion: "q" });
+            game.undo();
             return true;
         } catch {
             return false;
