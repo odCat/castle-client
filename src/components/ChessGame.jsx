@@ -33,7 +33,7 @@ export default function ChessGame() {
         setPossibleMoves(moves);
         const updatedSquares = {};
         for (const move of moves) {
-            const color = getSquareColor(move.to) === "dark" ? "rgb(60,97,134)" : "rgb(168,170,178)";
+            const color = game.squareColor(move.to) === "dark" ? "rgb(60,97,134)" : "rgb(168,170,178)";
 
             updatedSquares[move.to] = {
                 background:
@@ -105,13 +105,6 @@ export default function ChessGame() {
     function isPromotionMove(sourceSquare, targetSquare) {
         const game = chessGameRef.current;
         return game.get(sourceSquare).type === "p" && (targetSquare[1] === "8" || targetSquare[1] === "1");
-    }
-
-    function getSquareColor(square) {
-        const rank = parseInt(square[1]) - 1;
-        const file = square[0].charCodeAt(0) - "a".charCodeAt(0);
-
-        return (rank + file) % 2 === 0 ? "dark" : "light";
     }
 
     function promote(piece) {
