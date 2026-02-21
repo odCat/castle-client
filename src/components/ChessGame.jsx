@@ -55,7 +55,7 @@ export default function ChessGame() {
         if (!targetSquare)
             return false;
 
-        if (isPromotionMove(sourceSquare, targetSquare)) {
+        if (game.turn() === game.get(sourceSquare).color && isPromotionMove(sourceSquare, targetSquare)) {
             setPromotionMove({ sourceSquare, targetSquare, turn: game.turn() });
             setSquareOptions({});
             setPossibleMoves([]);
@@ -169,7 +169,7 @@ export default function ChessGame() {
             >
                 <Chessboard options={chessboardOptions} />
 
-                {promotionMove ? (
+                {promotionMove /*&& chessGameRef.current.turn() === "w" */ ? (
                     <div id="promotionMenu" style={{ height: squareSizeLength }}>
                         {(["q", "r", "n", "b"]).map((piece) => (
                             <button id="promotionOptions"
