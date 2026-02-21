@@ -88,15 +88,15 @@ export default function ChessGame() {
                     }
                     game.move({ from: move.from, to: move.to })
                     setChessPosition(game.fen());
+                } else {
+                    getAndSetPossibleMoves(square);
                 }
             }
             setSquareOptions({});
             setPossibleMoves([]);
             setPromotionMove(null);
-            return;
         } else if (piece === null) {
             setPromotionMove(null);
-            return;
         }
 
         getAndSetPossibleMoves(square);
