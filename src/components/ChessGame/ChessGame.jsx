@@ -173,7 +173,7 @@ export default function ChessGame() {
             >
                 <Chessboard options={chessboardOptions} />
 
-                {promotionMove /*&& chessGameRef.current.turn() === "w" */ ? (
+                {promotionMove ? (
                     <div id="promotionMenu" style={{ height: squareSizeLength }}>
                         {(["q", "r", "n", "b"]).map((piece) => (
                             <button id="promotionOptions"
