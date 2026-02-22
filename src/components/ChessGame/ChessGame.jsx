@@ -1,9 +1,9 @@
 import "./ChessGame.css"
-import {Button} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
+import ChessGameDebug from "./ChessGameDebug.jsx";
 
 
 export default function ChessGame() {
@@ -192,19 +192,12 @@ export default function ChessGame() {
                 ) : null}
             </div>
 
-            <Button variant="contained" onClick={() => {
-                chessGameRef.current.undo();
-                setChessPosition(chessGameRef.current.fen());
-                setSquareOptions({});
-                setPromotionMove(null);
-            }}>Undo</Button>
-            <Button variant="contained" onClick={() => {
-                chessGameRef.current.load("rnbqkb1r/pP3ppp/5n2/8/2B5/5N2/PPPp1PPP/RNBQ1RK1 w kq - 0 8");
-                setChessPosition(chessGameRef.current.fen());
-            }}>
-                Set Position
-            </Button>
-
+            <ChessGameDebug
+                chessGameRef = {chessGameRef}
+                setSquareOptions = {setSquareOptions}
+                setPromotionMove= {setPromotionMove}
+                setChessPosition = {setChessPosition}
+            />
         </div>
     )
 }
