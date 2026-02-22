@@ -5,7 +5,7 @@ import Copyright from "./components/Copyright.jsx";
 import {Box, Container} from "@mui/material";
 import {Route, Routes} from "react-router";
 import RegisterCard from "./components/RegisterCard.jsx";
-import ChessGame from "./components/ChessGame.jsx";
+import ChessGame from "./components/ChessGame/ChessGame.jsx";
 
 
 export default function App() {
