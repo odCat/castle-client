@@ -140,7 +140,7 @@ export default function ChessGame() {
             ?.getBoundingClientRect()?.width ?? 0;
 
     const chessboardOptions = {
-        boardStyle: { width: "648px" },
+        boardStyle: { maxWidth: "648px", minWidth: "460px" },
         alphaNotationStyle: { fontWeight: 500 },
         numericNotationStyle: { fontWeight: 500 },
         lightSquareNotationStyle: { color: "#578cc1" },
