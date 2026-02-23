@@ -141,8 +141,8 @@ export default function ChessGame() {
 
     const chessboardOptions = {
         boardStyle: { maxWidth: "648px", minWidth: "460px" },
-        alphaNotationStyle: { fontWeight: 500 },
-        numericNotationStyle: { fontWeight: 500 },
+        alphaNotationStyle: { fontSize: "14px", fontWeight: 500 },
+        numericNotationStyle: { fontSize: "14px", fontWeight: 500 },
         lightSquareNotationStyle: { color: "#578cc1" },
         lightSquareStyle: { backgroundColor: "#ffffff" },
         darkSquareStyle: { backgroundColor: "#578cc1" },
