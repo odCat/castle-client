@@ -163,7 +163,12 @@ export default function ChessGame() {
     };
 
     return (
-        <div>
+        <div
+            style={{
+                    display: "flex",
+                    flexDirection: "row"
+            }}
+        >
             <div
                 style={{
                     display: "flex",
