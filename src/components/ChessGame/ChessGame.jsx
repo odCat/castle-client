@@ -4,6 +4,7 @@ import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
 import ChessGameDebug from "./ChessGameDebug.jsx";
+import TopBar from "../TopBar.jsx";
 
 
 export default function ChessGame() {
@@ -165,8 +166,8 @@ export default function ChessGame() {
     return (
         <div
             style={{
-                    display: "flex",
-                    flexDirection: "row"
+                display: "flex",
+                flexDirection: "row",
             }}
         >
             <div

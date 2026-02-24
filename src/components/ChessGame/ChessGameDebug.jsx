@@ -4,7 +4,7 @@ import {Box, Button, Card, CardContent, CardHeader} from "@mui/material";
 export default function ChessGameDebug({ chessGameRef, setSquareOptions, setPromotionMove, setChessPosition })
 {
     return (
-        <Box sx={{ marginX: 2}}>
+        <Box sx={{ marginLeft: 2}}>
             <Card variant="outlined" sx={{ bgcolor: 'transparent', borderColor: '#424548' }}>
 
                 <CardHeader title="Chess Game Debug" sx={{ bgcolor: '#eaf4ff' }} />

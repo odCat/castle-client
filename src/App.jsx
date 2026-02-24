@@ -7,6 +7,7 @@ import {Route, Routes} from "react-router";
 import RegisterCard from "./components/RegisterCard.jsx";
 import ChessGame from "./components/ChessGame/ChessGame.jsx";
 import {styled} from "@mui/material/styles";
+import TopBar from "./components/TopBar.jsx";
 
 
 const MainBox = styled(Box)({
@@ -26,7 +27,9 @@ export default function App() {
 
     return (
         <MainBox>
-            <MainContainer>
+            <TopBar />
+
+            <MainContainer disableGutters>
                 <Routes>
                     <Route path="/" element={<OnlineCard />} />
                     <Route path="/register" element={<RegisterCard />} />
