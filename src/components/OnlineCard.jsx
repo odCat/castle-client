@@ -8,6 +8,10 @@ export default function OnlineCard() {
 
     return (
         <Stack direction="column" spacing={0.5}>
+            <Button variant="contained" onClick={() => navigate("/watch")}>
+                Guest
+            </Button>
+
             <Button variant="contained" onClick={() => navigate("/login")}>
                 Login
             </Button>
