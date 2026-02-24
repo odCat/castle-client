@@ -3,7 +3,7 @@ import LoginCard from "./components/LoginCard.jsx";
 import OnlineCard from "./components/OnlineCard.jsx";
 import Copyright from "./components/Copyright.jsx";
 import {Box, Container} from "@mui/material";
-import {Route, Routes} from "react-router";
+import {Route, Routes, useLocation} from "react-router";
 import RegisterCard from "./components/RegisterCard.jsx";
 import ChessGame from "./components/ChessGame/ChessGame.jsx";
 import {styled} from "@mui/material/styles";
@@ -25,9 +25,14 @@ const MainContainer = styled(Container)({
 
 export default function App() {
 
+    const location = useLocation();
+
+    const hideOnPaths = ["/", "/login", "/register"];
+    const showTopBar = !hideOnPaths.includes(location.pathname);
+
     return (
         <MainBox>
-            <TopBar />
+            {showTopBar && <TopBar />}
 
             <MainContainer disableGutters>
                 <Routes>
