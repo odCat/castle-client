@@ -209,13 +209,15 @@ export default function ChessGame() {
                     gap: 16
                 }}
             >
-                <Card sx={{
-                        marginLeft: 2,
-                        p: 1
-                    }}
-                >
-                    {pgn}
-                </Card>
+                { pgn !== "" &&
+                    <Card sx={{
+                            marginLeft: 2,
+                            p: 1
+                        }}
+                    >
+                        {pgn}
+                    </Card>
+                }
 
                 <ChessGameDebug
                     chessGameRef = {chessGameRef}
