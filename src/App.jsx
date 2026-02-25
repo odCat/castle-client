@@ -1,15 +1,15 @@
 import './App.css'
+import ChessGame from "./components/ChessGame/ChessGame.jsx";
+import Copyright from "./components/Copyright.jsx";
 import LoginCard from "./components/LoginCard.jsx";
 import OnlineCard from "./components/OnlineCard.jsx";
-import Copyright from "./components/Copyright.jsx";
-import {Box, Container} from "@mui/material";
-import {Route, Routes, useLocation} from "react-router";
+import Play from "./components/Play/Play.jsx";
 import RegisterCard from "./components/RegisterCard.jsx";
-import ChessGame from "./components/ChessGame/ChessGame.jsx";
-import {styled} from "@mui/material/styles";
 import TopBar from "./components/TopBar.jsx";
 import Watch from "./components/Watch.jsx";
-import Play from "./components/Play/Play.jsx";
+import {Box, Container} from "@mui/material";
+import {Route, Routes, useLocation} from "react-router";
+import {styled} from "@mui/material/styles";
 
 
 const MainBox = styled(Box)({

@@ -1,8 +1,8 @@
-import {Box, Button, Card, Container, InputLabel, MenuItem, Select, Typography} from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import {useState} from "react";
-import {styled} from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
+import FormControl from "@mui/material/FormControl";
+import {Box, Button, Card, Container, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {styled} from "@mui/material/styles";
+import {useState} from "react";
 
 
 const GameList = styled(Box)({

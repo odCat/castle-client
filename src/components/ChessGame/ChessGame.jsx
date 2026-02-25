@@ -1,10 +1,10 @@
 import "./ChessGame.css"
+import ChessGameDebug from "./ChessGameDebug.jsx";
+import {Card} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
-import ChessGameDebug from "./ChessGameDebug.jsx";
-import {Card} from "@mui/material";
 
 
 export default function ChessGame() {
