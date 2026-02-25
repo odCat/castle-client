@@ -210,11 +210,7 @@ export default function ChessGame() {
                 }}
             >
                 { pgn !== "" &&
-                    <Card sx={{
-                            marginLeft: 2,
-                            p: 1
-                        }}
-                    >
+                    <Card sx={{ ml: 2, p: 1 }} >
                         {pgn}
                     </Card>
                 }
