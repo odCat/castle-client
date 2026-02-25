@@ -18,8 +18,15 @@ export default function ChessGame() {
     const [promotionMove, setPromotionMove] = useState(null);
     const [pgn, setPgn] = useState("")
 
+    function canDragPiece({ piece }) {
+        const game = chessGameRef.current;
+        return game.turn() === piece.pieceType[0];
+    }
+
     function onPieceDrag({ square }) {
-        getAndSetPossibleMoves(square);
+        const game = chessGameRef.current;
+        if (game.turn() === game.get(square).color)
+            getAndSetPossibleMoves(square);
     }
 
     function getAndSetPossibleMoves(square) {
@@ -158,6 +165,7 @@ export default function ChessGame() {
         dragActivationDistance: 1,
         showAnimations: false,
 
+        canDragPiece,
         onPieceDrag,
         onPieceDrop,
         onSquareClick,
