@@ -1,5 +1,6 @@
 import {AppBar, Button, Toolbar} from "@mui/material";
 import {styled} from "@mui/material/styles";
+import {useNavigate} from "react-router";
 
 
 const TopBarButton = styled(Button)({
@@ -8,12 +9,15 @@ const TopBarButton = styled(Button)({
 })
 
 export default function TopBar() {
+
+    const navigate = useNavigate();
+
     return (
         <AppBar position="static" sx={{ bgcolor: '#0c1a29' }}>
             <Toolbar>
-                <TopBarButton>Play</TopBarButton>
-                <TopBarButton sx={{ color: 'white', display: 'block' }}>Watch</TopBarButton>
-                <TopBarButton sx={{ color: 'white', display: 'block' }}>Tools</TopBarButton>
+                <TopBarButton onClick={() => navigate("/play")}>Play</TopBarButton>
+                <TopBarButton onClick={() => navigate("/watch")}>Watch</TopBarButton>
+                <TopBarButton>Tools</TopBarButton>
                 <TopBarButton sx={{ ml: "auto", color: 'white', display: 'block' }}>User</TopBarButton>
             </Toolbar>
         </AppBar>
