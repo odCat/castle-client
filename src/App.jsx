@@ -9,6 +9,7 @@ import ChessGame from "./components/ChessGame/ChessGame.jsx";
 import {styled} from "@mui/material/styles";
 import TopBar from "./components/TopBar.jsx";
 import Watch from "./components/Watch.jsx";
+import Play from "./components/Play/Play.jsx";
 
 
 const MainBox = styled(Box)({
@@ -40,6 +41,7 @@ export default function App() {
                     <Route path="/" element={<OnlineCard />} />
                     <Route path="/register" element={<RegisterCard />} />
                     <Route path="/login" element={<LoginCard />} />
+                    <Route path="/play" element={<Play />} />
                     <Route path="/watch" element={<Watch />} />
                     <Route path="/game/:gameId" element={<ChessGame />} />
                 </Routes>
