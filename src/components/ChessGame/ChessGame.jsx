@@ -4,6 +4,7 @@ import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
 import ChessGameDebug from "./ChessGameDebug.jsx";
+import {Card} from "@mui/material";
 
 
 export default function ChessGame() {
@@ -15,6 +16,7 @@ export default function ChessGame() {
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [promotionMove, setPromotionMove] = useState(null);
+    const [pgn, setPgn] = useState("")
 
     function onPieceDrag({ square }) {
         getAndSetPossibleMoves(square);
@@ -64,6 +66,7 @@ export default function ChessGame() {
 
         try {
             game.move({ from: sourceSquare, to: targetSquare });
+            setPgn(game.pgn());
             setPosition(game.fen());
             setSquareOptions({});
             setPossibleMoves([]);
@@ -98,6 +101,7 @@ export default function ChessGame() {
                         return;
                     }
                     game.move({ from: move.from, to: move.to })
+                    setPgn(game.pgn());
                     setPosition(game.fen());
                 } else {
                     getAndSetPossibleMoves(square);
@@ -197,13 +201,31 @@ export default function ChessGame() {
                 ) : null}
             </div>
 
-            <ChessGameDebug
-                chessGameRef = {chessGameRef}
-                position={position}
-                setSquareOptions = {setSquareOptions}
-                setPromotionMove= {setPromotionMove}
-                setChessPosition = {setPosition}
-            />
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "400px",
+                    gap: 16
+                }}
+            >
+                <Card sx={{
+                        marginLeft: 2,
+                        p: 1
+                    }}
+                >
+                    {pgn}
+                </Card>
+
+                <ChessGameDebug
+                    chessGameRef = {chessGameRef}
+                    position={position}
+                    setSquareOptions = {setSquareOptions}
+                    setPromotionMove= {setPromotionMove}
+                    setChessPosition = {setPosition}
+                    setPgn = {setPgn}
+                />
+            </div>
         </div>
     )
 }
