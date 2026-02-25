@@ -4,7 +4,6 @@ import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useRef, useState} from "react";
 import ChessGameDebug from "./ChessGameDebug.jsx";
-import TopBar from "../TopBar.jsx";
 
 
 export default function ChessGame() {
@@ -12,7 +11,7 @@ export default function ChessGame() {
     const { gameId: _gameId } = useParams();
     const chessGameRef = useRef(new Chess());
 
-    const [chessPosition, setChessPosition] = useState(() => new Chess().fen());
+    const [position, setPosition] = useState(() => new Chess().fen());
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [promotionMove, setPromotionMove] = useState(null);
@@ -65,7 +64,7 @@ export default function ChessGame() {
 
         try {
             game.move({ from: sourceSquare, to: targetSquare });
-            setChessPosition(game.fen());
+            setPosition(game.fen());
             setSquareOptions({});
             setPossibleMoves([]);
             return true;
@@ -99,7 +98,7 @@ export default function ChessGame() {
                         return;
                     }
                     game.move({ from: move.from, to: move.to })
-                    setChessPosition(game.fen());
+                    setPosition(game.fen());
                 } else {
                     getAndSetPossibleMoves(square);
                 }
@@ -128,7 +127,7 @@ export default function ChessGame() {
                 to: promotionMove.targetSquare,
                 promotion: piece
             });
-            setChessPosition(game.fen());
+            setPosition(game.fen());
         } catch {
             // do nothing
         }
@@ -159,7 +158,7 @@ export default function ChessGame() {
         onPieceDrop,
         onSquareClick,
 
-        position: chessPosition,
+        position: position,
         squareStyles: squareOptions,
     };
 
@@ -200,9 +199,10 @@ export default function ChessGame() {
 
             <ChessGameDebug
                 chessGameRef = {chessGameRef}
+                position={position}
                 setSquareOptions = {setSquareOptions}
                 setPromotionMove= {setPromotionMove}
-                setChessPosition = {setChessPosition}
+                setChessPosition = {setPosition}
             />
         </div>
     )
