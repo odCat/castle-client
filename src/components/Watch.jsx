@@ -1,8 +1,14 @@
-import {Box, Container} from "@mui/material";
+import {Box, Button, Container} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
 import Diagram from "./Diagram.jsx";
+import Divider from "@mui/material/Divider";
 
+
+const RefreshButton = styled(Button) ({
+    width:"100px",
+    margin: "16px"
+})
 
 const GameList = styled(Box)({
     display: 'flex',
@@ -23,19 +29,22 @@ export default function Watch() {
 
     const [gameList, setGameList] = useState([]);
 
-    useEffect(() => {
-        const fetchGames = async () => {
-            try {
-                const response = await fetch("http://localhost:8080/games");
-                const json = await response.json();
-                console.log(json);
-                setGameList(json);
-            } catch (error) {
-                console.log(error.message);
-            }
+    async function fetchGames() {
+        try {
+            const response = await fetch("http://localhost:8080/games");
+            const json = await response.json();
+            console.log("Refreshing games");
+            console.log(json);
+            setGameList(json);
+        } catch (error) {
+            console.log(error.message);
         }
+    }
+
+    useEffect(() => {
         fetchGames();
     }, []);
+
 
     const diagrams = gameList.map(game =>
         <a href={"/game/" + game.id} key={game.id}>
@@ -44,10 +53,22 @@ export default function Watch() {
     );
 
     return (
-        <GameList>
+        <Box
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+            }}
+        >
+            <RefreshButton variant="outlined" onClick={fetchGames}>Refresh</RefreshButton>
 
-            {diagrams}
+            <Divider sx={{ width: "100%", my: 2, borderColor: "#424548" }} />
 
-        </GameList>
+            <GameList>
+
+                {diagrams}
+
+            </GameList>
+        </Box>
     )
 }
