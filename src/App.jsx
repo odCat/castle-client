@@ -1,5 +1,6 @@
 import './App.css'
 import ChessGame from "./components/ChessGame/ChessGame.jsx";
+import Demo from "./components/Demo/Demo.jsx";
 import Copyright from "./components/Copyright.jsx";
 import LoginCard from "./components/LoginCard.jsx";
 import OnlineCard from "./components/OnlineCard.jsx";
@@ -43,6 +44,7 @@ export default function App() {
                     <Route path="/login" element={<LoginCard />} />
                     <Route path="/play" element={<Play />} />
                     <Route path="/watch" element={<Watch />} />
+                    <Route path="/tools/demo" element={<Demo />} />
                     <Route path="/game/:gameId" element={<ChessGame />} />
                 </Routes>
             </MainContainer>
