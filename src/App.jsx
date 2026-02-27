@@ -6,7 +6,7 @@ import OnlineCard from "./components/OnlineCard.jsx";
 import Play from "./components/Play/Play.jsx";
 import RegisterCard from "./components/RegisterCard.jsx";
 import TopBar from "./components/TopBar.jsx";
-import Watch from "./components/Watch.jsx";
+import Watch from "./components/Watch/Watch.jsx";
 import {Box, Container} from "@mui/material";
 import {Route, Routes, useLocation} from "react-router";
 import {styled} from "@mui/material/styles";
