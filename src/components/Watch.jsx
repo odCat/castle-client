@@ -1,9 +1,16 @@
-import {Box, Button, Container} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
 import Diagram from "./Diagram.jsx";
 import Divider from "@mui/material/Divider";
 
+
+const LoadingText = styled(Typography) ({
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
+})
 
 const RefreshButton = styled(Button) ({
     width:"100px",
@@ -16,13 +23,6 @@ const GameList = styled(Box)({
     gap: "40px",
     justifyContent: 'center',
     width: ""
-})
-
-const GameContainer = styled(Container)({
-    width: "350px",
-    height: "350px",
-    zIndex: 1,
-    flex: "0 0 auto"
 })
 
 export default function Watch() {
@@ -53,22 +53,27 @@ export default function Watch() {
     );
 
     return (
-        <Box
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center"
-            }}
-        >
-            <RefreshButton variant="outlined" onClick={fetchGames}>Refresh</RefreshButton>
+        gameList.length !== 0 ? (
+            <Box
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center"
+                }}
+            >
 
-            <Divider sx={{ width: "100%", my: 2, borderColor: "#424548" }} />
+                <RefreshButton variant="outlined" onClick={fetchGames}>Refresh</RefreshButton>
 
-            <GameList>
+                <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
 
-                {diagrams}
+                <GameList>
 
-            </GameList>
-        </Box>
+                    {diagrams}
+
+                </GameList>
+            </Box>
+        ) : (
+            <LoadingText>Loading games...</LoadingText>
+        )
     )
 }
