@@ -1,22 +1,47 @@
-import "./ChessGame.css"
-import ChessGameDebug from "./ChessGameDebug.jsx";
-import {Card} from "@mui/material";
+import "./Game.css"
+import GameDebug from "./GameDebug.jsx";
+import {Card, Typography} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js"
 import {useParams} from "react-router";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import {styled} from "@mui/material/styles";
 
 
-export default function ChessGame() {
+const LoadingText = styled(Typography) ({
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
+})
 
-    const { gameId: _gameId } = useParams();
-    const chessGameRef = useRef(new Chess());
+export default function Game() {
 
-    const [position, setPosition] = useState(() => new Chess().fen());
+    const params = useParams();
+    const chessGameRef = useRef(new Chess("8/8/8/8/8/8/8/8 w - - 0 1", { skipValidation: true }));
+
+    const [pgn, setPgn] = useState("")
+    const [position, setPosition] = useState("");
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [promotionMove, setPromotionMove] = useState(null);
-    const [pgn, setPgn] = useState("")
+
+    useEffect(() => {
+        const fetchGame = async function() {
+            const game = chessGameRef.current;
+
+            try {
+                const response = await fetch("http://localhost:8080/games/" + params.gameId)
+                const json = await response.json();
+                setPgn(json.pgn);
+                setPosition(json.fen);
+                game.load(json.fen);
+            } catch(error) {
+                console.log(error.message);
+            }
+        }
+        fetchGame();
+    }, []);
 
     function canDragPiece({ piece }) {
         const game = chessGameRef.current;
@@ -175,63 +200,67 @@ export default function ChessGame() {
     };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "row",
-            }}
-        >
+        position ? (
             <div
                 style={{
                     display: "flex",
-                    justifyContent: "center",
-                    position: "relative",
+                    flexDirection: "row",
                 }}
             >
-                <Chessboard options={chessboardOptions} />
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        position: "relative",
+                    }}
+                >
+                    <Chessboard options={chessboardOptions} />
 
-                {promotionMove ? (
-                    <div id="promotionMenu" style={{ height: squareSizeLength }}>
-                        {(["q", "r", "n", "b"]).map((piece) => (
-                            <button id="promotionOptions"
-                                key={piece}
-                                onClick={() => {
-                                    promote(piece);
-                                }}
-                                onContextMenu={(e) => {
-                                    e.preventDefault();
-                                }}
-                            >
-                                {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
-                            </button>
-                        ))}
-                    </div>
-                ) : null}
+                    {promotionMove ? (
+                        <div id="promotionMenu" style={{ height: squareSizeLength }}>
+                            {(["q", "r", "n", "b"]).map((piece) => (
+                                <button id="promotionOptions"
+                                    key={piece}
+                                    onClick={() => {
+                                        promote(piece);
+                                    }}
+                                    onContextMenu={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                >
+                                    {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
+                                </button>
+                            ))}
+                        </div>
+                    ) : null}
+                </div>
+
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "400px",
+                        gap: 16
+                    }}
+                >
+                    { pgn !== "" &&
+                        <Card sx={{ ml: 2, p: 1 }} >
+                            {pgn}
+                        </Card>
+                    }
+
+                    <GameDebug
+                        chessGameRef = {chessGameRef}
+                        position={position}
+                        setSquareOptions = {setSquareOptions}
+                        setPromotionMove= {setPromotionMove}
+                        setChessPosition = {setPosition}
+                        setPgn = {setPgn}
+                    />
+                </div>
             </div>
-
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "400px",
-                    gap: 16
-                }}
-            >
-                { pgn !== "" &&
-                    <Card sx={{ ml: 2, p: 1 }} >
-                        {pgn}
-                    </Card>
-                }
-
-                <ChessGameDebug
-                    chessGameRef = {chessGameRef}
-                    position={position}
-                    setSquareOptions = {setSquareOptions}
-                    setPromotionMove= {setPromotionMove}
-                    setChessPosition = {setPosition}
-                    setPgn = {setPgn}
-                />
-            </div>
-        </div>
+        ) : (
+            <LoadingText>Loading game...</LoadingText>
+        )
     )
 }

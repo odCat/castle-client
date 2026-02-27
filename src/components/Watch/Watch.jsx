@@ -47,7 +47,7 @@ export default function Watch() {
 
 
     const diagrams = gameList.map(game =>
-        <a href={"/game/" + game.id} key={game.id}>
+        <a href={"/games/" + game.id} key={game.id}>
             <Diagram game={game} />
         </a>
     );

@@ -1,7 +1,7 @@
 import {Box, Button, Card, CardContent, CardHeader} from "@mui/material";
 
 
-export default function ChessGameDebug({ chessGameRef, position, setSquareOptions, setPromotionMove, setChessPosition, setPgn })
+export default function GameDebug({ chessGameRef, position, setSquareOptions, setPromotionMove, setChessPosition, setPgn })
 {
     return (
         <Box sx={{ marginLeft: 2 }}>

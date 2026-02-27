@@ -12,11 +12,11 @@ export default function ChessGame() {
     const { gameId: _gameId } = useParams();
     const chessGameRef = useRef(new Chess());
 
+    const [pgn, setPgn] = useState("")
     const [position, setPosition] = useState(() => new Chess().fen());
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [promotionMove, setPromotionMove] = useState(null);
-    const [pgn, setPgn] = useState("")
 
     function canDragPiece({ piece }) {
         const game = chessGameRef.current;
