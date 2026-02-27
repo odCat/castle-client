@@ -1,5 +1,7 @@
 import {Box, Container} from "@mui/material";
 import {styled} from "@mui/material/styles";
+import {useEffect, useState} from "react";
+import Diagram from "./Diagram.jsx";
 
 
 const GameList = styled(Box)({
@@ -7,6 +9,7 @@ const GameList = styled(Box)({
     flexWrap: 'wrap',
     gap: "40px",
     justifyContent: 'center',
+    width: ""
 })
 
 const GameContainer = styled(Container)({
@@ -18,23 +21,33 @@ const GameContainer = styled(Container)({
 
 export default function Watch() {
 
+    const [gameList, setGameList] = useState([]);
+
+    useEffect(() => {
+        const fetchGames = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/games");
+                const json = await response.json();
+                console.log(json);
+                setGameList(json);
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        fetchGames();
+    }, []);
+
+    const diagrams = gameList.map(game =>
+        <a href={"/game/" + game.id} key={game.id}>
+            <Diagram game={game} />
+        </a>
+    );
+
     return (
         <GameList>
-            <a href="/game/123">
-                <GameContainer sx={{ bgcolor: "green" }} />
-            </a>
-            <a href="/game/124">
-                <GameContainer sx={{ bgcolor: "yellow" }} />
-            </a>
-            <a href="/game/125">
-                <GameContainer sx={{ bgcolor: "orange" }} />
-            </a>
-            <a href="/game/126">
-                <GameContainer sx={{ bgcolor: "blue" }} />
-            </a>
-            <a href="/game/127">
-                <GameContainer sx={{ bgcolor: "violet" }} />
-            </a>
+
+            {diagrams}
+
         </GameList>
     )
 }
