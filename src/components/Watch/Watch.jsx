@@ -29,9 +29,9 @@ export default function Watch() {
 
     const [gameList, setGameList] = useState([]);
 
-    async function fetchGames() {
+    async function fetchInProgress() {
         try {
-            const response = await fetch("http://localhost:8080/games");
+            const response = await fetch("http://localhost:8080/games/inprogress");
             const json = await response.json();
             console.log("Refreshing games");
             console.log(json);
@@ -42,7 +42,7 @@ export default function Watch() {
     }
 
     useEffect(() => {
-        fetchGames();
+        fetchInProgress();
     }, []);
 
 
@@ -62,7 +62,7 @@ export default function Watch() {
                 }}
             >
 
-                <RefreshButton variant="outlined" onClick={fetchGames}>Refresh</RefreshButton>
+                <RefreshButton variant="outlined" onClick={fetchInProgress}>Refresh</RefreshButton>
 
                 <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
 
