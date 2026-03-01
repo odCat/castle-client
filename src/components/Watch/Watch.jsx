@@ -27,7 +27,7 @@ const GameList = styled(Box)({
 
 export default function Watch() {
 
-    const [gameList, setGameList] = useState([]);
+    const [inProgressGameList, setInProgressGameList] = useState([]);
 
     async function fetchInProgress() {
         try {
@@ -35,7 +35,7 @@ export default function Watch() {
             const json = await response.json();
             console.log("Refreshing games");
             console.log(json);
-            setGameList(json);
+            setInProgressGameList(json);
         } catch (error) {
             console.log(error.message);
         }
@@ -46,14 +46,14 @@ export default function Watch() {
     }, []);
 
 
-    const diagrams = gameList.map(game =>
+    const diagrams = inProgressGameList.map(game =>
         <a href={"/games/" + game.id} key={game.id}>
             <Diagram game={game} />
         </a>
     );
 
     return (
-        gameList.length !== 0 ? (
+        inProgressGameList.length !== 0 ? (
             <Box
                 style={{
                     display: "flex",
