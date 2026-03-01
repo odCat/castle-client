@@ -1,31 +1,50 @@
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
-import {Box, Button, Card, Container, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {Box, Button, Card, InputLabel, MenuItem, Paper, Select, Typography} from "@mui/material";
 import {styled} from "@mui/material/styles";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 const GameList = styled(Box)({
     display: 'flex',
-    flexWrap: 'wrap',
-    gap: "40px",
+    flexDirection: "column",
+    gap: 10,
     justifyContent: 'center',
 })
 
-const GameContainer = styled(Container)({
-    width: "200px",
-    height: "200px",
-    zIndex: 1,
-    flex: "0 0 auto"
+const GameContainer = styled(Paper)({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    gap: 16,
 })
 
 export default function Play() {
 
     const [color, setColor] = useState("white");
+    const [openGameList, setOpenGameList] = useState([]);
 
     function changeColor(event) {
         setColor(event.target.value);
     }
+
+    async function fetchOpenGames() {
+        try {
+            const response = await fetch("http://localhost:8080/games/open");
+            const json = await response.json();
+            console.log("Refreshing games");
+            console.log(json);
+            setOpenGameList(json);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchOpenGames();
+    }, []);
 
     return (
         <div
@@ -61,21 +80,13 @@ export default function Play() {
             <Divider sx={{ my: 5.5 }} />
 
             <GameList sx={{ maxWidth: "700px" }}>
-                <a href="/game/123">
-                    <GameContainer sx={{ bgcolor: "green" }} />
-                </a>
-                <a href="/game/124">
-                    <GameContainer sx={{ bgcolor: "yellow" }} />
-                </a>
-                <a href="/game/125">
-                    <GameContainer sx={{ bgcolor: "orange" }} />
-                </a>
-                <a href="/game/126">
-                    <GameContainer sx={{ bgcolor: "blue" }} />
-                </a>
-                <a href="/game/127">
-                    <GameContainer sx={{ bgcolor: "violet" }} />
-                </a>
+                {openGameList.map((game) => (
+                    <GameContainer>
+                        <Typography>{"#" + game.id}</Typography>
+                        <Typography>{game.white ? "White: " + game.white : "Black: " + game.black}</Typography>
+                        <Button variant="outlined">Join</Button>
+                    </GameContainer>
+                 ))}
             </GameList>
         </div>
     )
