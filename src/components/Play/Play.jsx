@@ -24,11 +24,35 @@ const GameContainer = styled(Paper)({
 export default function Play() {
 
     const [color, setColor] = useState("white");
+    const [myGame, setMyGame] = useState(null);
     const [openGameList, setOpenGameList] = useState([]);
 
     function changeColor(event) {
         setColor(event.target.value);
     }
+
+    async function createGame() {
+        try {
+            const response = await fetch("http://localhost:8080/games/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ color: "white", name: "Dorin" })
+            });
+
+            const json = await response.json();
+            console.log("Refreshing games");
+            console.log(json);
+            setMyGame(json);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchOpenGames();
+    }, []);
 
     async function fetchOpenGames() {
         try {
@@ -41,10 +65,6 @@ export default function Play() {
             console.log(error.message);
         }
     }
-
-    useEffect(() => {
-        fetchOpenGames();
-    }, []);
 
     return (
         <div
@@ -74,7 +94,7 @@ export default function Play() {
                     </Select>
                 </FormControl>
 
-                <Button variant="outlined">Create</Button>
+                <Button variant="outlined" onClick={createGame}>Create</Button>
             </Card>
 
             <Divider sx={{ my: 5.5 }} />
