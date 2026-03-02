@@ -1,6 +1,17 @@
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
-import {Box, Button, Card, InputLabel, MenuItem, Paper, Select, Typography} from "@mui/material";
+import {
+    Alert,
+    Box,
+    Button,
+    Card,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    Snackbar,
+    Typography
+} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
@@ -28,6 +39,7 @@ export default function Play() {
     const [color, setColor] = useState("white");
     const [myGame, setMyGame] = useState(null);
     const [openGameList, setOpenGameList] = useState([]);
+    const [open, setOpen] = useState(false);
 
     function changeColor(event) {
         setColor(event.target.value);
@@ -67,14 +79,16 @@ export default function Play() {
             });
 
             const json = await response.json();
-            console.log("Joining a game...");
             console.log(json);
-            console.log("http://localhost:5173/games/id/" + json.id);
-            setMyGame(json);
             navigate("http://localhost:5173/games/id/" + json.id);
         } catch (error) {
             console.log(error.message);
+            handleError();
         }
+    }
+
+    function handleError() {
+        setOpen(true);
     }
 
     useEffect(() => {
@@ -101,6 +115,17 @@ export default function Play() {
                 alignItems: "center"
             }}
         >
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={() => setOpen(false)}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert severity="error" variant="filled" onClose={() => setOpen(false)}>
+                    Unable to join game!
+                </Alert>
+            </Snackbar>
+
             <Card sx={{
                 display: "flex",
                 flexDirection: "column",
