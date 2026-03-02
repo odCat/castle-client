@@ -3,6 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import {Box, Button, Card, InputLabel, MenuItem, Paper, Select, Typography} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router";
 
 
 const GameList = styled(Box)({
@@ -23,6 +24,7 @@ const GameContainer = styled(Paper)({
 
 export default function Play() {
 
+    const navigate = useNavigate();
     const [color, setColor] = useState("white");
     const [myGame, setMyGame] = useState(null);
     const [openGameList, setOpenGameList] = useState([]);
@@ -45,6 +47,31 @@ export default function Play() {
             console.log("Refreshing games");
             console.log(json);
             setMyGame(json);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    async function joinGame(id) {
+        const gameToJoin = openGameList.find(game => game.id === id);
+        console.log(gameToJoin);
+        const color = gameToJoin.white === "" ? "white" : "black";
+
+        try {
+            const response = await fetch("http://localhost:8080/games/join", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: id, color: color, name: "Marin" })
+            });
+
+            const json = await response.json();
+            console.log("Joining a game...");
+            console.log(json);
+            console.log("http://localhost:5173/games/id/" + json.id);
+            setMyGame(json);
+            navigate("http://localhost:5173/games/id/" + json.id);
         } catch (error) {
             console.log(error.message);
         }
@@ -104,7 +131,7 @@ export default function Play() {
                     <GameContainer>
                         <Typography>{"#" + game.id}</Typography>
                         <Typography>{game.white ? "White: " + game.white : "Black: " + game.black}</Typography>
-                        <Button variant="outlined">Join</Button>
+                        <Button variant="outlined" onClick={() => joinGame(game.id)}>Join</Button>
                     </GameContainer>
                  ))}
             </GameList>
