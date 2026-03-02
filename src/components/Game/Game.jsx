@@ -251,9 +251,9 @@ export default function Game() {
 
                     <GameDebug
                         chessGameRef = {chessGameRef}
-                        position={position}
+                        position = {position}
                         setSquareOptions = {setSquareOptions}
-                        setPromotionMove= {setPromotionMove}
+                        setPromotionMove = {setPromotionMove}
                         setChessPosition = {setPosition}
                         setPgn = {setPgn}
                     />

@@ -15,6 +15,7 @@ import {
 import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
+import WaitForPlayer from "./WaitForPlayer.jsx";
 
 
 const GameList = styled(Box)({
@@ -126,28 +127,32 @@ export default function Play() {
                 </Alert>
             </Snackbar>
 
-            <Card sx={{
-                display: "flex",
-                flexDirection: "column",
-                maxWidth: "400px",
-            }}>
-                <Typography variant="h6" sx={{ ml: 1 }}>Create Game</Typography>
-                <FormControl variant="filled" sx={{ m: 1, minWidth: 300 }}>
-                    <InputLabel id="color-label">Color</InputLabel>
-                    <Select
-                        labelId="color-label"
-                        variant={"filled"}
-                        value={color}
-                        label="Color"
-                        onChange={ changeColor }
-                    >
-                        <MenuItem value={"white"}>White</MenuItem>
-                        <MenuItem value={"black"}>Black</MenuItem>
-                    </Select>
-                </FormControl>
+            { myGame === null
+                ?
+                    <Card sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        maxWidth: "400px",
+                    }}>
+                        <Typography variant="h6" sx={{ ml: 1 }}>Create Game</Typography>
+                        <FormControl variant="filled" sx={{ m: 1, minWidth: 300 }}>
+                            <InputLabel id="color-label">Color</InputLabel>
+                            <Select
+                                labelId="color-label"
+                                variant={"filled"}
+                                value={color}
+                                label="Color"
+                                onChange={ changeColor }
+                            >
+                                <MenuItem value={"white"}>White</MenuItem>
+                                <MenuItem value={"black"}>Black</MenuItem>
+                            </Select>
+                        </FormControl>
 
-                <Button variant="outlined" onClick={createGame}>Create</Button>
-            </Card>
+                        <Button variant="outlined" onClick={createGame}>Create</Button>
+                    </Card>
+                : <WaitForPlayer game={myGame} setMyGame={setMyGame} />
+            }
 
             <Divider sx={{ my: 5.5 }} />
 
