@@ -47,7 +47,7 @@ export default function Watch() {
 
 
     const diagrams = inProgressGameList.map(game =>
-        <a href={"/games/" + game.id} key={game.id}>
+        <a href={"/games/id/" + game.id} key={game.id}>
             <Diagram game={game} />
         </a>
     );

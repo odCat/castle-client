@@ -31,7 +31,7 @@ export default function Game() {
             const game = chessGameRef.current;
 
             try {
-                const response = await fetch("http://localhost:8080/games/" + params.gameId)
+                const response = await fetch("http://localhost:8080/games/id/" + params.gameId)
                 const json = await response.json();
                 setPgn(json.pgn);
                 setPosition(json.fen);

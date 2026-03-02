@@ -45,7 +45,7 @@ export default function App() {
                     <Route path="/play" element={<Play />} />
                     <Route path="/watch" element={<Watch />} />
                     <Route path="/tools/demo" element={<Demo />} />
-                    <Route path="/games/:gameId" element={<Game />} />
+                    <Route path="/games/id/:gameId" element={<Game />} />
                 </Routes>
             </MainContainer>
 
