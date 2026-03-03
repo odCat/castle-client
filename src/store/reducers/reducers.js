@@ -11,7 +11,7 @@ export function rootReducer(state = initialState, action) {
         case LOGOUT:
         case VISIT:
             return {
-                ...action.payload.player
+                player: { ...action.payload.player }
             }
         default:
             return state;

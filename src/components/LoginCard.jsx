@@ -6,6 +6,9 @@ import MuiCard from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../store/actions/actions.js";
+import {useNavigate} from "react-router";
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -28,6 +31,10 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function LoginCard() {
 
+    const dispatch = useDispatch();
+    const player = useSelector(state => state.player);
+    const navigate = useNavigate();
+
     async function handleSubmit(event)
     {
         event.preventDefault();
@@ -43,7 +50,8 @@ export default function LoginCard() {
                 body: JSON.stringify({usernameOrEmail: emailOrUsername, password: password})
             })
             const json = await response.json();
-            console.log(json);
+            dispatch(login(json));
+            navigate("/play");
         } catch (error) {
             console.log(error.message);
         }
