@@ -6,7 +6,7 @@ import MuiCard from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {login} from "../store/actions/actions.js";
 import {useNavigate} from "react-router";
 
@@ -32,7 +32,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
 export default function LoginCard() {
 
     const dispatch = useDispatch();
-    const player = useSelector(state => state.player);
     const navigate = useNavigate();
 
     async function handleSubmit(event)
