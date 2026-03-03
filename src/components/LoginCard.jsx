@@ -28,15 +28,19 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function LoginCard() {
 
-    async function handleSubmit() {
-        console.log("Submitting...")
-        console.log(JSON.stringify({email: "gigel", password: "gigel"}));
+    async function handleSubmit(event)
+    {
+        event.preventDefault();
+
+        const data = new FormData(event.currentTarget);
+        const emailOrUsername = data.get("emailOrUsername");
+        const password = data.get("password");
 
         try {
             const response = await fetch("http://localhost:8080/players/login", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({usernameOrEmail: "gigel", password: "gigel"})
+                body: JSON.stringify({usernameOrEmail: emailOrUsername, password: password})
             })
             const json = await response.json();
             console.log(json);
@@ -52,7 +56,7 @@ export default function LoginCard() {
                 variant="h4"
                 sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
             >
-                Sign in
+                Login
             </Typography>
 
             <Box
@@ -62,13 +66,13 @@ export default function LoginCard() {
                 sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
             >
                 <FormControl>
-                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <FormLabel htmlFor="emailOrUsername">Email/Username</FormLabel>
                     <TextField
                         // error={emailError}
                         // helperText={emailErrorMessage}
                         id="email"
                         type="email"
-                        name="email"
+                        name="emailOrUsername"
                         placeholder="your@email.com"
                         autoComplete="email"
                         autoFocus
