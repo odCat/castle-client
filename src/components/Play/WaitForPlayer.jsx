@@ -1,4 +1,4 @@
-import {Box, Button, Typography} from "@mui/material";
+import {Card, Button, Typography} from "@mui/material";
 
 
 export default function WaitForPlayer({ game, setMyGame }) {
@@ -16,9 +16,16 @@ export default function WaitForPlayer({ game, setMyGame }) {
     }
 
     return (
-        <Box>
+        <Card variant="outlined"
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                p: 2,
+                gap: 2,
+            }}
+        >
             <Typography>Waiting for a player to join...</Typography>
             <Button variant="outlined" onClick={closeGame}>Close</Button>
-        </Box>
+        </Card>
     )
 }
