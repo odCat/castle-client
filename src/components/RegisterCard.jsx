@@ -28,6 +28,34 @@ const SignCard = styled(MuiCard)(({ theme }) => ({
 
 export default function RegisterCard() {
 
+    async function handleSubmit(event)
+    {
+        event.preventDefault();
+
+        const data = new FormData(event.currentTarget);
+        const email = data.get("email");
+        const username = data.get("username");
+        const password = data.get("password");
+        const fullName = data.get("fullName");
+
+        try {
+            const response = await fetch("http://localhost:8080/players/register", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    email: email,
+                    username: username,
+                    password: password,
+                    fullName: fullName
+                })
+            })
+            const json = await response.json();
+            console.log(json);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <SignCard>
             <Typography
@@ -40,7 +68,7 @@ export default function RegisterCard() {
 
             <Box
                 component="form"
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
 
@@ -63,7 +91,7 @@ export default function RegisterCard() {
                     <FormLabel htmlFor="name">Full name</FormLabel>
                     <TextField
                         autoComplete="name"
-                        name="name"
+                        name="fullName"
                         fullWidth
                         id="name"
                         placeholder="Jon Snow"
