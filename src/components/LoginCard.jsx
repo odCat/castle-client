@@ -27,6 +27,24 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function LoginCard() {
+
+    async function handleSubmit() {
+        console.log("Submitting...")
+        console.log(JSON.stringify({email: "gigel", password: "gigel"}));
+
+        try {
+            const response = await fetch("http://localhost:8080/players/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({usernameOrEmail: "gigel", password: "gigel"})
+            })
+            const json = await response.json();
+            console.log(json);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <Card variant="outlined">
             <Typography
@@ -39,7 +57,7 @@ export default function LoginCard() {
 
             <Box
                 component="form"
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 noValidate
                 sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
             >
@@ -79,7 +97,7 @@ export default function LoginCard() {
                 </FormControl>
 
                 <Button type="submit" fullWidth variant="contained" /*onClick={validateInputs}*/>
-                    Sign in
+                    Login
                 </Button>
             </Box>
         </Card>
