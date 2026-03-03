@@ -27,6 +27,7 @@ const SignCard = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function RegisterCard() {
+
     return (
         <SignCard>
             <Typography
@@ -42,6 +43,7 @@ export default function RegisterCard() {
                 // onSubmit={handleSubmit}
                 sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
+
                 <FormControl>
                     <FormLabel htmlFor="name">User name</FormLabel>
                     <TextField
@@ -110,7 +112,7 @@ export default function RegisterCard() {
                     variant="contained"
                     // onClick={validateInputs}
                 >
-                    Sign up
+                    Register
                 </Button>
 
             </Box>
