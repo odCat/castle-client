@@ -35,20 +35,22 @@ export default function TopBar() {
                 { username &&
                     <Box sx={{ ml: "auto", bg: "#0c1a29" }}>
                         <TopBarButton onClick={handleOpen}>{username}</TopBarButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                            sx={{ py: 0, mt: 1, "& .MuiPaper-root": { bgcolor: "#0c1a29" } }}
-                        >
-                            <MenuItem onClick={handleClose}
-                                sx={{
-                                    backgroundColor: "#0c1a29",
-                                    "&:hover": { backgroundColor: "#15273b" },
-                                    color: "white"
-                                }}
-                            >Logout</MenuItem>
-                        </Menu>
+                        { username !== "Guest" &&
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
+                                sx={{ py: 0, mt: 1, "& .MuiPaper-root": { bgcolor: "#0c1a29" } }}
+                            >
+                                <MenuItem onClick={handleClose}
+                                    sx={{
+                                        backgroundColor: "#0c1a29",
+                                        "&:hover": { backgroundColor: "#15273b" },
+                                        color: "white"
+                                    }}
+                                >Logout</MenuItem>
+                            </Menu>
+                        }
                     </Box>
                 }
             </Toolbar>
