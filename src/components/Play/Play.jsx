@@ -34,6 +34,11 @@ const GameContainer = styled(Paper)({
     gap: 16,
 })
 
+const RefreshButton = styled(Button) ({
+    width:"100px",
+    margin: "16px"
+})
+
 export default function Play() {
 
     const navigate = useNavigate();
@@ -57,7 +62,6 @@ export default function Play() {
             });
 
             const json = await response.json();
-            console.log("Refreshing games");
             console.log(json);
             setMyGame(json);
         } catch (error) {
@@ -157,6 +161,8 @@ export default function Play() {
             <Divider sx={{ my: 5.5 }} />
 
             <GameList sx={{ maxWidth: "700px" }}>
+
+                <RefreshButton variant="outlined" onClick={fetchOpenGames} sx={{ alignSelf: "center" }}>Refresh</RefreshButton>
                 {openGameList.map((game, index) => (
                     <GameContainer key={index}>
                         <Typography>{"#" + game.id}</Typography>
