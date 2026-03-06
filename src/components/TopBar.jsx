@@ -1,9 +1,10 @@
 import {AppBar, Button, Menu, MenuItem, Toolbar} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {useNavigate} from "react-router";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import Box from "@mui/material/Box";
+import {logout} from "../store/actions/actions.js";
 
 
 const TopBarButton = styled(Button)({
@@ -16,6 +17,7 @@ export default function TopBar() {
 
     const navigate = useNavigate();
     const username = useSelector(store => store.player.username);
+    const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleOpen = (event) => {
@@ -25,6 +27,11 @@ export default function TopBar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    function logoutOnClick() {
+        dispatch(logout());
+        navigate("/login");
+    }
 
     return (
         <AppBar position="static" sx={{ bgcolor: '#0c1a29' }}>
@@ -42,7 +49,7 @@ export default function TopBar() {
                                 onClose={handleClose}
                                 sx={{ py: 0, mt: 1, "& .MuiPaper-root": { bgcolor: "#0c1a29" } }}
                             >
-                                <MenuItem onClick={handleClose}
+                                <MenuItem onClick={logoutOnClick}
                                     sx={{
                                         backgroundColor: "#0c1a29",
                                         "&:hover": { backgroundColor: "#15273b" },
