@@ -26,6 +26,7 @@ export default function TopBar() {
 
     const handleClose = () => {
         setAnchorEl(null);
+
     };
 
     function logoutOnClick() {
@@ -34,7 +35,7 @@ export default function TopBar() {
     }
 
     return (
-        <AppBar position="static" sx={{ bgcolor: '#0c1a29' }}>
+        <AppBar position="static" sx={{ bgcolor: '#0c1a29', minWidth: "700px" }}>
             <Toolbar>
                 <TopBarButton onClick={() => navigate("/play")}>Play</TopBarButton>
                 <TopBarButton onClick={() => navigate("/watch")}>Watch</TopBarButton>
