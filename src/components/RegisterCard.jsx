@@ -6,6 +6,8 @@ import MuiCard from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import {styled} from "@mui/material/styles";
+import {useState} from "react";
+import {useNavigate} from "react-router";
 
 
 const SignCard = styled(MuiCard)(({ theme }) => ({
@@ -27,6 +29,14 @@ const SignCard = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function RegisterCard() {
+
+    const [usernameError, setUsernameError] = useState(false);
+    const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
+    const [emailError, setEmailError] = useState(false);
+    const [emailErrorMessage, setEmailErrorMessage] = useState("");
+    const [passwordError, setPasswordError] = useState(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     async function handleSubmit(event)
     {
@@ -50,10 +60,50 @@ export default function RegisterCard() {
                 })
             })
             const json = await response.json();
-            console.log(json);
-        } catch (error) {
-            console.log(error.message);
+
+            if (!response.ok) {
+                if (response.status === 400) {
+                    if (json.username) {
+                        setUsernameError(true);
+                        setUsernameErrorMessage(json.username);
+                    }
+                    if (json.email) {
+                        setEmailError(true);
+                        setEmailErrorMessage(json.email);
+                    }
+                    if (json.password) {
+                            setPasswordError(true);
+                            setPasswordErrorMessage(json.password);
+                    }
+                }
+
+                if (response.status === 403) {
+                    if (json.error === "UNIQUE constraint failed: players.username") {
+                        setUsernameError(true);
+                        setUsernameErrorMessage("Username is already taken");
+                    }
+                    if (json.error === "UNIQUE constraint failed: players.email") {
+                        setEmailError(true);
+                        setEmailErrorMessage("Email is already taken");
+                    }
+                }
+
+                throw new Error();
+            }
+
+            navigate("/login");
+        } catch {
+            // do nothing
         }
+    }
+
+    function validateInputs() {
+        setUsernameError(false);
+        setUsernameErrorMessage("");
+        setEmailError(false);
+        setEmailErrorMessage("");
+        setPasswordError(false);
+        setPasswordErrorMessage("");
     }
 
     return (
@@ -81,8 +131,8 @@ export default function RegisterCard() {
                         fullWidth
                         id="name"
                         placeholder="john_snow"
-                        // error={nameError}
-                        // helperText={nameErrorMessage}
+                        error={usernameError}
+                        helperText={usernameErrorMessage}
                         // color={nameError ? 'error' : 'primary'}
                     />
                 </FormControl>
@@ -95,9 +145,6 @@ export default function RegisterCard() {
                         fullWidth
                         id="name"
                         placeholder="Jon Snow"
-                        // error={nameError}
-                        // helperText={nameErrorMessage}
-                        // color={nameError ? 'error' : 'primary'}
                     />
                 </FormControl>
 
@@ -111,9 +158,8 @@ export default function RegisterCard() {
                         name="email"
                         autoComplete="email"
                         variant="outlined"
-                        // error={emailError}
-                        // helperText={emailErrorMessage}
-                        // color={passwordError ? 'error' : 'primary'}
+                        error={emailError}
+                        helperText={emailErrorMessage}
                     />
                 </FormControl>
 
@@ -128,9 +174,8 @@ export default function RegisterCard() {
                         id="password"
                         autoComplete="new-password"
                         variant="outlined"
-                        // error={passwordError}
-                        // helperText={passwordErrorMessage}
-                        // color={passwordError ? 'error' : 'primary'}
+                        error={passwordError}
+                        helperText={passwordErrorMessage}
                     />
                 </FormControl>
 
@@ -138,7 +183,7 @@ export default function RegisterCard() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    // onClick={validateInputs}
+                    onClick={validateInputs}
                 >
                     Register
                 </Button>
