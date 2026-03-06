@@ -16,6 +16,7 @@ import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import WaitForPlayer from "./WaitForPlayer.jsx";
+import {useSelector} from "react-redux";
 
 
 const GameList = styled(Box)({
@@ -42,6 +43,7 @@ const RefreshButton = styled(Button) ({
 export default function Play() {
 
     const navigate = useNavigate();
+    const token = useSelector(store => store.player.password);
     const [color, setColor] = useState("white");
     const [myGame, setMyGame] = useState(null);
     const [openGameList, setOpenGameList] = useState([]);
@@ -57,6 +59,7 @@ export default function Play() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
                 },
                 body: JSON.stringify({ color: "white", name: "Dorin" })
             });
