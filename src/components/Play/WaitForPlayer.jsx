@@ -1,13 +1,19 @@
 import {Card, Button, Typography} from "@mui/material";
+import {useSelector} from "react-redux";
 
 
 export default function WaitForPlayer({ game, setMyGame }) {
+
+    const token = useSelector(store => store.player.password);
 
     async function closeGame() {
         try {
             await fetch("http://localhost:8080/games/id/" + game.id, {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
             });
             setMyGame(null);
         } catch (error) {

@@ -43,61 +43,12 @@ const RefreshButton = styled(Button) ({
 export default function Play() {
 
     const navigate = useNavigate();
-    const token = useSelector(store => store.player.password);
+    const player = useSelector(store => store.player);
     const [color, setColor] = useState("white");
     const [myGame, setMyGame] = useState(null);
     const [openGameList, setOpenGameList] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
     const [open, setOpen] = useState(false);
-
-    function changeColor(event) {
-        setColor(event.target.value);
-    }
-
-    async function createGame() {
-        try {
-            const response = await fetch("http://localhost:8080/games/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token
-                },
-                body: JSON.stringify({ color: "white", name: "Dorin" })
-            });
-
-            const json = await response.json();
-            console.log(json);
-            setMyGame(json);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-
-    async function joinGame(id) {
-        const gameToJoin = openGameList.find(game => game.id === id);
-        console.log(gameToJoin);
-        const color = gameToJoin.white === "" ? "white" : "black";
-
-        try {
-            const response = await fetch("http://localhost:8080/games/join", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ id: id, color: color, name: "Marin" })
-            });
-
-            const json = await response.json();
-            console.log(json);
-            navigate("http://localhost:5173/games/id/" + json.id);
-        } catch (error) {
-            console.log(error.message);
-            handleError();
-        }
-    }
-
-    function handleError() {
-        setOpen(true);
-    }
 
     useEffect(() => {
         fetchOpenGames();
@@ -109,10 +60,62 @@ export default function Play() {
             const json = await response.json();
             console.log("Refreshing games");
             console.log(json);
-            setOpenGameList(json);
+            setOpenGameList(json.filter((game) => game.white !== player.username && game.black !== player.username));
         } catch (error) {
             console.log(error.message);
         }
+    }
+
+    function changeColor(event) {
+        setColor(event.target.value);
+    }
+
+    async function createGame() {
+
+        setErrorMessage("Unable to create a new game.");
+
+        try {
+            const response = await fetch("http://localhost:8080/games/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + player.password
+                },
+                body: JSON.stringify({ color: color, name: player.username })
+            });
+            const json = await response.json();
+            setMyGame(json);
+        } catch (error) {
+            handleError();
+        }
+    }
+
+    async function joinGame(id) {
+        const gameToJoin = openGameList.find(game => game.id === id);
+        const openColor = gameToJoin.white === "" ? "white" : "black";
+
+        setErrorMessage("Unable to join game! You have an open game.");
+
+        try {
+            const response = await fetch("http://localhost:8080/games/join", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + player.password
+                },
+                body: JSON.stringify({ id: id, color: openColor, name: player.username })
+            });
+
+            const json = await response.json();
+
+            navigate("http://localhost:5173/games/id/" + json.id);
+        } catch {
+            handleError();
+        }
+    }
+
+    function handleError() {
+        setOpen(true);
     }
 
     return (
@@ -125,12 +128,12 @@ export default function Play() {
         >
             <Snackbar
                 open={open}
-                autoHideDuration={6000}
+                autoHideDuration={2500}
                 onClose={() => setOpen(false)}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
                 <Alert severity="error" variant="filled" onClose={() => setOpen(false)}>
-                    Unable to join game!
+                    {errorMessage}
                 </Alert>
             </Snackbar>
 
