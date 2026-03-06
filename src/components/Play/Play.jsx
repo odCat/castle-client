@@ -157,8 +157,8 @@ export default function Play() {
             <Divider sx={{ my: 5.5 }} />
 
             <GameList sx={{ maxWidth: "700px" }}>
-                {openGameList.map((game) => (
-                    <GameContainer>
+                {openGameList.map((game, index) => (
+                    <GameContainer key={index}>
                         <Typography>{"#" + game.id}</Typography>
                         <Typography>{game.white ? "White: " + game.white : "Black: " + game.black}</Typography>
                         <Button variant="outlined" onClick={() => joinGame(game.id)}>Join</Button>

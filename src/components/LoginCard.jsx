@@ -78,6 +78,7 @@ export default function LoginCard() {
 
                 throw new Error();
             }
+
             dispatch(login(json));
             navigate("/play");
         } catch {
