@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import {useDispatch} from "react-redux";
 import {login} from "../store/actions/actions.js";
 import {useNavigate} from "react-router";
+import {useState} from "react";
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -31,6 +32,11 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function LoginCard() {
 
+    const [usernameOrMail, setUsernameOrMail] = useState(false);
+    const [usernameOrEmailErrorMessage, setUsernameOrEmailErrorMessage] = useState("");
+    const [passwordError, setPasswordError] = useState(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -49,11 +55,39 @@ export default function LoginCard() {
                 body: JSON.stringify({usernameOrEmail: emailOrUsername, password: password})
             })
             const json = await response.json();
+
+            if (!response.ok)
+            {
+                if (response.status === 403) {
+                    setUsernameOrMail(true);
+                    setUsernameOrEmailErrorMessage("Invalid email or username");
+                    setPasswordError(true);
+                    setPasswordErrorMessage("Invalid email or username");
+                }
+
+                if (response.status === 400) {
+                    if (json.password === "Password must not be blank") {
+                        setPasswordError(true);
+                        setPasswordErrorMessage("Password must not be blank");
+                    }
+                    if (json.usernameOrEmail === "Email or username must not be blank") {
+                        setUsernameOrMail(true);
+                        setUsernameOrEmailErrorMessage("Email or username must not be blank");
+                    }
+                }
+
+                throw new Error();
+            }
             dispatch(login(json));
             navigate("/play");
-        } catch (error) {
-            console.log(error.message);
+        } catch {
+            // do nothing
         }
+    }
+
+    function validateInputs() {
+        setUsernameOrMail(false);
+        setPasswordError(false);
     }
 
     return (
@@ -75,8 +109,8 @@ export default function LoginCard() {
                 <FormControl>
                     <FormLabel htmlFor="emailOrUsername">Email/Username</FormLabel>
                     <TextField
-                        // error={emailError}
-                        // helperText={emailErrorMessage}
+                        error={usernameOrMail}
+                        helperText={usernameOrEmailErrorMessage}
                         id="email"
                         type="email"
                         name="emailOrUsername"
@@ -86,14 +120,13 @@ export default function LoginCard() {
                         required
                         fullWidth
                         variant="outlined"
-                        // color={emailError ? 'error' : 'primary'}
                     />
                 </FormControl>
                 <FormControl>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <TextField
-                        // error={passwordError}
-                        // helperText={passwordErrorMessage}
+                        error={passwordError}
+                        helperText={passwordErrorMessage}
                         name="password"
                         placeholder="••••••"
                         type="password"
@@ -103,11 +136,10 @@ export default function LoginCard() {
                         required
                         fullWidth
                         variant="outlined"
-                        // color={passwordError ? 'error' : 'primary'}
                     />
                 </FormControl>
 
-                <Button type="submit" fullWidth variant="contained" /*onClick={validateInputs}*/>
+                <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
                     Login
                 </Button>
             </Box>
