@@ -35,7 +35,7 @@ export default function Game() {
                 const json = await response.json();
                 setPgn(json.pgn);
                 setPosition(json.fen);
-                game.load(json.fen);
+                game.loadPgn(json.pgn);
             } catch(error) {
                 console.log(error.message);
             }
