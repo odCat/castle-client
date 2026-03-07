@@ -3,6 +3,7 @@ import {styled} from "@mui/material/styles";
 import {useEffect, useState} from "react";
 import Diagram from "./Diagram.jsx";
 import Divider from "@mui/material/Divider";
+import {useNavigate} from "react-router";
 
 
 const LoadingText = styled(Typography) ({
@@ -27,6 +28,7 @@ const GameList = styled(Box)({
 
 export default function Watch() {
 
+    const navigate = useNavigate();
     const [inProgressGameList, setInProgressGameList] = useState([]);
 
     async function fetchInProgress() {
@@ -47,9 +49,9 @@ export default function Watch() {
 
 
     const diagrams = inProgressGameList.map(game =>
-        <a href={"/games/id/" + game.id} key={game.id}>
+        <div key={game.id} onClick={() => navigate("/games/id/" + game.id)}>
             <Diagram game={game} />
-        </a>
+        </div>
     );
 
     return (
