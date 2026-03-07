@@ -85,7 +85,7 @@ export default function Play() {
             });
             const json = await response.json();
             setMyGame(json);
-        } catch (error) {
+        } catch {
             handleError();
         }
     }
