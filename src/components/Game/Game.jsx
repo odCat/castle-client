@@ -6,6 +6,7 @@ import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
+import {useSelector} from "react-redux";
 
 
 const LoadingText = styled(Typography) ({
@@ -18,6 +19,7 @@ const LoadingText = styled(Typography) ({
 export default function Game() {
 
     const params = useParams();
+    const token = useSelector(store => store.player.password);
     const chessGameRef = useRef(new Chess("8/8/8/8/8/8/8/8 w - - 0 1", { skipValidation: true }));
 
     const [pgn, setPgn] = useState("")
@@ -31,8 +33,15 @@ export default function Game() {
             const game = chessGameRef.current;
 
             try {
-                const response = await fetch("http://localhost:8080/games/id/" + params.gameId)
+                const response = await fetch("http://localhost:8080/games/id/" + params.gameId, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    }
+                })
                 const json = await response.json();
+                console.log(json.pgn);
                 setPgn(json.pgn);
                 setPosition(json.fen);
                 game.loadPgn(json.pgn);
