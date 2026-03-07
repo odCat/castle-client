@@ -117,6 +117,7 @@ export default function Game() {
 
         try {
             game.move({ from: sourceSquare, to: targetSquare });
+            checkGameOver();
             setPgn(game.pgn());
             setPosition(game.fen());
             setSquareOptions({});
@@ -128,6 +129,20 @@ export default function Game() {
         } catch {
             return false;
         }
+    }
+
+    function checkGameOver() {
+
+        const game = chessGameRef.current;
+
+        let result = "*";
+        if (game.isGameOver() === true) {
+            result = game.turn() === "w" ? "0-1" : "1-0";
+        } else if (game.isDraw() === true) {
+            result = "1/2-1/2";
+        }
+
+        game.setHeader("Result", result);
     }
 
     async function sendMove(game, sourceSquare, targetSquare) {
@@ -181,6 +196,7 @@ export default function Game() {
                         return;
                     }
                     game.move({ from: move.from, to: move.to })
+                    checkGameOver();
                     setPgn(game.pgn());
                     setPosition(game.fen());
 
