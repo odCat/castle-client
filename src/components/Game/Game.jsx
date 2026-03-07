@@ -41,10 +41,9 @@ export default function Game() {
                     }
                 })
                 const json = await response.json();
-                console.log(json.pgn);
+                game.loadPgn(json.pgn);
                 setPgn(json.pgn);
                 setPosition(json.fen);
-                game.loadPgn(json.pgn);
             } catch(error) {
                 console.log(error.message);
             }
@@ -91,7 +90,7 @@ export default function Game() {
         setSquareOptions(updatedSquares);
     }
 
-    function onPieceDrop({ sourceSquare, targetSquare })
+    async function onPieceDrop({ sourceSquare, targetSquare })
     {
         const game = chessGameRef.current;
 
@@ -111,10 +110,39 @@ export default function Game() {
             setPosition(game.fen());
             setSquareOptions({});
             setPossibleMoves([]);
+
+            await sendMove(game, sourceSquare, targetSquare);
+
             return true;
         } catch {
             return false;
         }
+    }
+
+    async function sendMove(game, sourceSquare, targetSquare) {
+
+        const response = await fetch("http://localhost:8080/games/" + params.gameId + "/move", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                color: (game.turn() === "w" ? "b" : "w"),
+                from: sourceSquare,
+                to: targetSquare,
+                pgn: game.pgn(),
+                fen: game.fen()
+            })
+        })
+
+        if (!response.ok) {
+            game.undo();
+            setPgn(game.pgn());
+            setPosition(game.fen());
+        }
+
+        console.log(game.turn(), sourceSquare, targetSquare);
     }
 
     function isValidMove(source, target) {
@@ -128,7 +156,7 @@ export default function Game() {
         }
     }
 
-    function onSquareClick({ square, piece })
+    async function onSquareClick({ square, piece })
     {
         const game = chessGameRef.current;
 
@@ -144,6 +172,8 @@ export default function Game() {
                     game.move({ from: move.from, to: move.to })
                     setPgn(game.pgn());
                     setPosition(game.fen());
+
+                    await sendMove(game, move.from, move.to);
                 } else {
                     getAndSetPossibleMoves(square);
                 }
