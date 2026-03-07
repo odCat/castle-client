@@ -312,7 +312,7 @@ export default function Game() {
                 >
                     { pgn !== "" &&
                         <Card sx={{ ml: 2, p: 1 }} >
-                            {pgn}
+                            {pgn.split(/\n\s*\n/).pop()}
                         </Card>
                     }
 
