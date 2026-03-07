@@ -108,7 +108,7 @@ export default function Play() {
 
             const json = await response.json();
 
-            navigate("http://localhost:5173/games/id/" + json.id);
+            navigate("http://localhost:5173/games/id/" + json.id, { state: { color: openColor }});
         } catch {
             handleError();
         }

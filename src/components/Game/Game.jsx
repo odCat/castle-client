@@ -3,7 +3,7 @@ import GameDebug from "./GameDebug.jsx";
 import {Card, Typography} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js"
-import {useParams} from "react-router";
+import {useLocation, useNavigate, useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
 import {useSelector} from "react-redux";
@@ -19,8 +19,10 @@ const LoadingText = styled(Typography) ({
 export default function Game() {
 
     const params = useParams();
-    const token = useSelector(store => store.player.password);
+    const player = useSelector(store => store.player);
     const chessGameRef = useRef(new Chess("8/8/8/8/8/8/8/8 w - - 0 1", { skipValidation: true }));
+    const { color } = useLocation().state || { color: "white" };
+    const navigate = useNavigate();
 
     const [pgn, setPgn] = useState("")
     const [position, setPosition] = useState("");
@@ -37,10 +39,19 @@ export default function Game() {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer " + token
+                        "Authorization": "Bearer " + player.password
                     }
                 })
                 const json = await response.json();
+
+                // hack, for debugging, reconsider later
+                // it allows to switch colors on entering a game from the watch page
+                if (player.username === json.black)
+                    navigate(window.location.pathname, {
+                        state: { color: "black" },
+                        replace: true
+                    });
+
                 game.loadPgn(json.pgn);
                 setPgn(json.pgn);
                 setPosition(json.fen);
@@ -125,7 +136,7 @@ export default function Game() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
+                "Authorization": "Bearer " + player.password
             },
             body: JSON.stringify({
                 color: (game.turn() === "w" ? "b" : "w"),
@@ -221,6 +232,7 @@ export default function Game() {
         lightSquareNotationStyle: { color: "#578cc1" },
         lightSquareStyle: { backgroundColor: "#ffffff" },
         darkSquareStyle: { backgroundColor: "#578cc1" },
+        boardOrientation: color,
 
         allowDragOffBoard: false,
         draggingPieceGhostStyle: { opacity: 0 },
