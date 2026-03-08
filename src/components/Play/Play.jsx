@@ -17,6 +17,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import WaitForPlayer from "./WaitForPlayer.jsx";
 import {useSelector} from "react-redux";
+import {Client} from "@stomp/stompjs";
 
 
 const GameList = styled(Box)({
@@ -54,15 +55,37 @@ export default function Play() {
         fetchOpenGames();
     }, []);
 
+    useEffect(() => {
+        if (myGame == null)
+            return;
+
+        const client = new Client({
+            brokerURL: "ws://localhost:8080/websocket",
+            onConnect: () => {
+                client.subscribe(`/topic/game/${myGame.id}`, (message) => {
+                    const gameData = JSON.parse(message.body);
+                    navigate("http://localhost:5173/games/id/" + gameData.id, { state: { color: color }});
+                })
+            },
+            onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+            },
+        });
+        client.activate();
+
+        return () => {
+            client.deactivate();
+        };
+    }, [myGame]);
+
     async function fetchOpenGames() {
         try {
             const response = await fetch("http://localhost:8080/games/open");
             const json = await response.json();
-            console.log("Refreshing games");
-            console.log(json);
             setOpenGameList(json.filter((game) => game.white !== player.username && game.black !== player.username));
         } catch (error) {
-            console.log(error.message);
+            console.error(error.message);
         }
     }
 
@@ -88,6 +111,7 @@ export default function Play() {
         } catch {
             handleError();
         }
+
     }
 
     async function joinGame(id) {
