@@ -38,10 +38,8 @@ export default function Game() {
         const client = new Client({
             brokerURL: "ws://localhost:8080/websocket",
             onConnect: () => {
-                console.log("Connected to WebSocket");
                 client.subscribe(`/topic/game/${params.gameId}`, (message) => {
                     const moveData = JSON.parse(message.body);
-                    console.log("Received move data:", moveData);
 
                     try {
                         game.move({ from: moveData.from, to: moveData.to });
@@ -70,7 +68,6 @@ export default function Game() {
                     }
                 })
                 const json = await response.json();
-                console.log(json);
 
                 // hack, for debugging, reconsider later
                 // it allows to switch colors on entering a game from the watch page
@@ -86,7 +83,7 @@ export default function Game() {
                 setPgn(json.pgn);
                 setPosition(json.fen);
             } catch(error) {
-                console.log(error.message);
+                console.error(error.message);
             }
         }
 
@@ -209,8 +206,6 @@ export default function Game() {
             setPgn(game.pgn());
             setPosition(game.fen());
         }
-
-        console.log(game.turn(), sourceSquare, targetSquare);
     }
 
     function isValidMove(source, target) {
