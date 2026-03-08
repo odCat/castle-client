@@ -31,6 +31,21 @@ export default function Game() {
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [promotionMove, setPromotionMove] = useState(null);
 
+    function checkGameOver() {
+
+        const game = chessGameRef.current;
+
+        let result = "*";
+        if (game.isGameOver() === true)
+            if (game.isDraw() === true) {
+                result = "1/2-1/2";
+            }
+            else
+                result = game.turn() === "w" ? "0-1" : "1-0";
+
+        game.setHeader("Result", result);
+    }
+
     useEffect(() => {
 
         const game = chessGameRef.current;
@@ -43,6 +58,7 @@ export default function Game() {
 
                     try {
                         game.move({ from: moveData.from, to: moveData.to });
+                        checkGameOver();
                         setPgn(game.pgn());
                         setPosition(game.fen());
                         setSquareOptions({});
@@ -175,21 +191,6 @@ export default function Game() {
         } catch {
             return false;
         }
-    }
-
-    function checkGameOver() {
-
-        const game = chessGameRef.current;
-
-        let result = "*";
-        if (game.isGameOver() === true)
-            if (game.isDraw() === true) {
-                result = "1/2-1/2";
-            }
-        else
-            result = game.turn() === "w" ? "0-1" : "1-0";
-
-        game.setHeader("Result", result);
     }
 
     async function sendMove(game, sourceSquare, targetSquare) {
