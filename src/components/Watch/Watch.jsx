@@ -35,11 +35,9 @@ export default function Watch() {
         try {
             const response = await fetch("http://localhost:8080/games/inprogress");
             const json = await response.json();
-            console.log("Refreshing games");
-            console.log(json);
             setInProgressGameList(json);
         } catch (error) {
-            console.log(error.message);
+            console.error(error.message);
         }
     }
 
