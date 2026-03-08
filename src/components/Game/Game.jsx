@@ -2,7 +2,8 @@ import "./Game.css"
 import GameDebug from "./GameDebug.jsx";
 import {Card, Typography} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
-import {Chess} from "chess.js"
+import {Chess} from "chess.js";
+import { Client } from '@stomp/stompjs';
 import {useLocation, useNavigate, useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
@@ -31,9 +32,35 @@ export default function Game() {
     const [promotionMove, setPromotionMove] = useState(null);
 
     useEffect(() => {
-        const fetchGame = async function() {
-            const game = chessGameRef.current;
 
+        const game = chessGameRef.current;
+
+        const client = new Client({
+            brokerURL: "ws://localhost:8080/websocket",
+            onConnect: () => {
+                console.log("Connected to WebSocket");
+                client.subscribe(`/topic/game/${params.gameId}`, (message) => {
+                    const moveData = JSON.parse(message.body);
+                    console.log("Received move data:", moveData);
+
+                    try {
+                        game.move({ from: moveData.from, to: moveData.to });
+                        setPgn(game.pgn());
+                        setPosition(game.fen());
+                        setSquareOptions({});
+                        setPossibleMoves([]);
+                    } catch {
+                        // do nothing
+                    }
+                })
+            },
+            onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+            },
+        });
+
+        const fetchGame = async function() {
             try {
                 const response = await fetch("http://localhost:8080/games/id/" + params.gameId, {
                     method: "GET",
@@ -59,7 +86,14 @@ export default function Game() {
                 console.log(error.message);
             }
         }
+
+        client.activate();
         fetchGame();
+
+        return () => {
+            console.log('Disconnecting WebSocket');
+            client.deactivate();
+        };
     }, []);
 
     function canDragPiece({ piece }) {
@@ -136,11 +170,12 @@ export default function Game() {
         const game = chessGameRef.current;
 
         let result = "*";
-        if (game.isGameOver() === true) {
+        if (game.isGameOver() === true)
+            if (game.isDraw() === true) {
+                result = "1/2-1/2";
+            }
+        else
             result = game.turn() === "w" ? "0-1" : "1-0";
-        } else if (game.isDraw() === true) {
-            result = "1/2-1/2";
-        }
 
         game.setHeader("Result", result);
     }
