@@ -91,18 +91,26 @@ export default function Game() {
         fetchGame();
 
         return () => {
-            console.log('Disconnecting WebSocket');
             client.deactivate();
         };
     }, []);
 
     function canDragPiece({ piece }) {
         const game = chessGameRef.current;
+        return canInteractWithPiece({ piece }) && game.turn() === piece.pieceType[0];
+    }
+
+    function canInteractWithPiece() {
+        const game = chessGameRef.current;
         if (game.getHeaders().Result !== "*")
             return false;
         if (player.username !== game.getHeaders().White && player.username !== game.getHeaders().Black)
             return false;
-        return game.turn() === piece.pieceType[0];
+        if (game.turn() === "w" && color !== "white")
+            return false;
+        if (game.turn() === "b" && color !== "black")
+            return false;
+        return true;
     }
 
     function onPieceDrag({ square }) {
@@ -221,6 +229,9 @@ export default function Game() {
 
     async function onSquareClick({ square, piece })
     {
+        if (!canInteractWithPiece(piece))
+            return;
+
         const game = chessGameRef.current;
 
         if (possibleMoves.length !== 0) {
