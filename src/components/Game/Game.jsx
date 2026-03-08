@@ -85,14 +85,6 @@ export default function Game() {
                 })
                 const json = await response.json();
 
-                // hack, for debugging, reconsider later
-                // it allows to switch colors on entering a game from the watch page
-                if (player.username === json.black)
-                    navigate(window.location.pathname, {
-                        state: { color: "black" },
-                        replace: true
-                    });
-
                 game.loadPgn(json.pgn);
                 game.setHeader("White", json.white);
                 game.setHeader("Black", json.black);
