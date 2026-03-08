@@ -70,6 +70,7 @@ export default function Game() {
                     }
                 })
                 const json = await response.json();
+                console.log(json);
 
                 // hack, for debugging, reconsider later
                 // it allows to switch colors on entering a game from the watch page
@@ -80,6 +81,8 @@ export default function Game() {
                     });
 
                 game.loadPgn(json.pgn);
+                game.setHeader("White", json.white);
+                game.setHeader("Black", json.black);
                 setPgn(json.pgn);
                 setPosition(json.fen);
             } catch(error) {
@@ -98,6 +101,10 @@ export default function Game() {
 
     function canDragPiece({ piece }) {
         const game = chessGameRef.current;
+        if (game.getHeaders().Result !== "*")
+            return false;
+        if (player.username !== game.getHeaders().White && player.username !== game.getHeaders().Black)
+            return false;
         return game.turn() === piece.pieceType[0];
     }
 
