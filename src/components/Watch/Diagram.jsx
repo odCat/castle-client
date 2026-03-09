@@ -4,7 +4,12 @@ import {Typography} from "@mui/material";
 export default function Diagram({ game }) {
     const diagramOptions = {
         boardStyle: { width: "300px" },
-        position: game.fen
+        lightSquareNotationStyle: { color: "#578cc1" },
+        lightSquareStyle: { backgroundColor: "#ffffff" },
+        darkSquareStyle: { backgroundColor: "#578cc1" },
+        allowDragging: false,
+        allowDrawingArrows: false,
+        position: game.fen,
     }
 
     return (
