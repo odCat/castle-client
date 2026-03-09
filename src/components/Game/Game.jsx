@@ -8,6 +8,7 @@ import {useLocation, useNavigate, useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
 import {useSelector} from "react-redux";
+import Divider from "@mui/material/Divider";
 
 
 const LoadingText = styled(Typography) ({
@@ -22,6 +23,8 @@ export default function Game() {
     const params = useParams();
     const player = useSelector(store => store.player);
     const chessGameRef = useRef(new Chess("8/8/8/8/8/8/8/8 w - - 0 1", { skipValidation: true }));
+    const [white, setWhite] = useState("");
+    const [black, setBlack] = useState("");
     const { color } = useLocation().state || { color: "white" };
     const navigate = useNavigate();
 
@@ -87,7 +90,9 @@ export default function Game() {
 
                 game.loadPgn(json.pgn);
                 game.setHeader("White", json.white);
+                setWhite(json.white);
                 game.setHeader("Black", json.black);
+                setBlack(json.black);
                 setPgn(json.pgn);
                 setPosition(json.fen);
             } catch(error) {
@@ -351,9 +356,12 @@ export default function Game() {
                         gap: 16
                     }}
                 >
-                    { pgn !== "" &&
+                    { (pgn || (white && black)) &&
                         <Card sx={{ ml: 2, p: 1 }} >
-                            {pgn.split(/\n\s*\n/).pop()}
+                            <Typography>White: {white}</Typography>
+                            <Typography>Black: {black}</Typography>
+                            <Divider sx={{width: "100%", my: 1.5, borderColor: "#424548"}}/>
+                            <Typography>{pgn.split(/\n\s*\n/).pop()}</Typography>
                         </Card>
                     }
 
