@@ -365,14 +365,14 @@ export default function Game() {
                         </Card>
                     }
 
-                    <GameDebug
-                        chessGameRef = {chessGameRef}
-                        position = {position}
-                        setSquareOptions = {setSquareOptions}
-                        setPromotionMove = {setPromotionMove}
-                        setChessPosition = {setPosition}
-                        setPgn = {setPgn}
-                    />
+                    {/*<GameDebug*/}
+                    {/*    chessGameRef = {chessGameRef}*/}
+                    {/*    position = {position}*/}
+                    {/*    setSquareOptions = {setSquareOptions}*/}
+                    {/*    setPromotionMove = {setPromotionMove}*/}
+                    {/*    setChessPosition = {setPosition}*/}
+                    {/*    setPgn = {setPgn}*/}
+                    {/*/>*/}
                 </div>
             </div>
         ) : (
