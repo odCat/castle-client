@@ -11,6 +11,8 @@ import Watch from "./components/Watch/Watch.jsx";
 import {Box, Container} from "@mui/material";
 import {Route, Routes, useLocation} from "react-router";
 import {styled} from "@mui/material/styles";
+import Profile from "./components/Profile/Profile.jsx";
+import Settings from "./components/Settings/Settings.jsx";
 
 
 const MainBox = styled(Box)({
@@ -46,6 +48,8 @@ export default function App() {
                     <Route path="/watch" element={<Watch />} />
                     <Route path="/tools/demo" element={<Demo />} />
                     <Route path="/games/id/:gameId" element={<Game />} />
+                    <Route path="/profile/:playerId" element={<Profile />} />
+                    <Route path="/settings" element={<Settings />} />
                 </Routes>
             </MainContainer>
 
