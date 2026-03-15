@@ -39,7 +39,7 @@ export default function TopBar() {
             <Toolbar>
                 <TopBarButton onClick={() => navigate("/play")}>Play</TopBarButton>
                 <TopBarButton onClick={() => navigate("/watch")}>Watch</TopBarButton>
-                {/*<TopBarButton onClick={() => navigate("/tools/demo")}>Demo</TopBarButton>*/}
+                <TopBarButton onClick={() => navigate("/tools/demo")}>Demo</TopBarButton>
                 { username &&
                     <Box sx={{ ml: "auto", bg: "#0c1a29" }}>
                         <TopBarButton onClick={handleOpen}>{username}</TopBarButton>
