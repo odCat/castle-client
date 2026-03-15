@@ -1,10 +1,9 @@
 import "./Game.css"
-import GameDebug from "./GameDebug.jsx";
 import {Card, Typography} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js";
 import { Client } from '@stomp/stompjs';
-import {useLocation, useNavigate, useParams} from "react-router";
+import {useLocation, useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
 import {useSelector} from "react-redux";
@@ -26,7 +25,6 @@ export default function Game() {
     const [white, setWhite] = useState("");
     const [black, setBlack] = useState("");
     const { color } = useLocation().state || { color: "white" };
-    const navigate = useNavigate();
 
     const [pgn, setPgn] = useState("")
     const [position, setPosition] = useState("");
