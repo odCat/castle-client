@@ -16,7 +16,7 @@ export default function Profile() {
 
     const params = useParams();
     const navigate = useNavigate();
-    const [player, setPlayer] = useState(null);
+    // const [player, setPlayer] = useState(null);
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export default function Profile() {
             try {
                 const response = await fetch("http://localhost:8080/players/history/" + id);
                 const json = await response.json();
-                setHistory(json);
+                setHistory(json.sort((a, b) => a.date.localeCompare(b.date)));
             } catch {
                 // do nothing
             }
@@ -72,7 +72,7 @@ export default function Profile() {
                         <TableBody>
                             {history.map((game) => {
                                 return (
-                                    <TableRow id={game.id} onClick={goToGame}
+                                    <TableRow id={game.id} key={game.id} onClick={goToGame}
                                         sx={{
                                             "&:hover": {
                                                 backgroundColor: "#515151",
