@@ -21,6 +21,8 @@ export default function Profile() {
 
     useEffect(() => {
 
+        if (!params.playerId) return;
+
         const getPlayerInfo = async function(id) {
             console.log(`Getting player ${id} info`);
         }
@@ -38,7 +40,7 @@ export default function Profile() {
 
         getPlayerInfo().then();
         getPlayerHistory(params.playerId).then();
-    }, []);
+    }, [params.playerId]);
 
     function goToGame(event) {
         navigate("/games/id/" + event.currentTarget.id);
