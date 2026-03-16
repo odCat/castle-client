@@ -65,6 +65,7 @@ export default function Profile() {
                             <TableRow>
                                 <Cell sx={{ color: "#bbbbbb"}}>White</Cell>
                                 <Cell>Black</Cell>
+                                <Cell>Date</Cell>
                                 <Cell>Result</Cell>
                             </TableRow>
                         </TableHead>
@@ -80,6 +81,7 @@ export default function Profile() {
                                     }}>
                                         <Cell>{game.white}</Cell>
                                         <Cell>{game.black}</Cell>
+                                        <Cell>{game.date}</Cell>
                                         <Cell>{game.result}</Cell>
                                     </TableRow>
                                 )}
