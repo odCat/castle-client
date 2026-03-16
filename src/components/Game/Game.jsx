@@ -2,7 +2,7 @@ import "./Game.css"
 import {Card, Typography} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js";
-import { Client } from '@stomp/stompjs';
+import { Client } from "@stomp/stompjs";
 import {useLocation, useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
@@ -70,8 +70,8 @@ export default function Game() {
                 })
             },
             onStompError: (frame) => {
-                console.error('Broker reported error: ' + frame.headers['message']);
-                console.error('Additional details: ' + frame.body);
+                console.error("Broker reported error: " + frame.headers["message"]);
+                console.error("Additional details: " + frame.body);
             },
         });
 
@@ -99,12 +99,12 @@ export default function Game() {
         }
 
         client.activate();
-        fetchGame();
+        fetchGame().then();
 
         return () => {
-            client.deactivate();
+            client.deactivate().then();
         };
-    }, []);
+    }, [params.gameId, player.password]);
 
     function canDragPiece({ piece }) {
         const game = chessGameRef.current;
@@ -133,7 +133,7 @@ export default function Game() {
     function getAndSetPossibleMoves(square) {
         const game = chessGameRef.current;
 
-        const moves = game.moves({ square: square, verbose: true });
+        const moves = game.moves({  verbose: true, square:square });
 
         if (moves.length === 0) {
             setSquareOptions({});
@@ -285,6 +285,7 @@ export default function Game() {
             .querySelector(`[data-column="a"][data-row="1"]`)
             ?.getBoundingClientRect()?.width ?? 0;
 
+    // noinspection JSUnusedGlobalSymbols
     const chessboardOptions = {
         boardStyle: { maxWidth: "648px", minWidth: "460px" },
         alphaNotationStyle: { fontSize: "14px", fontWeight: 500 },
