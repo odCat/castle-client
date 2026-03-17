@@ -42,7 +42,7 @@ export default function Watch() {
     }
 
     useEffect(() => {
-        fetchInProgress();
+        fetchInProgress().then();
     }, []);
 
 
