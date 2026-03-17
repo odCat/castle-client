@@ -16,6 +16,16 @@ export default function GameDebug({ chessGameRef, position, setSquareOptions, se
                     </Card>
 
                     <Button variant="contained" onClick={() => {
+                        chessGameRef.current.load("8/8/8/8/8/8/8/8 w - - 0 1", { skipValidation: true });
+                        setChessPosition(chessGameRef.current.fen());
+                        setPgn(chessGameRef.current.pgn());
+                        setSquareOptions({});
+                        setPromotionMove(null);
+                    }}>
+                        Clear
+                    </Button>
+
+                    <Button variant="contained" onClick={() => {
                         chessGameRef.current.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
                         setChessPosition(chessGameRef.current.fen());
                         setPgn(chessGameRef.current.pgn());
@@ -40,6 +50,7 @@ export default function GameDebug({ chessGameRef, position, setSquareOptions, se
                     }}>
                         Undo
                     </Button>
+
 
                 </CardContent>
 
