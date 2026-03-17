@@ -1,5 +1,4 @@
 import "./Demo.css"
-import ChessGameDebug from "./DemoDebug.jsx";
 import {Box, Card} from "@mui/material";
 import {Chessboard, ChessboardProvider, defaultPieces, SparePiece} from "react-chessboard";
 import {Chess} from "chess.js"
