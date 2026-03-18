@@ -51,6 +51,12 @@ export default function GameDebug({ chessGameRef, position, setSquareOptions, se
                         Undo
                     </Button>
 
+                    <Button variant="contained" onClick={ async () => {
+                        await navigator.clipboard.writeText(position);
+                    }}>
+                        Export
+                    </Button>
+
 
                 </CardContent>
 
