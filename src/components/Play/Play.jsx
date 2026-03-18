@@ -52,7 +52,7 @@ export default function Play() {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        fetchOpenGames();
+        fetchOpenGames().then();
     }, []);
 
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function Play() {
             onConnect: () => {
                 client.subscribe(`/topic/game/${myGame.id}`, (message) => {
                     const gameData = JSON.parse(message.body);
-                    navigate("http://localhost:5173/games/id/" + gameData.id, { state: { color: color }});
+                    navigate(`/games/id/${gameData.id}`, { state: { color: color }});
                 })
             },
             onStompError: (frame) => {
@@ -75,9 +75,9 @@ export default function Play() {
         client.activate();
 
         return () => {
-            client.deactivate();
+            client.deactivate().then();
         };
-    }, [myGame]);
+    }, [color, myGame, navigate]);
 
     async function fetchOpenGames() {
         try {
@@ -132,7 +132,7 @@ export default function Play() {
 
             const json = await response.json();
 
-            navigate("http://localhost:5173/games/id/" + json.id, { state: { color: openColor }});
+            navigate(`/games/id/${json.id}`, { state: { color: openColor }});
         } catch {
             handleError();
         }
