@@ -14,6 +14,7 @@ export default function ChessGame() {
 
     const [pgn, setPgn] = useState("")
     const [position, setPosition] = useState(chessGameRef.current.fen());
+    const [boardOrientation, setBoardOrientation] = useState("black");
     const [squareSizeLength, setSquareSizeLength] = useState(null);
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
@@ -211,6 +212,7 @@ export default function ChessGame() {
         lightSquareNotationStyle: { color: "#578cc1" },
         lightSquareStyle: { backgroundColor: "#ffffff" },
         darkSquareStyle: { backgroundColor: "#578cc1" },
+        boardOrientation,
 
         draggingPieceGhostStyle: { opacity: 0 },
         // dropSquareStyle: { boxShadow: "inset 0px 0px 0px 0px black", },
@@ -338,6 +340,8 @@ export default function ChessGame() {
                 <GameDebug
                     chessGameRef = {chessGameRef}
                     position={position}
+                    boardOrientation={boardOrientation}
+                    setBoardOrientation = {setBoardOrientation}
                     setSquareOptions = {setSquareOptions}
                     setPromotionMove= {setPromotionMove}
                     setChessPosition = {setPosition}

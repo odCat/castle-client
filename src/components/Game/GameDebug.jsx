@@ -1,7 +1,7 @@
 import {Box, Button, Card, CardContent, CardHeader} from "@mui/material";
 
 
-export default function GameDebug({ chessGameRef, position, setSquareOptions, setPromotionMove, setChessPosition, setPgn })
+export default function GameDebug({ chessGameRef, position, boardOrientation, setBoardOrientation, setSquareOptions, setPromotionMove, setChessPosition, setPgn })
 {
     return (
         <Box sx={{ marginLeft: 2 }}>
@@ -57,6 +57,17 @@ export default function GameDebug({ chessGameRef, position, setSquareOptions, se
                         Export
                     </Button>
 
+                    <Button variant="contained" onClick={ () => {
+
+                        if (boardOrientation === "white")
+                            setBoardOrientation("black");
+                        else
+                            setBoardOrientation("white");
+
+                        console.log(boardOrientation);
+                    }}>
+                        Switch colors
+                    </Button>
 
                 </CardContent>
 
