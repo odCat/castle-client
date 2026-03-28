@@ -5,7 +5,16 @@ import {Chess} from "chess.js"
 import {useParams} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import GameDebug from "../Game/GameDebug.jsx";
+import {styled} from "@mui/material/styles";
 
+
+const SparePiecesBox = styled(Box) ({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(6, 1fr)',
+    width: 'fit-content',
+    margin: '0 auto',
+    backgroundColor: "#474747",
+});
 
 export default function ChessGame() {
 
@@ -251,17 +260,7 @@ export default function ChessGame() {
                 }}>
 
                     {squareSizeLength ? (
-                        <Box variant="outlined"
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(6, 1fr)',
-                                width: 'fit-content',
-                                margin: '0 auto',
-                                backgroundColor: "#474747",
-                                borderRadius: 2,
-
-                            }}
-                        >
+                        <SparePiecesBox variant="outlined">
                             {blackPieceTypes.map((pieceType) => (
                                 <Box
                                     key={pieceType}
@@ -273,21 +272,13 @@ export default function ChessGame() {
                                     <SparePiece pieceType={pieceType} />
                                 </Box>
                             ))}
-                        </Box>
+                        </SparePiecesBox>
                     ) : null}
 
                     <Chessboard />
 
                     {squareSizeLength ? (
-                        <Box
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(6, 1fr)',
-                                width: 'fit-content',
-                                margin: '0 auto',
-                                backgroundColor: "#474747",
-                            }}
-                        >
+                        <SparePiecesBox variant="outlined">
                             {whitePieceTypes.map((pieceType) => (
                                 <Box
                                     key={pieceType}
@@ -299,7 +290,7 @@ export default function ChessGame() {
                                     <SparePiece pieceType={pieceType} />
                                 </Box>
                             ))}
-                        </Box>
+                        </SparePiecesBox>
                     ) : null}
 
                 </ChessboardProvider>
