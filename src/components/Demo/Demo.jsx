@@ -238,6 +238,38 @@ export default function ChessGame() {
         // squareStyles: squareOptions,
     };
 
+    function whiteSparePieces() {
+        return (
+            whitePieceTypes.map((pieceType) => (
+                <Box
+                    key={pieceType}
+                    style={{
+                        width: `${squareSizeLength}px`,
+                        height: `${squareSizeLength}px`,
+                    }}
+                >
+                    <SparePiece pieceType={pieceType} />
+                </Box>
+            ))
+        );
+    }
+
+    function blackSparePieces() {
+        return (
+            blackPieceTypes.map((pieceType) => (
+                <Box
+                    key={pieceType}
+                    style={{
+                        width: `${squareSizeLength}px`,
+                        height: `${squareSizeLength}px`,
+                    }}
+                >
+                    <SparePiece pieceType={pieceType} />
+                </Box>
+            ))
+        );
+    }
+
     return (
         <Box
             style={{
@@ -261,17 +293,7 @@ export default function ChessGame() {
 
                     {squareSizeLength ? (
                         <SparePiecesBox variant="outlined">
-                            {blackPieceTypes.map((pieceType) => (
-                                <Box
-                                    key={pieceType}
-                                    style={{
-                                        width: `${squareSizeLength}px`,
-                                        height: `${squareSizeLength}px`,
-                                    }}
-                                >
-                                    <SparePiece pieceType={pieceType} />
-                                </Box>
-                            ))}
+                            {blackSparePieces()}
                         </SparePiecesBox>
                     ) : null}
 
@@ -279,17 +301,7 @@ export default function ChessGame() {
 
                     {squareSizeLength ? (
                         <SparePiecesBox variant="outlined">
-                            {whitePieceTypes.map((pieceType) => (
-                                <Box
-                                    key={pieceType}
-                                    style={{
-                                        width: `${squareSizeLength}px`,
-                                        height: `${squareSizeLength}px`,
-                                    }}
-                                >
-                                    <SparePiece pieceType={pieceType} />
-                                </Box>
-                            ))}
+                            {whiteSparePieces()}
                         </SparePiecesBox>
                     ) : null}
 
