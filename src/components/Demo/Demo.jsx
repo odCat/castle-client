@@ -23,7 +23,7 @@ export default function ChessGame() {
 
     const [pgn, setPgn] = useState("")
     const [position, setPosition] = useState(chessGameRef.current.fen());
-    const [boardOrientation, setBoardOrientation] = useState("black");
+    const [boardOrientation, setBoardOrientation] = useState("white");
     const [squareSizeLength, setSquareSizeLength] = useState(null);
     const [squareOptions, setSquareOptions] = useState({});
     const [possibleMoves, setPossibleMoves] = useState([]);
@@ -293,7 +293,7 @@ export default function ChessGame() {
 
                     {squareSizeLength ? (
                         <SparePiecesBox variant="outlined">
-                            {blackSparePieces()}
+                            { boardOrientation === "white" ? blackSparePieces() : whiteSparePieces() }
                         </SparePiecesBox>
                     ) : null}
 
@@ -301,7 +301,7 @@ export default function ChessGame() {
 
                     {squareSizeLength ? (
                         <SparePiecesBox variant="outlined">
-                            {whiteSparePieces()}
+                            { boardOrientation === "white" ? whiteSparePieces() : blackSparePieces() }
                         </SparePiecesBox>
                     ) : null}
 
