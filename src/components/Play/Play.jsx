@@ -47,6 +47,7 @@ export default function Play() {
     const player = useSelector(store => store.player);
     const [color, setColor] = useState("white");
     const [myGame, setMyGame] = useState(null);
+    const [inprogressGameList, setInProgressGameList] = useState([]);
     const [openGameList, setOpenGameList] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [open, setOpen] = useState(false);
@@ -189,6 +190,11 @@ export default function Play() {
             }
 
             <Divider sx={{ my: 5.5 }} />
+
+
+            <GameList sx={{ maxWidth: "700px" }}>
+                <Typography variant="h6" sx={{ alignSelf: "center" }}>In Progress</Typography>
+            </GameList>
 
             <GameList sx={{ maxWidth: "700px" }}>
 
