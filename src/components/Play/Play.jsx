@@ -18,6 +18,7 @@ import {useNavigate} from "react-router";
 import WaitForPlayer from "./WaitForPlayer.jsx";
 import {useSelector} from "react-redux";
 import {Client} from "@stomp/stompjs";
+import Diagram from "../Watch/Diagram.jsx";
 
 
 const GameList = styled(Box)({
@@ -47,12 +48,13 @@ export default function Play() {
     const player = useSelector(store => store.player);
     const [color, setColor] = useState("white");
     const [myGame, setMyGame] = useState(null);
-    const [inprogressGameList, setInProgressGameList] = useState([]);
+    const [inProgressGameList, setInProgressGameList] = useState([]);
     const [openGameList, setOpenGameList] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        fetchInProgressGames().then();
         fetchOpenGames().then();
     }, []);
 
@@ -80,11 +82,27 @@ export default function Play() {
         };
     }, [color, myGame, navigate]);
 
+    const diagrams = inProgressGameList.map(game =>
+        <div key={game.id} onClick={() => navigate("/games/id/" + game.id)}>
+            <Diagram game={game} />
+        </div>
+    );
+
     async function fetchOpenGames() {
         try {
             const response = await fetch("http://localhost:8080/games/open");
             const json = await response.json();
             setOpenGameList(json.filter((game) => game.white !== player.username && game.black !== player.username));
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    async function fetchInProgressGames() {
+        try {
+            const response = await fetch(`http://localhost:8080/games/inprogress/player/${player.username}`);
+            const json = await response.json();
+            setInProgressGameList(json);
         } catch (error) {
             console.error(error.message);
         }
@@ -168,6 +186,7 @@ export default function Play() {
                         display: "flex",
                         flexDirection: "column",
                         maxWidth: "400px",
+                        mt: 5,
                     }}>
                         <Typography variant="h6" sx={{ ml: 1 }}>Create Game</Typography>
                         <FormControl variant="filled" sx={{ m: 1, minWidth: 300 }}>
@@ -189,16 +208,20 @@ export default function Play() {
                 : <WaitForPlayer game={myGame} setMyGame={setMyGame} />
             }
 
-            <Divider sx={{ my: 5.5 }} />
+            <Divider sx={{ my: 2 }} />
 
+            <RefreshButton variant="outlined" onClick={fetchOpenGames} sx={{ alignSelf: "center" }}>Refresh</RefreshButton>
+
+            <Divider sx={{ my: 2 }} />
 
             <GameList sx={{ maxWidth: "700px" }}>
-                <Typography variant="h6" sx={{ alignSelf: "center" }}>In Progress</Typography>
+                {diagrams}
             </GameList>
 
+            <Divider sx={{ my: 2 }} />
+
             <GameList sx={{ maxWidth: "700px" }}>
 
-                <RefreshButton variant="outlined" onClick={fetchOpenGames} sx={{ alignSelf: "center" }}>Refresh</RefreshButton>
                 {openGameList.map((game, index) => (
                     <GameContainer key={index}>
                         <Typography>{"#" + game.id}</Typography>
