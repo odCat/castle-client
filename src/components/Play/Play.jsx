@@ -108,6 +108,11 @@ export default function Play() {
         }
     }
 
+    function fetchGames() {
+        fetchOpenGames().then();
+        fetchInProgressGames().then();
+    }
+
     function changeColor(event) {
         setColor(event.target.value);
     }
@@ -210,7 +215,7 @@ export default function Play() {
 
             <Divider sx={{ my: 2 }} />
 
-            <RefreshButton variant="outlined" onClick={fetchOpenGames} sx={{ alignSelf: "center" }}>Refresh</RefreshButton>
+            <RefreshButton variant="outlined" onClick={fetchGames} sx={{ alignSelf: "center" }}>Refresh</RefreshButton>
 
             <Divider sx={{ my: 2 }} />
 
