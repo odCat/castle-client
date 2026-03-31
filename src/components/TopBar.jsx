@@ -17,6 +17,7 @@ export default function TopBar() {
 
     const navigate = useNavigate();
     const username = useSelector(store => store.player.username);
+    const id = useSelector(store => store.player.id);
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -28,6 +29,10 @@ export default function TopBar() {
         setAnchorEl(null);
 
     };
+
+    function goToProfile() {
+        navigate(`/profile/${id}`)
+    }
 
     function logoutOnClick() {
         dispatch(logout());
@@ -50,6 +55,13 @@ export default function TopBar() {
                                 onClose={handleClose}
                                 sx={{ py: 0, mt: 1, "& .MuiPaper-root": { bgcolor: "#0c1a29" } }}
                             >
+                                <MenuItem onClick={goToProfile}
+                                          sx={{
+                                              backgroundColor: "#0c1a29",
+                                              "&:hover": { backgroundColor: "#15273b" },
+                                              color: "white"
+                                          }}
+                                >Profile</MenuItem>
                                 <MenuItem onClick={logoutOnClick}
                                     sx={{
                                         backgroundColor: "#0c1a29",
