@@ -1,5 +1,5 @@
 import {Chessboard} from "react-chessboard";
-import {Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 export default function Diagram({ game }) {
     const diagramOptions = {
@@ -13,10 +13,10 @@ export default function Diagram({ game }) {
     }
 
     return (
-        <div>
+        <Box>
             <Typography>{game.black}</Typography>
             <Chessboard options={diagramOptions} />
             <Typography>{game.white}</Typography>
-        </div>
+        </Box>
     );
 }

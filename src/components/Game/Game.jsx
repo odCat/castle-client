@@ -1,5 +1,5 @@
 import "./Game.css"
-import {Card, Typography} from "@mui/material";
+import {Box, Card, Typography} from "@mui/material";
 import {Chessboard, defaultPieces} from "react-chessboard";
 import {Chess} from "chess.js";
 import { Client } from "@stomp/stompjs";
@@ -313,13 +313,13 @@ export default function Game() {
 
     return (
         position ? (
-            <div
+            <Box
                 style={{
                     display: "flex",
                     flexDirection: "row",
                 }}
             >
-                <div
+                <Box
                     style={{
                         display: "flex",
                         justifyContent: "center",
@@ -329,7 +329,7 @@ export default function Game() {
                     <Chessboard options={chessboardOptions} />
 
                     {promotionMove ? (
-                        <div id="promotionMenu" style={{ height: squareSizeLength }}>
+                        <Box id="promotionMenu" style={{ height: squareSizeLength }}>
                             {(["q", "r", "n", "b"]).map((piece) => (
                                 <button id="promotionOptions"
                                     key={piece}
@@ -343,11 +343,11 @@ export default function Game() {
                                     {defaultPieces[`${promotionMove.turn}${piece.toUpperCase()}`]()}
                                 </button>
                             ))}
-                        </div>
+                        </Box>
                     ) : null}
-                </div>
+                </Box>
 
-                <div
+                <Box
                     style={{
                         display: "flex",
                         flexDirection: "column",
@@ -372,8 +372,8 @@ export default function Game() {
                     {/*    setChessPosition = {setPosition}*/}
                     {/*    setPgn = {setPgn}*/}
                     {/*/>*/}
-                </div>
-            </div>
+                </Box>
+            </Box>
         ) : (
             <LoadingText>Loading game...</LoadingText>
         )

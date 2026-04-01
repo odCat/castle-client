@@ -62,6 +62,7 @@ export default function TopBar() {
                                               color: "white"
                                           }}
                                 >Profile</MenuItem>
+
                                 <MenuItem onClick={logoutOnClick}
                                     sx={{
                                         backgroundColor: "#0c1a29",

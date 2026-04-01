@@ -83,9 +83,9 @@ export default function Play() {
     }, [color, myGame, navigate]);
 
     const diagrams = inProgressGameList.map(game =>
-        <div key={game.id} onClick={() => navigate("/games/id/" + game.id)}>
+        <Box key={game.id} onClick={() => navigate("/games/id/" + game.id)}>
             <Diagram game={game} />
-        </div>
+        </Box>
     );
 
     async function fetchOpenGames() {
@@ -167,7 +167,7 @@ export default function Play() {
     }
 
     return (
-        <div
+        <Box
             style={{
                 display: "flex",
                 flexDirection: "column",
@@ -235,6 +235,6 @@ export default function Play() {
                     </GameContainer>
                  ))}
             </GameList>
-        </div>
+        </Box>
     )
 }

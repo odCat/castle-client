@@ -47,9 +47,9 @@ export default function Watch() {
 
 
     const diagrams = inProgressGameList.map(game =>
-        <div key={game.id} onClick={() => navigate("/games/id/" + game.id)}>
+        <Box key={game.id} onClick={() => navigate("/games/id/" + game.id)}>
             <Diagram game={game} />
-        </div>
+        </Box>
     );
 
     return (
