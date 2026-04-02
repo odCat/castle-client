@@ -34,6 +34,10 @@ export default function TopBar() {
         navigate(`/profile/${id}`)
     }
 
+    function goToSettings() {
+        navigate("/settings");
+    }
+
     function logoutOnClick() {
         dispatch(logout());
         navigate("/login");
@@ -62,6 +66,14 @@ export default function TopBar() {
                                               color: "white"
                                           }}
                                 >Profile</MenuItem>
+
+                                <MenuItem onClick={goToSettings}
+                                          sx={{
+                                              backgroundColor: "#0c1a29",
+                                              "&:hover": { backgroundColor: "#15273b" },
+                                              color: "white"
+                                          }}
+                                >Settings</MenuItem>
 
                                 <MenuItem onClick={logoutOnClick}
                                     sx={{
