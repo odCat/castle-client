@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/actions/actions.js";
 import {useNavigate} from "react-router";
 import {useState} from "react";
+import TextField from "@mui/material/TextField";
 
 
 export default function Settings() {
@@ -14,8 +15,10 @@ export default function Settings() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [name, setName] = useState(player.fullName);
 
     function handleClose() {
+        console.log(player.fullName);
         setOpenDeleteDialog(false);
     }
 
@@ -44,8 +47,24 @@ export default function Settings() {
 
             <Typography variant="h5">Full name</Typography>
             <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
+            <TextField
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                fullWidth
+                color="white"
+                size="small"
+                sx={{
+                    '& .MuiInputBase-input': { color: '#fff' },
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': { borderColor: '#fff' },
+                        '&:hover fieldset': { borderColor: '#fff' },
+                        '&.Mui-focused fieldset': { borderColor: '#fff' },
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#fff' },
+                }}
+            />
 
-            <Typography variant="h5">Email</Typography>
+            <Typography variant="h5" sx={{ mt : 5 }}>Email</Typography>
             <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
 
             <Button variant="contained">
