@@ -18,7 +18,6 @@ export default function Settings() {
     const [name, setName] = useState(player.fullName);
 
     function handleClose() {
-        console.log(player.fullName);
         setOpenDeleteDialog(false);
     }
 
