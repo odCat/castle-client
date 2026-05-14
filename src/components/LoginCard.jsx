@@ -108,11 +108,11 @@ export default function LoginCard() {
                 sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
             >
                 <FormControl>
-                    <FormLabel htmlFor="emailOrUsername">Email/Username</FormLabel>
+                    <FormLabel htmlFor="emailusername">Email/Username</FormLabel>
                     <TextField
                         error={usernameOrMail}
                         helperText={usernameOrEmailErrorMessage}
-                        id="email"
+                        id="emailusername"
                         type="email"
                         name="emailOrUsername"
                         placeholder="your@email.com"
