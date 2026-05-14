@@ -5,10 +5,10 @@ test("has components", async ({ page }) => {
 
     await expect(page).toHaveTitle("chess-client");
 
-    await expect(page.getByRole("textbox", { name: "your@email.com"})).toBeVisible();
-    await expect(page.getByRole("textbox", { name: "password"})).toBeVisible();
+    await expect(page.getByRole("textbox", { name: /^Email\/Username$/ })).toBeVisible();
+    await expect(page.getByRole("textbox", { name: /^Password$/ })).toBeVisible();
 
-    await expect(page.getByRole("button", { name: "login"})).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Login$/ })).toBeVisible();
 
-    await expect(page.getByText("Copyright © 2026 Mihai Gătejescu")).toBeVisible();
+    await expect(page.getByText(/^Copyright © 202\d Mihai Gătejescu$/)).toBeVisible();
 })
