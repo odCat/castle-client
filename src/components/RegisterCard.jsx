@@ -123,13 +123,13 @@ export default function RegisterCard() {
             >
 
                 <FormControl>
-                    <FormLabel htmlFor="name">User name</FormLabel>
+                    <FormLabel htmlFor="username">User name</FormLabel>
                     <TextField
                         autoComplete="username"
                         name="username"
                         required
                         fullWidth
-                        id="name"
+                        id="username"
                         placeholder="john_snow"
                         error={usernameError}
                         helperText={usernameErrorMessage}
@@ -138,12 +138,12 @@ export default function RegisterCard() {
                 </FormControl>
 
                 <FormControl>
-                    <FormLabel htmlFor="name">Full name</FormLabel>
+                    <FormLabel htmlFor="fullname">Full name</FormLabel>
                     <TextField
                         autoComplete="name"
                         name="fullName"
                         fullWidth
-                        id="name"
+                        id="fullname"
                         placeholder="Jon Snow"
                     />
                 </FormControl>
