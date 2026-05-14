@@ -5,6 +5,9 @@ test("has components", async ({ page }) => {
 
     await expect(page).toHaveTitle("chess-client");
 
+    await expect(page.getByRole("textbox", { name: "your@email.com"})).toBeVisible();
+    await expect(page.getByRole("textbox", { name: "password"})).toBeVisible();
+
     await expect(page.getByRole("button", { name: "login"})).toBeVisible();
 
     await expect(page.getByText("Copyright © 2026 Mihai Gătejescu")).toBeVisible();
