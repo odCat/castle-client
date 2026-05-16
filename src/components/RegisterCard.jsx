@@ -144,7 +144,7 @@ export default function RegisterCard() {
                         name="fullName"
                         fullWidth
                         id="fullname"
-                        placeholder="Jon Snow"
+                        placeholder="John Snow"
                     />
                 </FormControl>
 
