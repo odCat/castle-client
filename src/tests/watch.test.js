@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { testHeader } from "./helpers/header.js";
 
 
 test("has components", async ({ page }) => {
@@ -6,12 +7,7 @@ test("has components", async ({ page }) => {
 
     await expect(page).toHaveTitle("chess-client");
 
-    await expect(page.getByRole("banner")).toBeVisible();
-    await expect(page.getByRole("banner").getByRole("button", { name: "Play" })).toBeVisible();
-    await expect(page.getByRole("banner").getByRole("button", { name: "Watch" })).toBeVisible();
-    await expect(page.getByRole("banner").getByRole("button", { name: "Demo" })).toBeVisible();
-    await expect(page.getByRole("banner").getByRole("button", { name: "Guest" })).toBeVisible();
-
+    await testHeader({ page });
     await expect(page.getByRole("button", { name: /^Refresh$/ })).toBeVisible();
     await expect(page.getByRole("separator")).toBeVisible();
     await expect(await page.locator("#chessboard-board")).toHaveCount(4);
