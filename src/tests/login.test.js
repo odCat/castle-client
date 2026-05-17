@@ -1,8 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-test("has components", async ({ page }) => {
-    await page.goto("http://localhost:5173/login")
 
+test.beforeEach( async ({ page }) => {
+    await page.goto("http://localhost:5173/login")
+})
+
+test("has components", async ({ page }) => {
     await expect(page).toHaveTitle("chess-client");
 
     await expect(page.getByRole("textbox", { name: /^Email\/Username$/ })).toBeVisible();
