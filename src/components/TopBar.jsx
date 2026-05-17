@@ -16,7 +16,7 @@ const TopBarButton = styled(Button)({
 export default function TopBar() {
 
     const navigate = useNavigate();
-    const username = useSelector(store => store.player.username);
+    const username = useSelector(store => store.player.username) || "Guest";
     const id = useSelector(store => store.player.id);
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -49,43 +49,41 @@ export default function TopBar() {
                 <TopBarButton onClick={() => navigate("/play")}>Play</TopBarButton>
                 <TopBarButton onClick={() => navigate("/watch")}>Watch</TopBarButton>
                 <TopBarButton onClick={() => navigate("/tools/demo")}>Demo</TopBarButton>
-                { username &&
-                    <Box sx={{ ml: "auto", bg: "#0c1a29" }}>
-                        <TopBarButton onClick={handleOpen}>{username}</TopBarButton>
-                        { username !== "Guest" &&
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                                sx={{ py: 0, mt: 1, "& .MuiPaper-root": { bgcolor: "#0c1a29" } }}
-                            >
-                                <MenuItem onClick={goToProfile}
-                                          sx={{
-                                              backgroundColor: "#0c1a29",
-                                              "&:hover": { backgroundColor: "#15273b" },
-                                              color: "white"
-                                          }}
-                                >Profile</MenuItem>
+                <Box sx={{ ml: "auto", bg: "#0c1a29" }}>
+                    <TopBarButton onClick={handleOpen}>{username}</TopBarButton>
+                    { username !== "Guest" &&
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                            sx={{ py: 0, mt: 1, "& .MuiPaper-root": { bgcolor: "#0c1a29" } }}
+                        >
+                            <MenuItem onClick={goToProfile}
+                                      sx={{
+                                          backgroundColor: "#0c1a29",
+                                          "&:hover": { backgroundColor: "#15273b" },
+                                          color: "white"
+                                      }}
+                            >Profile</MenuItem>
 
-                                <MenuItem onClick={goToSettings}
-                                          sx={{
-                                              backgroundColor: "#0c1a29",
-                                              "&:hover": { backgroundColor: "#15273b" },
-                                              color: "white"
-                                          }}
-                                >Settings</MenuItem>
+                            <MenuItem onClick={goToSettings}
+                                      sx={{
+                                          backgroundColor: "#0c1a29",
+                                          "&:hover": { backgroundColor: "#15273b" },
+                                          color: "white"
+                                      }}
+                            >Settings</MenuItem>
 
-                                <MenuItem onClick={logoutOnClick}
-                                    sx={{
-                                        backgroundColor: "#0c1a29",
-                                        "&:hover": { backgroundColor: "#15273b" },
-                                        color: "white"
-                                    }}
-                                >Logout</MenuItem>
-                            </Menu>
-                        }
-                    </Box>
-                }
+                            <MenuItem onClick={logoutOnClick}
+                                sx={{
+                                    backgroundColor: "#0c1a29",
+                                    "&:hover": { backgroundColor: "#15273b" },
+                                    color: "white"
+                                }}
+                            >Logout</MenuItem>
+                        </Menu>
+                    }
+                </Box>
             </Toolbar>
         </AppBar>
     )
