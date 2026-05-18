@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import {generatePlayer} from "../helpers/player.js";
 
 
 test.beforeEach(async ({ page }) => {
@@ -53,4 +54,14 @@ test("cannot register an existing email", async ({ page}) => {
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page.getByText("Email is already taken")).toBeVisible();
+})
+
+test("player can register", async ({ page }) => {
+    const player = generatePlayer();
+    await page.getByRole('textbox', { name: "User name" }).fill(player.username);
+    await page.getByRole('textbox', { name: "Email" }).fill(player.email);
+    await page.getByRole('textbox', { name: "Password" }).fill(player.password);
+    await page.getByRole("button", { name: /^Register$/ }).click();
+
+    await expect(page).toHaveURL("http://localhost:5173/login");
 })

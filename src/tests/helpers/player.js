@@ -32,3 +32,12 @@ export function generatePassword() {
 
     return prefix + suffix;
 }
+
+export function generatePlayer() {
+    let player = {}
+    player.username = generateUsername();
+    player.email = generateEmail(player.username);
+    player.password = generatePassword();
+
+    return player;
+}
