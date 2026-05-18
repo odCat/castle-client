@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { testHeader } from "./helpers/header.js";
+import { testHeader } from "../helpers/header.js";
 
 
 test("has components", async ({ page }) => {
