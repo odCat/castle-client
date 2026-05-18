@@ -18,7 +18,7 @@ export function generateUsername(name) {
         "barbara", "daniel", "elizabeth", "patricia", "sarah", "mark", "karen", "donald",
     ]
 
-    return names[Math.floor(Math.random()) * names.length].concat(sufix);
+    return names[Math.floor(Math.random() * names.length)].concat(sufix);
 }
 
 export function generatePassword() {
