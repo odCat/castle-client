@@ -4,8 +4,11 @@ export function generateEmail(username) {
 
 export function generateUsername(name) {
     const sufix = Math.floor(Math.random() * 100000).toString().padStart(5, "0");
-    if (name)
+    if (name) {
+        if (name.length > 24)
+            throw new Error("The name is too long.")
         return name.trim().replace(/\s/g, "_").toLowerCase().concat(sufix);
+    }
 
     const names = [
         "john", "paul", "peter", "matthew", "mark", "luke", "james", "thomas", "philip",

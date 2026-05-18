@@ -10,6 +10,11 @@ test("generate a random username", () => {
     expect(generateUsername()).toMatch(/^[a-z]*\d{5}$/);
 })
 
+test("throw error when the name is too long", () => {
+    expect(() => generateUsername("ANameTooLongToFitInTwentyFourCharacters"))
+        .toThrow("The name is too long.")
+})
+
 test("generate email", () => {
     expect(generateEmail("john_doe")).toBe("john_doe@test.com");
 })
