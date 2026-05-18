@@ -8,4 +8,8 @@ export default defineConfig({
     build: {
         outDir: "dist",
     },
+    test: {
+        environment: 'node',
+        include: ["src/tests/unit/**/*.test.js"]
+    },
 })

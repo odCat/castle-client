@@ -1,0 +1,31 @@
+export function generateEmail(username) {
+    return username.concat("@test.com");
+}
+
+export function generateUsername(name) {
+    const sufix = Math.floor(Math.random() * 100000).toString().padStart(5, "0");
+    if (name)
+        return name.trim().replace(/\s/g, "_").toLowerCase().concat(sufix);
+
+    const names = [
+        "john", "paul", "peter", "matthew", "mark", "luke", "james", "thomas", "philip",
+        "bilbo", "frodo", "gandalf", "sauron", "gollum", "legolas", "gimli", "aragorn",
+        "blackbeard", "blackjack", "anne", "mary", "william", "jack", "jill", "robert",
+        "michael", "lisa", "susan", "david", "jennifer", "james", "linda", "charles",
+        "barbara", "daniel", "elizabeth", "patricia", "sarah", "mark", "karen", "donald",
+    ]
+
+    return names[Math.floor(Math.random()) * names.length].concat(sufix);
+}
+
+export function generatePassword() {
+    const prefixes = [ "a3L$", "b2J*", "c8R#", "d9E@", "e5W!", "f6&P", "g7^Q" ]
+    const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+
+    const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+    let suffix = "";
+    for (let i = 0; i < 20; ++i)
+        suffix = suffix.concat(characters[Math.floor(Math.random() * characters.length)]);
+
+    return prefix + suffix;
+}
