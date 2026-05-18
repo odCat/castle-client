@@ -60,9 +60,9 @@ export default function LoginCard() {
             {
                 if (response.status === 403) {
                     setUsernameOrMail(true);
-                    setUsernameOrEmailErrorMessage("Invalid email or username");
+                    setUsernameOrEmailErrorMessage("Invalid username or password");
                     setPasswordError(true);
-                    setPasswordErrorMessage("Invalid email or username");
+                    setPasswordErrorMessage("Invalid username or password");
                 }
 
                 if (response.status === 400) {
