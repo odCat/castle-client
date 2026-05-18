@@ -38,9 +38,40 @@ export default function RegisterCard() {
     const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
     const navigate = useNavigate();
 
+    function validateForm() {
+        const username = document.querySelector("#username").value;
+        const email = document.querySelector("#email").value;
+        const password = document.querySelector("#password").value;
+
+        console.log(username);
+        console.log(email);
+        console.log(password);
+
+        let isValid = true;
+
+        if (!username.trim()) {
+            setUsernameError(true);
+            setUsernameErrorMessage("Username should not be empty");
+            isValid = false;
+        }
+        if (!email.trim()) {
+            setEmailError(true);
+            setEmailErrorMessage("Email should not be empty");
+            isValid = false;
+        }
+        if (!password.trim()) {
+            setPasswordError(true);
+            setPasswordErrorMessage("Password should not be empty");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     async function handleSubmit(event)
     {
         event.preventDefault();
+        if (!validateForm()) return;
 
         const data = new FormData(event.currentTarget);
         const email = data.get("email");
@@ -127,7 +158,6 @@ export default function RegisterCard() {
                     <TextField
                         autoComplete="username"
                         name="username"
-                        required
                         fullWidth
                         id="username"
                         placeholder="john_snow"
@@ -151,7 +181,6 @@ export default function RegisterCard() {
                 <FormControl>
                     <FormLabel htmlFor="email">Email</FormLabel>
                     <TextField
-                        required
                         fullWidth
                         id="email"
                         placeholder="your@email.com"
@@ -166,7 +195,6 @@ export default function RegisterCard() {
                 <FormControl>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <TextField
-                        required
                         fullWidth
                         name="password"
                         placeholder="••••••"
