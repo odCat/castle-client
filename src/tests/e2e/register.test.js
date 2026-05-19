@@ -28,9 +28,9 @@ test("have to enter an username, email, and password", async ({ page}) => {
 })
 
 test("have to enter a valid username, email and password", async ({ page}) => {
-    await page.getByRole('textbox', { name: "User name" }).fill("a");
-    await page.getByRole('textbox', { name: "Email" }).fill("invalid-email");
-    await page.getByRole('textbox', { name: "Password" }).fill("password123");
+    await page.getByRole('textbox', { name: /^User name$/ }).fill("a");
+    await page.getByRole('textbox', { name: /^Email$/ }).fill("invalid-email");
+    await page.getByRole('textbox', { name: /^Password$/ }).fill("password123");
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page.getByText("Username must have 4-24 characters and include only letters and digits")).toBeVisible();
@@ -39,18 +39,18 @@ test("have to enter a valid username, email and password", async ({ page}) => {
 })
 
 test("cannot register an existing username", async ({ page}) => {
-    await page.getByRole('textbox', { name: "User name" }).fill("costel");
-    await page.getByRole('textbox', { name: "Email" }).fill("valid@mail.com");
-    await page.getByRole('textbox', { name: "Password" }).fill("Z2heWOKUUOF9$d#P9V");
+    await page.getByRole('textbox', { name: /^User name$/ }).fill("costel");
+    await page.getByRole('textbox', { name: /^Email$/ }).fill("valid@mail.com");
+    await page.getByRole('textbox', { name: /^Password$/ }).fill("Z2heWOKUUOF9$d#P9V");
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page.getByText("Username is already taken")).toBeVisible();
 })
 
 test("cannot register an existing email", async ({ page}) => {
-    await page.getByRole('textbox', { name: "User name" }).fill("notcostel");
-    await page.getByRole('textbox', { name: "Email" }).fill("costel@test.net");
-    await page.getByRole('textbox', { name: "Password" }).fill("Z2heWOKUUOF9$d#P9V");
+    await page.getByRole('textbox', { name: /^User name$/ }).fill("notcostel");
+    await page.getByRole('textbox', { name: /^Email$/ }).fill("costel@test.net");
+    await page.getByRole('textbox', { name: /^Password$/ }).fill("Z2heWOKUUOF9$d#P9V");
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page.getByText("Email is already taken")).toBeVisible();
@@ -58,9 +58,9 @@ test("cannot register an existing email", async ({ page}) => {
 
 test("player can register", async ({ page }) => {
     const player = generatePlayer();
-    await page.getByRole('textbox', { name: "User name" }).fill(player.username);
-    await page.getByRole('textbox', { name: "Email" }).fill(player.email);
-    await page.getByRole('textbox', { name: "Password" }).fill(player.password);
+    await page.getByRole('textbox', { name: /^User name$/ }).fill(player.username);
+    await page.getByRole('textbox', { name: /^Email$/ }).fill(player.email);
+    await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page).toHaveURL("http://localhost:5173/login");

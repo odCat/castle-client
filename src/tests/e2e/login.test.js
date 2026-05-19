@@ -46,12 +46,12 @@ test("cannot login with non-existing username", async ({ page }) => {
     await expect(page.getByText("Invalid username or password")).toHaveCount(2);
 })
 
-test("cannot login with wrong password", async ({ page }) => {
+test("cannot login with a wrong password", async ({ page }) => {
     await page.goto("http://localhost:5173/register")
     const player = generatePlayer();
-    await page.getByRole('textbox', { name: "User name" }).fill(player.username);
-    await page.getByRole('textbox', { name: "Email" }).fill(player.email);
-    await page.getByRole('textbox', { name: "Password" }).fill(player.password);
+    await page.getByRole('textbox', { name: /^User name$/ }).fill(player.username);
+    await page.getByRole('textbox', { name: /^Email$/ }).fill(player.email);
+    await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
@@ -64,9 +64,9 @@ test("cannot login with wrong password", async ({ page }) => {
 test("player can login", async ({ page }) => {
     await page.goto("http://localhost:5173/register")
     const player = generatePlayer();
-    await page.getByRole('textbox', { name: "User name" }).fill(player.username);
-    await page.getByRole('textbox', { name: "Email" }).fill(player.email);
-    await page.getByRole('textbox', { name: "Password" }).fill(player.password);
+    await page.getByRole('textbox', { name: /^User name$/ }).fill(player.username);
+    await page.getByRole('textbox', { name: /^Email$/ }).fill(player.email);
+    await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
