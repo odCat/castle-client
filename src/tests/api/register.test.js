@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { registerNewPlayer } from "../helpers/player.js";
+import { loginPlayer, registerNewPlayer } from "../helpers/player.js";
 
 
 test("can register a new player", async () => {
@@ -13,4 +13,26 @@ test("can register a new player", async () => {
         email: registration.input.email,
         password:registration.input.password
     });
+})
+
+test("player can login with username", async() => {
+    const registration = await registerNewPlayer();
+
+    const response = await loginPlayer(
+                                            registration.input.username,
+                                            registration.input.password
+                                       );
+
+    expect(response.ok()).toBeTruthy();
+})
+
+test("player can login with email", async() => {
+    const registration = await registerNewPlayer();
+
+    const response = await loginPlayer(
+        registration.input.email,
+        registration.input.password
+    );
+
+    expect(response.ok()).toBeTruthy();
 })

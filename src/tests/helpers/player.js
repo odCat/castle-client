@@ -22,6 +22,17 @@ export async function registerNewPlayer() {
     };
 }
 
+export async function loginPlayer(usernameOrEmail, password) {
+
+    const api = await request.newContext({baseURL: 'http://localhost:8080'});
+    return await api.post('/players/login', {
+        data: {
+            usernameOrEmail,
+            password,
+        }
+    });
+}
+
 export function generateEmail(username) {
     return username.concat("@test.com");
 }
