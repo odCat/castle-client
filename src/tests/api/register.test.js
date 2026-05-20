@@ -1,26 +1,16 @@
-import {test, expect, request} from "@playwright/test";
-import {generateEmail, generatePassword, generateUsername} from "../helpers/player.js";
+import { test, expect } from "@playwright/test";
+import { registerNewPlayer } from "../helpers/player.js";
 
 
-test("can register a new user", async () => {
-    const username = generateUsername();
-    const email = generateEmail(username);
-    const password = generatePassword();
+test("can register a new player", async () => {
+    const registration = await registerNewPlayer();
 
-    const api = await request.newContext({ baseURL: 'http://localhost:8080' });
+    expect(registration.response.ok()).toBeTruthy();
 
-    const response = await api.post('/players/register', {
-        data: {
-            username: username,
-            email: email,
-            password: password,
-        }
-    });
-
-    expect(response.ok()).toBeTruthy();
-    await expect(response.json()).resolves.toMatchObject({
-        username: username,
-        email: email,
-        password: password,
+    const player = await registration.response.json();
+    expect(player).toMatchObject({
+        username: registration.input.username,
+        email: registration.input.email,
+        password:registration.input.password
     });
 })

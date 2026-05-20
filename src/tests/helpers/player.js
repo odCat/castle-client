@@ -1,3 +1,27 @@
+import { request } from "@playwright/test";
+
+
+export async function registerNewPlayer() {
+    const username = generateUsername();
+    const email = generateEmail(username);
+    const password = generatePassword();
+
+    const api = await request.newContext({ baseURL: 'http://localhost:8080' });
+
+    const response = await api.post('/players/register', {
+        data: {
+            username: username,
+            email: email,
+            password: password,
+        }
+    });
+
+    return {
+        input : { username, email, password },
+        response
+    };
+}
+
 export function generateEmail(username) {
     return username.concat("@test.com");
 }
