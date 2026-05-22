@@ -18,10 +18,8 @@ test("can register a new player", async () => {
 test("player can login with username", async() => {
     const registration = await registerNewPlayer();
 
-    const response = await loginPlayer(
-                                            registration.input.username,
-                                            registration.input.password
-                                       );
+    const response = await loginPlayer(registration.input.username,
+                                       registration.input.password);
 
     expect(response.ok()).toBeTruthy();
 })
