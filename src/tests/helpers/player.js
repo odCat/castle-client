@@ -57,7 +57,7 @@ export function generateUsername(name) {
 }
 
 export function generatePassword() {
-    const prefixes = [ "a3L$", "b2J*", "c8R#", "d9E@", "e5W!", "f6&P", "g7^Q" ]
+    const prefixes = [ "a3L$", "b2J%", "c8R#", "d9E@", "e5W!", "f6&P", "g7^Q" ]
     const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
 
     const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
