@@ -8,9 +8,10 @@ test("can register a new player", async () => {
     expect(registration.response.ok()).toBeTruthy();
 
     const player = await registration.response.json();
-    expect(player).toMatchObject({
+    expect(player).toEqual({
         username: registration.input.username,
         email: registration.input.email,
+        fullName: null,
         password:registration.input.password
     });
 })
