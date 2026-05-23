@@ -33,6 +33,16 @@ export async function loginPlayer(usernameOrEmail, password) {
     });
 }
 
+export async function deletePlayer({ id, token }) {
+    const api = await request.newContext({baseURL: 'http://localhost:8080'});
+    return await api.delete(`/players?id=${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+}
+
 export function generateEmail(username) {
     return username.concat("@test.com");
 }
