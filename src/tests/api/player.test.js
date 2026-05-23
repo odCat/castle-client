@@ -14,6 +14,13 @@ test("can register a new player", async () => {
         fullName: null,
         password:registration.input.password
     });
+
+    const login = await loginPlayer(registration.input.username,
+                                    registration.input.password);
+    await deletePlayer({
+        id: (await login.json()).id,
+        token: (await login.json()).password
+    })
 })
 
 test("player can login with username", async() => {
@@ -23,6 +30,11 @@ test("player can login with username", async() => {
                                        registration.input.password);
 
     await checkLoginResponse(registration.input, response);
+
+    await deletePlayer({
+        id: (await response.json()).id,
+        token: (await response.json()).password
+    })
 })
 
 test("player can login with email", async() => {
@@ -32,6 +44,11 @@ test("player can login with email", async() => {
                                      registration.input.password);
 
     await checkLoginResponse(registration.input, response);
+
+    await deletePlayer({
+        id: (await response.json()).id,
+        token: (await response.json()).password
+    })
 })
 
 async function checkLoginResponse(input, response) {
