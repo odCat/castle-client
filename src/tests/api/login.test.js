@@ -67,7 +67,13 @@ test("cannot login with the wrong password", async () => {
 
     expect(response.status()).toBe(403);
     response = await response.json();
-    expect(response.error).toBe("Invalid username or password")
+    expect(response).toEqual({ error: "Invalid username or password" });
+
+    response = await (await loginPlayer(registration.input.username, registration.input.password)).json();
+    await deletePlayer({
+        id: response.id,
+        token: response.password
+    })
 })
 
 async function checkLoginResponse(input, response) {
