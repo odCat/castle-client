@@ -108,7 +108,7 @@ test("always get status ok on deletion if a valid token is used", async () => {
     await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
 })
 
-test.fail("cannot delete another player's account", async () => {
+test("cannot delete another player's account", async () => {
     const registration1 = await registerNewPlayer();
     let loginResponse1 = await loginPlayer(registration1.input.username,
                                            registration1.input.password);
