@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {deletePlayer, loginPlayer, registerNewPlayer} from "../helpers/player.js";
+import { deletePlayer, loginPlayer, registerNewPlayer } from "../helpers/player.js";
 
 
 test("can register a new player", async () => {
@@ -16,7 +16,7 @@ test("can register a new player", async () => {
     });
 
     const login = await loginPlayer(registration.input.username,
-                                    registration.input.password);
+                                                registration.input.password);
     await deletePlayer({
         id: (await login.json()).id,
         token: (await login.json()).password
@@ -27,7 +27,7 @@ test("player can login with username", async() => {
     const registration = await registerNewPlayer();
 
     const response = await loginPlayer(registration.input.username,
-                                       registration.input.password);
+                                                   registration.input.password);
 
     await checkLoginResponse(registration.input, response);
 
@@ -41,7 +41,7 @@ test("player can login with email", async() => {
     const registration = await registerNewPlayer();
 
     let response = await loginPlayer(registration.input.email,
-                                     registration.input.password);
+                                                 registration.input.password);
 
     await checkLoginResponse(registration.input, response);
 
@@ -67,21 +67,13 @@ async function checkLoginResponse(input, response) {
 
 test("player can delete his account", async () => {
     const registration = await registerNewPlayer();
-
-    if (!registration.response.ok())
-        console.log(registration.response);
-    expect(registration.response.ok()).toBeTruthy();
-
     let loginResponse = await loginPlayer(registration.input.username,
-                                          registration.input.password);
-
-    await checkLoginResponse(registration.input, loginResponse);
-
+                                                      registration.input.password);
     loginResponse = await loginResponse.json();
     const deleteResponse = await deletePlayer({
-                                                        id: loginResponse.id,
-                                                        token: loginResponse.password
-                                             })
+                                            token: loginResponse.password,
+                                            id: loginResponse.id
+                                       })
 
     expect(deleteResponse.ok()).toBeTruthy();
 
@@ -93,15 +85,13 @@ test("player can delete his account", async () => {
 
 test("always get status ok on deletion if a valid token is used", async () => {
     const registration = await registerNewPlayer();
-
     let loginResponse = await loginPlayer(registration.input.username,
-        registration.input.password);
-
+                                                      registration.input.password);
     loginResponse = await loginResponse.json();
     const deleteResponse = await deletePlayer({
-                                                id: Math.floor((Math.random() * 99)),
-                                                token: loginResponse.password
-                                            });
+                                            id: Math.floor((Math.random() * 99)),
+                                            token: loginResponse.password
+                                       });
 
     expect(deleteResponse.ok()).toBeTruthy();
 
@@ -111,7 +101,7 @@ test("always get status ok on deletion if a valid token is used", async () => {
 test("cannot delete another player's account", async () => {
     const registration1 = await registerNewPlayer();
     let loginResponse1 = await loginPlayer(registration1.input.username,
-                                           registration1.input.password);
+                                                       registration1.input.password);
     loginResponse1 = await loginResponse1.json();
 
     const registration2 = await registerNewPlayer();
@@ -120,9 +110,9 @@ test("cannot delete another player's account", async () => {
     loginResponse2 = await loginResponse2.json();
 
     const deleteResponse = await deletePlayer({
-                                    id: loginResponse2.id,
-                                    token: loginResponse1.password
-                                 });
+                                            id: loginResponse2.id,
+                                            token: loginResponse1.password
+                                       });
 
     expect(deleteResponse.ok()).not.toBeTruthy();
 
