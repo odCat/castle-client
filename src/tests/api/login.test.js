@@ -45,7 +45,7 @@ test("cannot login with an nonexisting username", async () => {
     expect(response.status()).toBe(403);
 
     response = await response.json();
-    expect(response.error).toBe("Invalid username or password")
+    expect(response).toEqual({ error: "Invalid username or password" });
 })
 
 test("cannot login with an nonexisting email", async () => {
@@ -57,16 +57,15 @@ test("cannot login with an nonexisting email", async () => {
     expect(response.status()).toBe(403);
 
     response = await response.json();
-    expect(response.error).toBe("Invalid username or password")
+    expect(response).toEqual({ error: "Invalid username or password" });
 })
 
 test("cannot login with the wrong password", async () => {
     const registration = await registerNewPlayer();
     let response = await loginPlayer(registration.input.username,
-        generatePassword());
+                                     generatePassword());
 
     expect(response.status()).toBe(403);
-
     response = await response.json();
     expect(response.error).toBe("Invalid username or password")
 })
