@@ -106,16 +106,23 @@ test("cannot delete another player's account", async () => {
 
     const registration2 = await registerNewPlayer();
     let loginResponse2 = await loginPlayer(registration2.input.username,
-                                           registration2.input.password);
+                                                       registration2.input.password);
     loginResponse2 = await loginResponse2.json();
 
-    const deleteResponse = await deletePlayer({
-                                            id: loginResponse2.id,
-                                            token: loginResponse1.password
-                                       });
+    await deletePlayer({
+        id: loginResponse2.id,
+        token: loginResponse1.password
+    });
 
-    expect(deleteResponse.ok()).not.toBeTruthy();
+    loginResponse1 = await loginPlayer(registration1.input.username,
+        registration1.input.password);
+    expect(loginResponse1.ok()).toBeTruthy();
+    loginResponse2 = await loginPlayer(registration2.input.username,
+        registration2.input.password);
+    expect(loginResponse2.ok()).toBeTruthy();
 
+    loginResponse1 = await loginResponse1.json();
+    loginResponse2 = await loginResponse2.json();
     await deletePlayer({ id: loginResponse1.id, token: loginResponse1.password });
     await deletePlayer({ id: loginResponse2.id, token: loginResponse2.password });
 })
