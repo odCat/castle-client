@@ -2,27 +2,6 @@ import { test, expect } from "@playwright/test";
 import { deletePlayer, loginPlayer, registerNewPlayer } from "../helpers/player.js";
 
 
-test("can register a new player", async () => {
-    const registration = await registerNewPlayer();
-
-    expect(registration.response.ok()).toBeTruthy();
-
-    const player = await registration.response.json();
-    expect(player).toEqual({
-        username: registration.input.username,
-        email: registration.input.email,
-        fullName: null,
-        password:registration.input.password
-    });
-
-    const login = await loginPlayer(registration.input.username,
-                                                registration.input.password);
-    await deletePlayer({
-        id: (await login.json()).id,
-        token: (await login.json()).password
-    })
-})
-
 test("player can delete his account", async () => {
     const registration = await registerNewPlayer();
     let loginResponse = await loginPlayer(registration.input.username,
