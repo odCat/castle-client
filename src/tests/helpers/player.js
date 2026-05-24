@@ -1,10 +1,13 @@
 import { request } from "@playwright/test";
 
 
-export async function registerNewPlayer() {
-    const username = generateUsername();
-    const email = generateEmail(username);
-    const password = generatePassword();
+export async function registerNewPlayer(username, email, password) {
+    if (!username)
+        username = generateUsername();
+    if (!email)
+        email = generateEmail(username);
+    if (!password)
+        password = generatePassword();
 
     const api = await request.newContext({ baseURL: 'http://localhost:8080' });
 
