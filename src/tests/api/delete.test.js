@@ -18,6 +18,7 @@ test("player can delete his account", async () => {
                                       registration.input.password);
 
     expect(loginResponse.status()).toBe(403);
+    expect(await loginResponse.json()).toEqual({ error: "Invalid username or password" });
 })
 
 test("always get status ok on deletion if a valid token is used", async () => {
