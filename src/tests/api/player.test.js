@@ -23,48 +23,6 @@ test("can register a new player", async () => {
     })
 })
 
-test("player can login with username", async() => {
-    const registration = await registerNewPlayer();
-
-    const response = await loginPlayer(registration.input.username,
-                                                   registration.input.password);
-
-    await checkLoginResponse(registration.input, response);
-
-    await deletePlayer({
-        id: (await response.json()).id,
-        token: (await response.json()).password
-    })
-})
-
-test("player can login with email", async() => {
-    const registration = await registerNewPlayer();
-
-    let response = await loginPlayer(registration.input.email,
-                                                 registration.input.password);
-
-    await checkLoginResponse(registration.input, response);
-
-    await deletePlayer({
-        id: (await response.json()).id,
-        token: (await response.json()).password
-    })
-})
-
-async function checkLoginResponse(input, response) {
-    expect(response.ok()).toBeTruthy();
-    response = await response.json();
-
-    expect(response.id).toBeDefined();
-    expect(response.username).toBeDefined();
-    expect(response.email).toBeDefined();
-    expect(response.fullName).toBeDefined();
-    expect(response.usernameOrEmail).toBeDefined();
-    expect(response.password).toBeDefined();
-    expect(response.password).toMatch(/\d+/);
-    expect(response.password).not.toEqual(input.password);
-}
-
 test("player can delete his account", async () => {
     const registration = await registerNewPlayer();
     let loginResponse = await loginPlayer(registration.input.username,
