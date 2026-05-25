@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {generatePlayer} from "../helpers/player.js";
+import { deletePlayer, generatePlayer, loginPlayer } from "../helpers/player.js";
 
 
 test.beforeEach(async ({ page }) => {
@@ -64,4 +64,11 @@ test("player can register", async ({ page }) => {
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page).toHaveURL("http://localhost:5173/login");
+
+    const login = await loginPlayer(player.username,
+                                    player.password);
+    await deletePlayer({
+        id: (await login.json()).id,
+        token: (await login.json()).password
+    })
 })
