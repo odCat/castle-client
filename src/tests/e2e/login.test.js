@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { generatePassword, generatePlayer, generateUsername } from "../helpers/player.js";
+import {
+    deletePlayer,
+    generatePassword,
+    generateUsername,
+    loginPlayer,
+    registerNewPlayer
+} from "../helpers/player.js";
 
 
 test.beforeEach( async ({ page }) => {
@@ -47,31 +53,35 @@ test("cannot login with non-existing username", async ({ page }) => {
 })
 
 test("cannot login with a wrong password", async ({ page }) => {
-    await page.goto("http://localhost:5173/register")
-    const player = generatePlayer();
-    await page.getByRole('textbox', { name: /^User name$/ }).fill(player.username);
-    await page.getByRole('textbox', { name: /^Email$/ }).fill(player.email);
-    await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
-    await page.getByRole("button", { name: /^Register$/ }).click();
-
+    const registration = await registerNewPlayer();
+    const player = await registration.response.json();
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Password$/ }).fill("incorrect_password");
     await page.getByRole("button", { name: /^Login$/ }).click();
 
     await expect(page.getByText("Invalid username or password")).toHaveCount(2);
+
+    const login = await loginPlayer(registration.input.username,
+                                    registration.input.password);
+    await deletePlayer({
+        id: (await login.json()).id,
+        token: (await login.json()).password
+    })
 })
 
 test("player can login", async ({ page }) => {
-    await page.goto("http://localhost:5173/register")
-    const player = generatePlayer();
-    await page.getByRole('textbox', { name: /^User name$/ }).fill(player.username);
-    await page.getByRole('textbox', { name: /^Email$/ }).fill(player.email);
-    await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
-    await page.getByRole("button", { name: /^Register$/ }).click();
-
+    const registration = await registerNewPlayer();
+    const player = await registration.response.json();
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Login$/ }).click();
 
     await expect(page).toHaveURL("http://localhost:5173/play");
+
+    const login = await loginPlayer(registration.input.username,
+                                    registration.input.password);
+    await deletePlayer({
+        id: (await login.json()).id,
+        token: (await login.json()).password
+    })
 })
