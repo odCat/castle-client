@@ -77,6 +77,8 @@ test("player can login", async ({ page }) => {
     await page.getByRole("button", { name: /^Login$/ }).click();
 
     await expect(page).toHaveURL("http://localhost:5173/play");
+    await expect(page.getByRole("button", { name: player.username })).toBeVisible();
+    await expect(page.getByRole("button", { name: "guest" })).not.toBeVisible();
 
     const login = await loginPlayer(registration.input.username,
                                     registration.input.password);
