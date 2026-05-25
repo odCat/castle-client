@@ -6,6 +6,7 @@ import {
     loginPlayer,
     registerNewPlayer
 } from "../helpers/player.js";
+import {testHeaderAsPlayer} from "../helpers/header.js";
 
 
 test.beforeEach( async ({ page }) => {
@@ -79,6 +80,7 @@ test("player can login", async ({ page }) => {
     await expect(page).toHaveURL("http://localhost:5173/play");
     await expect(page.getByRole("button", { name: player.username })).toBeVisible();
     await expect(page.getByRole("button", { name: "guest" })).not.toBeVisible();
+    await testHeaderAsPlayer(player.username, { page });
 
     const login = await loginPlayer(registration.input.username,
                                     registration.input.password);

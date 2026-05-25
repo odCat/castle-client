@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { testHeader } from "../helpers/header.js";
+import { testHeaderAsGuest } from "../helpers/header.js";
 
 
 test("has components", async ({ page }) => {
@@ -7,7 +7,7 @@ test("has components", async ({ page }) => {
 
     await expect(page).toHaveTitle("chess-client");
 
-    await testHeader({ page });
+    await testHeaderAsGuest({ page });
     await expect(page.getByRole("button", { name: /^Refresh$/ })).toBeVisible();
     await expect(page.getByRole("separator")).toBeVisible();
     await expect(await page.locator("#chessboard-board")).toHaveCount(4);
