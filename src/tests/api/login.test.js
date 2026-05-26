@@ -12,7 +12,7 @@ import {
 test("player can login with username", async() => {
     const registration = await registerNewPlayer();
     const response = await loginPlayer(registration.input.username,
-        registration.input.password);
+                                                   registration.input.password);
 
     await checkLoginResponse(registration.input, response);
 
@@ -26,7 +26,7 @@ test("player can login with email", async() => {
     const registration = await registerNewPlayer();
 
     let response = await loginPlayer(registration.input.email,
-        registration.input.password);
+                                                 registration.input.password);
 
     await checkLoginResponse(registration.input, response);
 

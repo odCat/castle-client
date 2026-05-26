@@ -26,7 +26,6 @@ export async function registerNewPlayer(username, email, password) {
 }
 
 export async function loginPlayer(usernameOrEmail, password) {
-
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
     return await api.post('/players/login', {
         data: {

@@ -83,7 +83,7 @@ test("player can login", async ({ page }) => {
     await testHeaderAsPlayer(player.username, { page });
 
     const login = await loginPlayer(registration.input.username,
-                                    registration.input.password);
+                                                registration.input.password);
     await deletePlayer({
         id: (await login.json()).id,
         token: (await login.json()).password
