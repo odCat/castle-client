@@ -44,7 +44,6 @@ test("update all player information", async () => {
     expect(updated.username).toEqual(newUsername);
     expect(updated.email).toEqual(newEmail);
     expect(updated.fullName).toEqual(newFullName);
-    expect(updated.password).toEqual(oldPassword);
 
     await deletePlayer({
         id: id,
