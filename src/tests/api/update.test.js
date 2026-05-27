@@ -19,7 +19,6 @@ test("update all player information", async () => {
                                          registration.input.password)).json();
 
     const id = login.id;
-    const oldPassword = login.password;
 
     const newUsername = generateUsername();
     const newFullName = "John Doe";
