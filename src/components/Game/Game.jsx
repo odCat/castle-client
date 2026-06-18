@@ -133,7 +133,7 @@ export default function Game() {
     function getAndSetPossibleMoves(square) {
         const game = chessGameRef.current;
 
-        const moves = game.moves({  verbose: true, square:square });
+        const moves = game.moves({ verbose: true, square:square });
 
         if (moves.length === 0) {
             setSquareOptions({});
