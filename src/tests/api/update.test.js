@@ -80,3 +80,34 @@ test("player can login with new password", async () => {
         token: login.password
     })
 })
+
+test("player can login with new username", async () => {
+    const registration = await registerNewPlayer();
+
+    expect(registration.response.ok()).toBeTruthy();
+
+    const api = await request.newContext({baseURL: 'http://localhost:8080'});
+    let login = await (await loginPlayer(registration.input.username,
+                                         registration.input.password)).json();
+
+    const newUsername = generateUsername();
+    const updated = await api.patch(`/players?id=${login.id}`, {
+        headers: {
+            Authorization: `Bearer ${login.password}`
+        },
+        data: {
+            username: newUsername,
+        }
+    });
+
+    expect(updated.ok()).toBeTruthy();
+
+    login = await loginPlayer(newUsername, registration.input.password);
+    expect(login.ok()).toBeTruthy();
+
+    login = await login.json();
+    await deletePlayer({
+        id: login.id,
+        token: login.password
+    })
+})
