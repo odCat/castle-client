@@ -36,6 +36,36 @@ test("always get status ok on deletion if a valid token is used", async () => {
     await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
 })
 
+test("cannot delete without authentication", async () => {
+    const registration = await registerNewPlayer();
+    let loginResponse = await loginPlayer(registration.input.username,
+                                                      registration.input.password);
+    loginResponse = await loginResponse.json();
+    const deleteResponse = await deletePlayer({
+        id: loginResponse.id,
+        token: null
+    });
+
+    expect(deleteResponse.status()).toBe(403);
+
+    await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
+})
+
+test("re-delete a player account", async () => {
+    const registration = await registerNewPlayer();
+    let loginResponse = await loginPlayer(registration.input.username,
+        registration.input.password);
+    loginResponse = await loginResponse.json();
+    await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
+
+    const deleteResponse = await deletePlayer({
+        id: loginResponse.id,
+        token: loginResponse.password
+    });
+
+    expect(deleteResponse.status()).toBe(200);
+})
+
 test("cannot delete another player's account", async () => {
     const registration1 = await registerNewPlayer();
     let loginResponse1 = await loginPlayer(registration1.input.username,
