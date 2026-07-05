@@ -76,6 +76,26 @@ test("cannot login with the wrong password", async () => {
     })
 })
 
+test("cannot login without password", async () => {
+    const registration = await registerNewPlayer();
+    const response = await loginPlayer(registration.input.username, null);
+
+    expect(response.status()).toBe(400);
+    expect((await response.json())).toEqual({
+        password: "Password must not be blank",
+    });
+})
+
+test("cannot login with empty password", async () => {
+    const registration = await registerNewPlayer();
+    const response = await loginPlayer(registration.input.username, "");
+
+    expect(response.status()).toBe(400);
+    expect((await response.json())).toEqual({
+        password: "Password must not be blank",
+    });
+})
+
 async function checkLoginResponse(input, response) {
     expect(response.ok()).toBeTruthy();
     response = await response.json();
