@@ -20,7 +20,7 @@ test("generate email", () => {
 })
 
 test("generate a valid password", () => {
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < 100; ++i) {
         let password = generatePassword();
         expect(password).toHaveLength(24);
         expect(password).toMatch(/^.*\d+.*$/);
