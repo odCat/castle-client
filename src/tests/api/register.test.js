@@ -22,11 +22,12 @@ test("can register a new player", async () => {
         password:registration.input.password
     });
 
-    const login = await loginPlayer(registration.input.username,
-                                    registration.input.password);
+    let login = await loginPlayer(registration.input.username,
+                                              registration.input.password);
+    login = await login.json();
     await deletePlayer({
-        id: (await login.json()).id,
-        token: (await login.json()).password
+        id: login.id,
+        token: login.password
     })
 })
 

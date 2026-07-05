@@ -11,28 +11,30 @@ import {
 
 test("player can login with username", async() => {
     const registration = await registerNewPlayer();
-    const response = await loginPlayer(registration.input.username,
-                                                   registration.input.password);
+    let login = await loginPlayer(registration.input.username,
+                                                 registration.input.password);
 
-    await checkLoginResponse(registration.input, response);
+    await checkLoginResponse(registration.input, login);
 
+    login = await login.json();
     await deletePlayer({
-        id: (await response.json()).id,
-        token: (await response.json()).password
+        id: login.id,
+        token: login.password
     })
 })
 
 test("player can login with email", async() => {
     const registration = await registerNewPlayer();
 
-    let response = await loginPlayer(registration.input.email,
+    let login = await loginPlayer(registration.input.email,
                                                  registration.input.password);
 
-    await checkLoginResponse(registration.input, response);
+    await checkLoginResponse(registration.input, login);
 
+    login = await login.json();
     await deletePlayer({
-        id: (await response.json()).id,
-        token: (await response.json()).password
+        id: login.id,
+        token: login.password
     })
 })
 
