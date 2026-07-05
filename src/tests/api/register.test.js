@@ -136,7 +136,7 @@ test("cannot register without the required fields", async () => {
     expect((await registration.json())).toEqual({
         password: "Password must not be null",
         email: "Email must not be blank",
-        username: "Username must not be blank"
+        username: "Username must have 4-24 characters and include only letters and digits."
     });
 })
 
@@ -154,6 +154,6 @@ test("cannot register with empty fields", async () => {
     expect((await registration.json())).toEqual({
         password: "Password must have 8-24 characters and include at least a digit, a lowercase, an uppercase and a symbol",
         email: "Email must not be blank",
-        username: "Username must not be blank"
+        username: "Username must have 4-24 characters and include only letters and digits."
     });
 })
