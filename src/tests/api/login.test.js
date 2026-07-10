@@ -80,22 +80,34 @@ test("cannot login with the wrong password", async () => {
 
 test("cannot login without password", async () => {
     const registration = await registerNewPlayer();
-    const response = await loginPlayer(registration.input.username, null);
+    let response = await loginPlayer(registration.input.username, null);
 
     expect(response.status()).toBe(400);
     expect((await response.json())).toEqual({
         password: "Password must not be blank",
     });
+
+    response = await (await loginPlayer(registration.input.username, registration.input.password)).json();
+    await deletePlayer({
+        id: response.id,
+        token: response.password
+    })
 })
 
 test("cannot login with empty password", async () => {
     const registration = await registerNewPlayer();
-    const response = await loginPlayer(registration.input.username, "");
+    let response = await loginPlayer(registration.input.username, "");
 
     expect(response.status()).toBe(400);
     expect((await response.json())).toEqual({
         password: "Password must not be blank",
     });
+
+    response = await (await loginPlayer(registration.input.username, registration.input.password)).json();
+    await deletePlayer({
+        id: response.id,
+        token: response.password
+    })
 })
 
 async function checkLoginResponse(input, response) {
