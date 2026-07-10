@@ -99,32 +99,44 @@ test("cannot register with duplicate username", async () => {
     const username = generateUsername();
     const email = generateEmail(username);
     const password = generatePassword();
-    await registerNewPlayer(username, email, password);
+    const registration1 = await registerNewPlayer(username, email, password);
 
     const newEmail = generateEmail(username);
     const newPassword = generatePassword();
-    const registration = await registerNewPlayer(username, newEmail, newPassword);
+    const registration2 = await registerNewPlayer(username, newEmail, newPassword);
 
-    expect(registration.response.status()).toBe(403);
-    expect((await registration.response.json())).toEqual({
+    expect(registration2.response.status()).toBe(403);
+    expect((await registration2.response.json())).toEqual({
         error: "UNIQUE constraint failed: players.username",
     });
+
+    const login = await (await loginPlayer(registration1.input.username, registration1.input.password)).json();
+    await deletePlayer({
+        id: login.id,
+        token: login.password
+    })
 })
 
 test("cannot register with duplicate email", async () => {
     const username = generateUsername();
     const email = generateEmail(username);
     const password = generatePassword();
-    await registerNewPlayer(username, email, password);
+    const registration1 = await registerNewPlayer(username, email, password);
 
     const newUsername = generateUsername();
     const newPassword = generatePassword();
-    const registration = await registerNewPlayer(newUsername, email, newPassword);
+    const registration2 = await registerNewPlayer(newUsername, email, newPassword);
 
-    expect(registration.response.status()).toBe(403);
-    expect((await registration.response.json())).toEqual({
+    expect(registration2.response.status()).toBe(403);
+    expect((await registration2.response.json())).toEqual({
         error: "UNIQUE constraint failed: players.email",
     });
+
+    const login = await (await loginPlayer(registration1.input.username, registration1.input.password)).json();
+    await deletePlayer({
+        id: login.id,
+        token: login.password
+    })
 })
 
 test("cannot register without the required fields", async () => {
