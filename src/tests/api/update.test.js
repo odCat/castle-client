@@ -150,7 +150,7 @@ test("player cannot update without authentication", async () => {
     expect(registration.response.ok()).toBeTruthy();
 
     let login = await (await loginPlayer(registration.input.username,
-        registration.input.password)).json();
+                                         registration.input.password)).json();
 
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
     const newUsername = generateUsername();
@@ -199,6 +199,9 @@ test("player cannot update another player", async () => {
     });
 
     expect(updated.status()).toBe(403);
+
+    const login3 = await loginPlayer(newUsername, generatePassword());
+    expect(login3.status()).toBe(403);
 
     login1 = await loginPlayer(registration1.input.username, registration1.input.password);
     expect(login1.ok()).toBeTruthy();
