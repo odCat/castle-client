@@ -22,13 +22,10 @@ test("can register a new player", async () => {
         password:registration.input.password
     });
 
-    let login = await loginPlayer(registration.input.username,
-                                              registration.input.password);
-    login = await login.json();
     await deletePlayer({
-        id: login.id,
-        token: login.password
-    })
+        usernameOrEmail: registration.input.username,
+        password: registration.input.password
+    });
 })
 
 test("cannot register with a short username", async () => {
@@ -110,11 +107,10 @@ test("cannot register with duplicate username", async () => {
         error: "UNIQUE constraint failed: players.username",
     });
 
-    const login = await (await loginPlayer(registration1.input.username, registration1.input.password)).json();
     await deletePlayer({
-        id: login.id,
-        token: login.password
-    })
+        usernameOrEmail: registration1.input.username,
+        password: registration1.input.password
+    });
 })
 
 test("cannot register with duplicate email", async () => {
@@ -132,11 +128,10 @@ test("cannot register with duplicate email", async () => {
         error: "UNIQUE constraint failed: players.email",
     });
 
-    const login = await (await loginPlayer(registration1.input.username, registration1.input.password)).json();
     await deletePlayer({
-        id: login.id,
-        token: login.password
-    })
+        usernameOrEmail: registration1.input.username,
+        password: registration1.input.password
+    });
 })
 
 test("cannot register without the required fields", async () => {

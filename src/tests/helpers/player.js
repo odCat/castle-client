@@ -1,4 +1,4 @@
-import { request } from "@playwright/test";
+import { expect, request } from "@playwright/test";
 
 
 export async function registerNewPlayer(username, email, password) {
@@ -35,8 +35,25 @@ export async function loginPlayer(usernameOrEmail, password) {
     });
 }
 
-export async function deletePlayer({ id, token }) {
+export async function deletePlayer({ usernameOrEmail, password, id, token }) {
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
+
+    if (id == null && token == null)
+    {
+        let login = await api.post('/players/login', {
+            data: {
+                usernameOrEmail,
+                password,
+            }
+        });
+
+        expect(login.status()).toBe(200);
+
+        login = await login.json();
+        id = login.id;
+        token = login.password;
+    }
+
     return await api.delete(`/players?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`

@@ -12,15 +12,14 @@ import {
 test("player can login with username", async() => {
     const registration = await registerNewPlayer();
     let login = await loginPlayer(registration.input.username,
-                                                 registration.input.password);
+                                              registration.input.password);
 
     await checkLoginResponse(registration.input, login);
 
-    login = await login.json();
     await deletePlayer({
-        id: login.id,
-        token: login.password
-    })
+        usernameOrEmail: registration.input.username,
+        password: registration.input.password
+    });
 })
 
 test("player can login with email", async() => {
@@ -31,11 +30,10 @@ test("player can login with email", async() => {
 
     await checkLoginResponse(registration.input, login);
 
-    login = await login.json();
     await deletePlayer({
-        id: login.id,
-        token: login.password
-    })
+        usernameOrEmail: registration.input.username,
+        password: registration.input.password
+    });
 })
 
 test("cannot login with an nonexisting username", async () => {
@@ -71,11 +69,10 @@ test("cannot login with the wrong password", async () => {
     response = await response.json();
     expect(response).toEqual({ error: "Invalid username or password" });
 
-    response = await (await loginPlayer(registration.input.username, registration.input.password)).json();
     await deletePlayer({
-        id: response.id,
-        token: response.password
-    })
+        usernameOrEmail: registration.input.username,
+        password: registration.input.password
+    });
 })
 
 test("cannot login without password", async () => {
@@ -87,11 +84,10 @@ test("cannot login without password", async () => {
         password: "Password must not be blank",
     });
 
-    response = await (await loginPlayer(registration.input.username, registration.input.password)).json();
     await deletePlayer({
-        id: response.id,
-        token: response.password
-    })
+        usernameOrEmail: registration.input.username,
+        password: registration.input.password
+    });
 })
 
 test("cannot login with empty password", async () => {
@@ -103,11 +99,10 @@ test("cannot login with empty password", async () => {
         password: "Password must not be blank",
     });
 
-    response = await (await loginPlayer(registration.input.username, registration.input.password)).json();
     await deletePlayer({
-        id: response.id,
-        token: response.password
-    })
+        usernameOrEmail: registration.input.username,
+        password: registration.input.password
+    });
 })
 
 async function checkLoginResponse(input, response) {
