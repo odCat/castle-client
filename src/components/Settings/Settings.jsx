@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/actions/actions.js";
 import {useNavigate} from "react-router";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
 
 
@@ -17,14 +17,28 @@ export default function Settings() {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [username, setUsername] = useState(player.username);
     const [password, setPassword] = useState("");
+    const [retypedPassword, setRetypedPassword] = useState("");
+    const [matches, setMatches] = useState(true);
     const [fullName, setFullName] = useState(player.fullName);
     const [email, setEmail] = useState(player.email);
+
+    useEffect(() => {
+        if (password !== retypedPassword)
+            setMatches(false);
+        else
+            setMatches(true);
+    }, [password, retypedPassword]);
 
     async function saveChanges() {
         console.log(`Username: ${username}`);
         console.log(`Password: ${password}`);
-        console.log(`Username: ${fullName}`);
-        console.log(`Username: ${email}`);
+        console.log(`Full Name: ${fullName}`);
+        console.log(`Email: ${email}`);
+
+        if (matches)
+            console.log(`Passwords matches`);
+        else
+            console.log(`Passwords do not match`);
     }
 
     async function deleteAccount() {
@@ -72,6 +86,22 @@ export default function Settings() {
             <TextField
                 value={password}
                 onChange={(e) => setPassword(e.target.value) }
+                fullWidth
+                color="white"
+                size="small"
+                sx={{
+                    mb: 1,
+                    '& .MuiInputBase-input': { color: '#fff' },
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': { borderColor: '#424548' },
+                        '&:hover fieldset': { borderColor: '#424548' },
+                        '&.Mui-focused fieldset': { borderColor: '#424548' },
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#424548' },
+                }}
+            />
+            <TextField
+                onChange={(e) => setRetypedPassword(e.target.value) }
                 fullWidth
                 color="white"
                 size="small"
