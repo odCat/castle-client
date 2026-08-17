@@ -15,10 +15,16 @@ export default function Settings() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [name, setName] = useState(player.fullName);
+    const [username, setUsername] = useState(player.username);
+    const [password, setPassword] = useState("");
+    const [fullName, setFullName] = useState(player.fullName);
+    const [email, setEmail] = useState(player.email);
 
-    function handleClose() {
-        setOpenDeleteDialog(false);
+    async function saveChanges() {
+        console.log(`Username: ${username}`);
+        console.log(`Password: ${password}`);
+        console.log(`Username: ${fullName}`);
+        console.log(`Username: ${email}`);
     }
 
     async function deleteAccount() {
@@ -34,39 +40,91 @@ export default function Settings() {
         navigate("/login");
     }
 
+    function handleClose() {
+        setOpenDeleteDialog(false);
+    }
+
     return (
-        <Box>
+        <Box sx={{ mb: 20 }}>
             <Typography variant="h4" sx={{ my: 10 }}>Settings</Typography>
 
             <Typography variant="h5">Username</Typography>
-            <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
-
-            <Typography variant="h5">Password</Typography>
-            <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
-
-            <Typography variant="h5">Full name</Typography>
-            <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
+            <Divider sx={{width: "100%", mt: 1, mb: 2, borderColor: "#424548"}}/>
             <TextField
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value) }
                 fullWidth
                 color="white"
                 size="small"
                 sx={{
                     '& .MuiInputBase-input': { color: '#fff' },
                     '& .MuiOutlinedInput-root': {
-                        '& fieldset': { borderColor: '#fff' },
-                        '&:hover fieldset': { borderColor: '#fff' },
-                        '&.Mui-focused fieldset': { borderColor: '#fff' },
+                        '& fieldset': { borderColor: '#424548' },
+                        '&:hover fieldset': { borderColor: '#424548' },
+                        '&.Mui-focused fieldset': { borderColor: '#424548' },
                     },
-                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#fff' },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#424548' },
+                }}
+            />
+
+            <Typography variant="h5" sx={{ mt: 5 }}>Password</Typography>
+            <Divider sx={{width: "100%", mt: 1, mb: 2, borderColor: "#424548"}}/>
+            <TextField
+                value={password}
+                onChange={(e) => setPassword(e.target.value) }
+                fullWidth
+                color="white"
+                size="small"
+                sx={{
+                    '& .MuiInputBase-input': { color: '#fff' },
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': { borderColor: '#424548' },
+                        '&:hover fieldset': { borderColor: '#424548' },
+                        '&.Mui-focused fieldset': { borderColor: '#424548' },
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#424548' },
+                }}
+            />
+
+            <Typography variant="h5" sx={{ mt: 5 }}>Full name</Typography>
+            <Divider sx={{width: "100%", mt: 1, mb: 2, borderColor: "#424548"}}/>
+            <TextField
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                fullWidth
+                color="white"
+                size="small"
+                sx={{
+                    '& .MuiInputBase-input': { color: '#fff' },
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': { borderColor: '#424548' },
+                        '&:hover fieldset': { borderColor: '#424548' },
+                        '&.Mui-focused fieldset': { borderColor: '#424548' },
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#424548' },
                 }}
             />
 
             <Typography variant="h5" sx={{ mt : 5 }}>Email</Typography>
-            <Divider sx={{width: "100%", my: 2, borderColor: "#424548"}}/>
+            <Divider sx={{width: "100%", mt:1, mb: 2, borderColor: "#424548"}}/>
+            <TextField
+                value={email}
+                onChange={(e) => setEmail(e.target.value) }
+                fullWidth
+                color="white"
+                size="small"
+                sx={{
+                    '& .MuiInputBase-input': { color: '#fff' },
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': { borderColor: '#424548' },
+                        '&:hover fieldset': { borderColor: '#424548' },
+                        '&.Mui-focused fieldset': { borderColor: '#424548' },
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#424548' },
+                }}
+            />
 
-            <Button variant="contained">
+            <Button variant="contained" sx={{ mt: 5 }} onClick={ () => saveChanges() }>
                 Save changes
             </Button>
 
