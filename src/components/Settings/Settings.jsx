@@ -85,6 +85,7 @@ export default function Settings() {
             <Divider sx={{width: "100%", mt: 1, mb: 2, borderColor: "#424548"}}/>
             <TextField
                 type="password"
+                placeholder="Enter the new password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value) }
                 fullWidth
@@ -103,6 +104,7 @@ export default function Settings() {
             />
             <TextField
                 type="password"
+                placeholder="(again)"
                 onChange={(e) => setRetypedPassword(e.target.value) }
                 fullWidth
                 color="white"
