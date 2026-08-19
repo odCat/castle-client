@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../store/actions/actions.js";
+import {logout, update} from "../../store/actions/actions.js";
 import {useNavigate} from "react-router";
 import {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
@@ -39,6 +39,32 @@ export default function Settings() {
             console.log(`Passwords matches`);
         else
             console.log(`Passwords do not match`);
+
+        let updateInfo = {};
+        if (username != null && username !== player.username)
+            updateInfo.username = username;
+        if (password !== "" && matches)
+            updateInfo.password = password;
+        if (fullName != null)
+            updateInfo.fullName = fullName;
+        if (email != null && email !== player.email)
+            updateInfo.email = email;
+        updateInfo = JSON.stringify(updateInfo);
+
+        try {
+            const response = await fetch("http://localhost:8080/players?id=" + player.id, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + player.password
+                },
+                body: updateInfo
+            });
+            const json = await response.json();
+            dispatch(update(json));
+        } catch(error) {
+            console.error(error.message);
+        }
     }
 
     async function deleteAccount() {
