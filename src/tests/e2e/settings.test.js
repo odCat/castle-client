@@ -1,13 +1,13 @@
 import {expect, test} from "@playwright/test";
-import {registerNewPlayer} from "../helpers/player.js";
+import {generatePassword, registerNewPlayer} from "../helpers/player.js";
 
 
 test("has components", async ({ page }) => {
     const registration = await registerNewPlayer();
-    const player = await registration.response.json();
+    const player = await registration.input;
     await page.goto("http://localhost:5173/login")
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
-    await page.getByRole('textbox', { name: /^Password$/ }).fill("incorrect_password");
+    await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Login$/ }).click();
 
     await page.goto("http://localhost:5173/settings")
