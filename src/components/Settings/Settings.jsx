@@ -91,6 +91,7 @@ export default function Settings() {
             <Typography variant="h5">Username</Typography>
             <Divider sx={{width: "100%", mt: 1, mb: 2, borderColor: "#424548"}}/>
             <TextField
+                id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value) }
                 fullWidth
@@ -149,6 +150,7 @@ export default function Settings() {
             <Typography variant="h5" sx={{ mt: 5 }}>Full name</Typography>
             <Divider sx={{width: "100%", mt: 1, mb: 2, borderColor: "#424548"}}/>
             <TextField
+                id="full_name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 fullWidth
@@ -168,6 +170,7 @@ export default function Settings() {
             <Typography variant="h5" sx={{ mt : 5 }}>Email</Typography>
             <Divider sx={{width: "100%", mt:1, mb: 2, borderColor: "#424548"}}/>
             <TextField
+                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value) }
                 fullWidth
