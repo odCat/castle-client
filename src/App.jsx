@@ -13,6 +13,7 @@ import {Route, Routes, useLocation} from "react-router";
 import {styled} from "@mui/material/styles";
 import Profile from "./components/Profile/Profile.jsx";
 import Settings from "./components/Settings/Settings.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 
 const MainBox = styled(Box)({
@@ -49,7 +50,7 @@ export default function App() {
                     <Route path="/tools/demo" element={<Demo />} />
                     <Route path="/games/id/:gameId" element={<Game />} />
                     <Route path="/profile/:playerId" element={<Profile />} />
-                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                 </Routes>
             </MainContainer>
 
