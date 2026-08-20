@@ -33,8 +33,8 @@ export default function App() {
 
     const location = useLocation();
 
-    const hideOnPaths = ["/", "/login", "/register"];
-    const showTopBar = !hideOnPaths.includes(location.pathname);
+    const showOnPaths = [ "/play", "/watch", "/tools/demo", "/games/id/", "/profile/", "/settings" ]
+    const showTopBar = showOnPaths.some(path => location.pathname.startsWith(path));
 
     return (
         <MainBox>
