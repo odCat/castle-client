@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {logout, update} from "../../store/actions/actions.js";
 import {useNavigate} from "react-router";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import TextField from "@mui/material/TextField";
 
 
@@ -22,18 +22,16 @@ export default function Settings() {
     const [fullName, setFullName] = useState(player.fullName);
     const [email, setEmail] = useState(player.email);
 
-    useEffect(() => {
-        if (password !== retypedPassword)
-            setMatches(false);
-        else
-            setMatches(true);
-    }, [password, retypedPassword]);
-
     async function saveChanges() {
         console.log(`Username: ${username}`);
         console.log(`Password: ${password}`);
         console.log(`Full Name: ${fullName}`);
         console.log(`Email: ${email}`);
+
+        if (password !== retypedPassword)
+            setMatches(false);
+        else
+            setMatches(true);
 
         if (matches)
             console.log(`Passwords matches`);
@@ -132,6 +130,8 @@ export default function Settings() {
             <TextField
                 type="password"
                 placeholder="(again)"
+                error={!matches}
+                helperText={!matches ? "Passwords do not match" : ""}
                 onChange={(e) => setRetypedPassword(e.target.value) }
                 fullWidth
                 color="white"
