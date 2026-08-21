@@ -28,9 +28,10 @@ export default function Settings() {
         console.log(`Full Name: ${fullName}`);
         console.log(`Email: ${email}`);
 
-        if (password !== retypedPassword)
+        if (password !== retypedPassword) {
             setMatches(false);
-        else
+            return ;
+        } else
             setMatches(true);
 
         if (matches)
