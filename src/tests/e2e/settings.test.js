@@ -9,8 +9,8 @@ test("has components", async ({ page }) => {
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Login$/ }).click();
-
-    await page.goto("http://localhost:5173/settings")
+    await page.getByRole("button", { name: player.username }).click();
+    await page.getByRole("menuitem", { name: "Settings" }).click();
 
     await expect(page).toHaveTitle("chess-client");
 
@@ -44,10 +44,10 @@ test("cannot update player info if the passwords do not match", async ({ page })
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Login$/ }).click();
+    await page.getByRole("button", { name: player.username }).click();
+    await page.getByRole("menuitem", { name: "Settings" }).click();
 
-    await page.goto("http://localhost:5173/settings")
-
-    await page.getByRole("textbox", { name: "Enter the new passwords" }).fill(generatePassword());
+    await page.getByRole("textbox", { name: "Enter the new password" }).fill(generatePassword());
     await page.getByRole("textbox", { name: "(again)" }).fill(generatePassword());
     await page.getByRole("button", { name: "Save changes" }).click();
 
