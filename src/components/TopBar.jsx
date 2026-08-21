@@ -31,14 +31,17 @@ export default function TopBar() {
     };
 
     function goToProfile() {
+        handleClose();
         navigate(`/profile/${id}`)
     }
 
     function goToSettings() {
+        handleClose();
         navigate("/settings");
     }
 
     function logoutOnClick() {
+        handleClose();
         dispatch(logout());
         navigate("/login");
     }
