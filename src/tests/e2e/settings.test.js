@@ -1,5 +1,5 @@
 import {expect, test} from "@playwright/test";
-import {generatePassword, registerNewPlayer} from "../helpers/player.js";
+import {deletePlayer, generatePassword, loginPlayer, registerNewPlayer} from "../helpers/player.js";
 
 
 test("has components", async ({ page }) => {
@@ -35,6 +35,8 @@ test("has components", async ({ page }) => {
     await expect(page.getByRole("button", { name: /^Delete your account$/ })).toBeVisible();
 
     await expect(page.getByText(/^Copyright © 202\d Mihai Gătejescu$/ )).toBeVisible();
+
+    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
 test("cannot update player info if the passwords do not match", async ({ page }) => {
@@ -52,6 +54,11 @@ test("cannot update player info if the passwords do not match", async ({ page })
     await page.getByRole("button", { name: "Save changes" }).click();
 
     await expect(page.getByText("Passwords do not match")).toBeVisible();
+
+    const login = await loginPlayer(player.username, player.password);
+    expect(login.status()).toBe(200);
+
+    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
 test("can delete account", async ({ page }) => {
