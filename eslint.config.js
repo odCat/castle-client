@@ -26,4 +26,11 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  {
+    files: ['src/tests/**/*.{js,jsx}'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

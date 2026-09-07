@@ -1,6 +1,16 @@
-import { expect, test } from "@playwright/test";
+// noinspection JSCheckFunctionSignatures, JSUnusedGlobalSymbols
+
+import { expect, test as base } from "@playwright/test";
 import { deletePlayer, registerNewPlayer } from "../helpers/player.js";
 
+
+const test = base.extend({
+    player: async (_, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    }
+});
 
 async function loginAndGoToProfile(page, player) {
     await page.goto("http://localhost:5173/login")
@@ -11,9 +21,7 @@ async function loginAndGoToProfile(page, player) {
     await page.getByRole("menuitem", { name: "Profile" }).click();
 }
 
-test("player can see his profile", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("player can see his profile", async ({ page, player }) => {
     await loginAndGoToProfile(page, player);
 
     await expect(page).toHaveTitle("chess-client");
@@ -30,8 +38,6 @@ test("player can see his profile", async ({ page }) => {
     await expect(page.locator("#game_history tr")).toHaveCount(1);
 
     await expect(page.getByText(/^Copyright © 202\d Mihai Gătejescu$/ )).toBeVisible();
-
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
 test("can see player profile", async ({ page }) => {
