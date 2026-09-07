@@ -5,7 +5,8 @@ import { deletePlayer, registerNewPlayer } from "../helpers/player.js";
 
 
 const test = base.extend({
-    player: async (_, use) => {
+    // eslint-disable-next-line no-empty-pattern
+    player: async ({}, use) => {
         const registration = await registerNewPlayer();
         await use(registration.input);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
