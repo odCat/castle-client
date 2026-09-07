@@ -11,7 +11,7 @@ async function loginAndGoToProfile(page, player) {
     await page.getByRole("menuitem", { name: "Profile" }).click();
 }
 
-test("has components", async ({ page }) => {
+test("player can see his profile", async ({ page }) => {
     const registration = await registerNewPlayer();
     const player = await registration.input;
     await loginAndGoToProfile(page, player);
@@ -32,4 +32,23 @@ test("has components", async ({ page }) => {
     await expect(page.getByText(/^Copyright © 202\d Mihai Gătejescu$/ )).toBeVisible();
 
     await deletePlayer({ usernameOrEmail: player.username, password: player.password });
+})
+
+test("can see player profile", async ({ page }) => {
+    await page.goto("http://localhost:5173/profile/1")
+
+    await expect(page).toHaveTitle("chess-client");
+
+    await expect(page.getByRole("heading", { name: "Game History" })).toBeVisible();
+
+    await expect(page.locator("#game_history")).toBeVisible();
+
+    await expect(page.getByRole("columnheader", { name: "White" })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "Black" })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "Date" })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "Result" })).toBeVisible();
+
+    await expect(page.locator("#game_history tr")).toHaveCount(6);
+
+    await expect(page.getByText(/^Copyright © 202\d Mihai Gătejescu$/ )).toBeVisible();
 })
