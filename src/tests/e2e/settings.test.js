@@ -1,4 +1,6 @@
-import { expect, test } from "@playwright/test";
+// noinspection JSCheckFunctionSignatures, JSUnusedGlobalSymbols
+
+import { expect, test as base } from "@playwright/test";
 import {
     deletePlayer,
     generateEmail,
@@ -9,6 +11,15 @@ import {
 } from "../helpers/player.js";
 
 
+const test = base.extend({
+    // eslint-disable-next-line no-empty-pattern
+    player: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    }
+});
+
 async function loginAndGoToSettings(page, player) {
     await page.goto("http://localhost:5173/login")
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
@@ -18,9 +29,7 @@ async function loginAndGoToSettings(page, player) {
     await page.getByRole("menuitem", { name: "Settings" }).click();
 }
 
-test("has components", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("has components", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await expect(page).toHaveTitle("chess-client");
@@ -52,13 +61,9 @@ test("has components", async ({ page }) => {
     await expect(page.getByRole("button", { name: /^Delete your account$/ })).toBeVisible();
 
     await expect(page.getByText(/^Copyright © 202\d Mihai Gătejescu$/ )).toBeVisible();
-
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
-test("cannot update player info if the passwords do not match", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("cannot update player info if the passwords do not match", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await page.getByRole("textbox", { name: "Enter the new password" }).fill(generatePassword());
@@ -69,13 +74,9 @@ test("cannot update player info if the passwords do not match", async ({ page })
 
     const login = await loginPlayer(player.username, player.password);
     expect(login.status()).toBe(200);
-
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
-test("can login with new password", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("can login with new password", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     const newPassword = generatePassword();
@@ -91,12 +92,10 @@ test("can login with new password", async ({ page }) => {
     const login = await loginPlayer(player.username, newPassword);
     expect(login.status()).toBe(200);
 
-    await deletePlayer({ usernameOrEmail: player.username, password: newPassword });
+    player.password = newPassword;
 })
 
-test("can login with new username", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("can login with new username", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await expect(page).toHaveURL("http://localhost:5173/settings");
@@ -112,12 +111,10 @@ test("can login with new username", async ({ page }) => {
     const login = await loginPlayer(newUsername, player.password);
     expect(login.status()).toBe(200);
 
-    await deletePlayer({ usernameOrEmail: newUsername, password: player.password });
+    player.username = newUsername;
 })
 
-test("can login with new email", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("can login with new email", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await expect(page).toHaveURL("http://localhost:5173/settings");
@@ -133,12 +130,10 @@ test("can login with new email", async ({ page }) => {
     const login = await loginPlayer(newEmail, player.password);
     expect(login.status()).toBe(200);
 
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
+    player.email = newEmail;
 })
 
-test("cannot update with invalid data", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("cannot update with invalid data", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await expect(page).toHaveURL("http://localhost:5173/settings");
@@ -171,12 +166,12 @@ test("cannot update with invalid data", async ({ page }) => {
     await expect(page.getByText("Password must have 8-24 characters and include at least a digit, a lowercase, an uppercase and a symbol")).not.toBeVisible();
     await expect(page.getByText("Must be a valid email address")).not.toBeVisible();
 
-    await deletePlayer({ usernameOrEmail: validUsername, password: validPassword });
+    player.username = validUsername;
+    player.password = validPassword;
+    player.email = validEmail;
 })
 
-test("update full name", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("update full name", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await expect(page).toHaveURL("http://localhost:5173/settings");
@@ -195,13 +190,9 @@ test("update full name", async ({ page }) => {
 
     login = await login.json();
     expect(login.fullName).toBe(newFullName);
-
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
-test("save button has delay", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("save button has delay", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await expect(page).toHaveURL("http://localhost:5173/settings");
@@ -212,11 +203,9 @@ test("save button has delay", async ({ page }) => {
 
     await expect(page.getByRole("button", { name: "Save changes" })).toBeDisabled();
     await expect(page.getByRole("button", { name: "Save changes" })).toBeEnabled();
-
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
 
-test("can delete account", async ({ page }) => {
+test("can delete account", async ({ page}) => {
     const registration = await registerNewPlayer();
     const player = await registration.input;
     await loginAndGoToSettings(page, player);
@@ -237,9 +226,7 @@ test("can delete account", async ({ page }) => {
     await expect(page.getByText("Invalid username or password")).toHaveCount(2);
 })
 
-test("can cancel account deletion", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.input;
+test("can cancel account deletion", async ({ page, player }) => {
     await loginAndGoToSettings(page, player);
 
     await page.getByRole("button", { name: "Delete your account" }).click();
@@ -254,6 +241,4 @@ test("can cancel account deletion", async ({ page }) => {
 
     const login = await loginPlayer(player.username, player.password);
     expect(login.status()).toBe(200);
-
-    await deletePlayer({ usernameOrEmail: player.username, password: player.password });
 })
