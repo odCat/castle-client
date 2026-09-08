@@ -1,10 +1,19 @@
-import { test, expect } from "@playwright/test";
-import { deletePlayer, generatePlayer, loginPlayer } from "../helpers/player.js";
+import { expect, test as base } from "@playwright/test";
+import { deletePlayer, generatePlayer } from "../helpers/player.js";
 
 
 test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:5173/register")
 })
+
+const test = base.extend({
+    // eslint-disable-next-line no-empty-pattern
+    player: async ({}, use) => {
+        const player = await generatePlayer();
+        await use(player);
+        await deletePlayer({ usernameOrEmail: player.username, password: player.password });
+    }
+});
 
 test("has components", async ({ page }) => {
     await expect(page).toHaveTitle("chess-client");
@@ -56,19 +65,11 @@ test("cannot register an existing email", async ({ page}) => {
     await expect(page.getByText("Email is already taken")).toBeVisible();
 })
 
-test("player can register", async ({ page }) => {
-    const player = generatePlayer();
+test("player can register", async ({ page, player }) => {
     await page.getByRole('textbox', { name: /^User name$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Email$/ }).fill(player.email);
     await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Register$/ }).click();
 
     await expect(page).toHaveURL("http://localhost:5173/login");
-
-    const login = await loginPlayer(player.username,
-                                    player.password);
-    await deletePlayer({
-        id: (await login.json()).id,
-        token: (await login.json()).password
-    })
 })
