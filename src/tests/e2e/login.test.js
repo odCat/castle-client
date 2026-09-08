@@ -1,13 +1,23 @@
-import { test, expect } from "@playwright/test";
+// noinspection JSCheckFunctionSignatures, JSUnusedGlobalSymbols
+
+import { expect, test as base } from "@playwright/test";
 import {
     deletePlayer,
     generatePassword,
     generateUsername,
-    loginPlayer,
     registerNewPlayer
 } from "../helpers/player.js";
-import {testHeaderAsPlayer} from "../helpers/header.js";
+import { testHeaderAsPlayer } from "../helpers/header.js";
 
+
+const test = base.extend({
+    // eslint-disable-next-line no-empty-pattern
+    player: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    }
+});
 
 test.beforeEach( async ({ page }) => {
     await page.goto("http://localhost:5173/login")
@@ -53,26 +63,16 @@ test("cannot login with non-existing username", async ({ page }) => {
     await expect(page.getByText("Invalid username or password")).toHaveCount(2);
 })
 
-test("cannot login with a wrong password", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.response.json();
+test("cannot login with a wrong password", async ({ page, player }) => {
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Password$/ }).fill("incorrect_password");
     await page.getByRole("button", { name: /^Login$/ }).click();
 
     await expect(page.getByText("Invalid username or password")).toHaveCount(2);
 
-    const login = await loginPlayer(registration.input.username,
-                                    registration.input.password);
-    await deletePlayer({
-        id: (await login.json()).id,
-        token: (await login.json()).password
-    })
 })
 
-test("player can login", async ({ page }) => {
-    const registration = await registerNewPlayer();
-    const player = await registration.response.json();
+test("player can login", async ({ page, player }) => {
     await page.getByRole('textbox', { name: /^Email\/Username$/ }).fill(player.username);
     await page.getByRole('textbox', { name: /^Password$/ }).fill(player.password);
     await page.getByRole("button", { name: /^Login$/ }).click();
@@ -81,11 +81,4 @@ test("player can login", async ({ page }) => {
     await expect(page.getByRole("button", { name: player.username })).toBeVisible();
     await expect(page.getByRole("button", { name: "guest" })).not.toBeVisible();
     await testHeaderAsPlayer(player.username, { page });
-
-    const login = await loginPlayer(registration.input.username,
-                                                registration.input.password);
-    await deletePlayer({
-        id: (await login.json()).id,
-        token: (await login.json()).password
-    })
 })
