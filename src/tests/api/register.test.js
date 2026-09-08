@@ -13,7 +13,7 @@ import {
 const test = base.extend({
     // eslint-disable-next-line no-empty-pattern
     registration: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({ checkResponse: false } );
         await use(registration);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
     }
@@ -34,7 +34,7 @@ test("can register a new player", async ({ registration }) => {
 })
 
 test("cannot register with a short username", async () => {
-    const registration = await registerNewPlayer("a");
+    const registration = await registerNewPlayer({ username: "a", checkResponse: false });
 
     expect(registration.response.status()).toBe(400);
     expect((await registration.response.json()))
@@ -44,7 +44,7 @@ test("cannot register with a short username", async () => {
 })
 
 test("cannot register with a long username", async () => {
-    const registration = await registerNewPlayer("AUsernameTooLongToBeValid");
+    const registration = await registerNewPlayer({ username: "AUsernameTooLongToBeValid", checkResponse: false });
 
     expect(registration.response.status()).toBe(400);
     expect((await registration.response.json()))
@@ -54,7 +54,7 @@ test("cannot register with a long username", async () => {
 })
 
 test("cannot register with a username containing special characters", async () => {
-    const registration = await registerNewPlayer("ha$specia!chars");
+    const registration = await registerNewPlayer({ username: "ha$specia!chars", checkResponse: false });
 
     expect(registration.response.status()).toBe(400);
     expect((await registration.response.json()))
@@ -64,7 +64,7 @@ test("cannot register with a username containing special characters", async () =
 })
 
 test("cannot register with an invalid email", async () => {
-    const registration = await registerNewPlayer(generateUsername(), "not a valid email");
+    const registration = await registerNewPlayer({ username: generateUsername(), email: "not a valid email", checkResponse: false });
 
     expect(registration.response.status()).toBe(400);
     expect((await registration.response.json()))
@@ -75,7 +75,7 @@ test("cannot register with an invalid password", async () => {
     const username = generateUsername();
     const email = generateEmail(username);
     const password = "invalid_password";
-    const registration = await registerNewPlayer(username, email, password);
+    const registration = await registerNewPlayer({ username: username, email: email, password: password, checkResponse: false });
 
     expect(registration.response.status()).toBe(400);
     expect((await registration.response.json())).toEqual({
@@ -87,7 +87,7 @@ test("cannot register with multiple invalid inputs", async () => {
     const username = "a";
     const email = "not a valid email";
     const password = "invalid_password";
-    const registration = await registerNewPlayer(username, email, password);
+    const registration = await registerNewPlayer({ username: username, email: email, password: password, checkResponse: false });
 
     expect(registration.response.status()).toBe(400);
     expect((await registration.response.json())).toEqual({
@@ -100,7 +100,7 @@ test("cannot register with multiple invalid inputs", async () => {
 test("cannot register with duplicate username", async ({ registration }) => {
     const newEmail = generateEmail();
     const newPassword = generatePassword();
-    const registration2 = await registerNewPlayer(registration.input.username, newEmail, newPassword);
+    const registration2 = await registerNewPlayer({ username: registration.input.username, email: newEmail, password: newPassword, checkResponse: false });
 
     expect(registration2.response.status()).toBe(403);
     expect((await registration2.response.json())).toEqual({
@@ -111,7 +111,7 @@ test("cannot register with duplicate username", async ({ registration }) => {
 test("cannot register with duplicate email", async ({ registration }) => {
     const newUsername = generateUsername();
     const newPassword = generatePassword();
-    const registration2 = await registerNewPlayer(newUsername, registration.input.email, newPassword);
+    const registration2 = await registerNewPlayer({ username: newUsername, email: registration.input.email, password: newPassword, checkResponse: false });
 
     expect(registration2.response.status()).toBe(403);
     expect((await registration2.response.json())).toEqual({

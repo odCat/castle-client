@@ -14,19 +14,19 @@ import {
 const test = base.extend({
     // eslint-disable-next-line no-empty-pattern
     registration: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({});
         await use(registration);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
     },
     // eslint-disable-next-line no-empty-pattern
     registration1: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({});
         await use(registration);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
     },
     // eslint-disable-next-line no-empty-pattern
     registration2: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({});
         await use(registration);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
     }

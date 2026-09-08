@@ -1,7 +1,7 @@
 import { expect, request } from "@playwright/test";
 
 
-export async function registerNewPlayer(username, email, password) {
+export async function registerNewPlayer({ username, email, password, checkResponse = true }) {
     if (!username)
         username = generateUsername();
     if (!email)
@@ -19,7 +19,8 @@ export async function registerNewPlayer(username, email, password) {
         }
     });
 
-    expect(response.ok()).toBeTruthy();
+    if (checkResponse)
+        expect(response.ok()).toBeTruthy();
 
     return {
         input : { username, email, password },

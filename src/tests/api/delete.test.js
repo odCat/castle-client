@@ -7,20 +7,20 @@ import { deletePlayer, loginPlayer, registerNewPlayer } from "../helpers/player.
 const test = base.extend({
     // eslint-disable-next-line no-empty-pattern
     player: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({});
         await use(registration.input);
     },
 
     // eslint-disable-next-line no-empty-pattern
     player1: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({});
         await use(registration.input);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
     },
 
     // eslint-disable-next-line no-empty-pattern
     player2: async ({}, use) => {
-        const registration = await registerNewPlayer();
+        const registration = await registerNewPlayer({});
         await use(registration.input);
         await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
     }
@@ -54,7 +54,7 @@ test("always get status ok on deletion if a valid token is used", async ({ playe
 })
 
 test("cannot delete without authentication", async () => {
-    const registration = await registerNewPlayer();
+    const registration = await registerNewPlayer({});
     let loginResponse = await loginPlayer(registration.input.username,
                                                       registration.input.password);
     loginResponse = await loginResponse.json();
