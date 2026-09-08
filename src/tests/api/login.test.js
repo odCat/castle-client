@@ -1,4 +1,6 @@
-import { expect, test } from "@playwright/test";
+// noinspection JSCheckFunctionSignatures, JSUnusedGlobalSymbols
+
+import { expect, test as base } from "@playwright/test";
 import {
     deletePlayer,
     generateEmail,
@@ -9,31 +11,25 @@ import {
 } from "../helpers/player.js";
 
 
-test("player can login with username", async() => {
-    const registration = await registerNewPlayer();
-    let login = await loginPlayer(registration.input.username,
-                                              registration.input.password);
+const test = base.extend({
+    // eslint-disable-next-line no-empty-pattern
+    player: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    }
+});
 
-    await checkLoginResponse(registration.input, login);
+test("player can login with username", async({ player }) => {
+    let login = await loginPlayer(player.username, player.password);
 
-    await deletePlayer({
-        usernameOrEmail: registration.input.username,
-        password: registration.input.password
-    });
+    await checkLoginResponse(player, login);
 })
 
-test("player can login with email", async() => {
-    const registration = await registerNewPlayer();
+test("player can login with email", async({ player }) => {
+    let login = await loginPlayer(player.username, player.password);
 
-    let login = await loginPlayer(registration.input.email,
-                                                 registration.input.password);
-
-    await checkLoginResponse(registration.input, login);
-
-    await deletePlayer({
-        usernameOrEmail: registration.input.username,
-        password: registration.input.password
-    });
+    await checkLoginResponse(player, login);
 })
 
 test("cannot login with an nonexisting username", async () => {
@@ -60,48 +56,29 @@ test("cannot login with an nonexisting email", async () => {
     expect(response).toEqual({ error: "Invalid username or password" });
 })
 
-test("cannot login with the wrong password", async () => {
-    const registration = await registerNewPlayer();
-    let response = await loginPlayer(registration.input.username,
-                                     generatePassword());
+test("cannot login with the wrong password", async ({ player }) => {
+    let response = await loginPlayer(player.username, generatePassword());
 
     expect(response.status()).toBe(403);
     response = await response.json();
     expect(response).toEqual({ error: "Invalid username or password" });
-
-    await deletePlayer({
-        usernameOrEmail: registration.input.username,
-        password: registration.input.password
-    });
 })
 
-test("cannot login without password", async () => {
-    const registration = await registerNewPlayer();
-    let response = await loginPlayer(registration.input.username, null);
+test("cannot login without password", async ({ player }) => {
+    let response = await loginPlayer(player.username, null);
 
     expect(response.status()).toBe(400);
     expect((await response.json())).toEqual({
         password: "Password must not be blank",
     });
-
-    await deletePlayer({
-        usernameOrEmail: registration.input.username,
-        password: registration.input.password
-    });
 })
 
-test("cannot login with empty password", async () => {
-    const registration = await registerNewPlayer();
-    let response = await loginPlayer(registration.input.username, "");
+test("cannot login with empty password", async ({ player }) => {
+    let response = await loginPlayer(player.username, "");
 
     expect(response.status()).toBe(400);
     expect((await response.json())).toEqual({
         password: "Password must not be blank",
-    });
-
-    await deletePlayer({
-        usernameOrEmail: registration.input.username,
-        password: registration.input.password
     });
 })
 
