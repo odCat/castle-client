@@ -1,4 +1,6 @@
-import {expect, request, test} from "@playwright/test";
+// noinspection JSCheckFunctionSignatures, JSUnusedGlobalSymbols
+
+import { expect, request, test as base } from "@playwright/test";
 import {
     deletePlayer,
     generateEmail,
@@ -8,9 +10,16 @@ import {
 } from "../helpers/player.js";
 
 
-test("can register a new player", async () => {
-    const registration = await registerNewPlayer();
+const test = base.extend({
+    // eslint-disable-next-line no-empty-pattern
+    registration: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    }
+});
 
+test("can register a new player", async ({ registration }) => {
     expect(registration.response.ok()).toBeTruthy();
 
     const player = await registration.response.json();
@@ -21,11 +30,6 @@ test("can register a new player", async () => {
         fullName: null,
         password: registration.input.password,
         created: today
-    });
-
-    await deletePlayer({
-        usernameOrEmail: registration.input.username,
-        password: registration.input.password
     });
 })
 
@@ -93,45 +97,25 @@ test("cannot register with multiple invalid inputs", async () => {
     });
 })
 
-test("cannot register with duplicate username", async () => {
-    const username = generateUsername();
-    const email = generateEmail(username);
-    const password = generatePassword();
-    const registration1 = await registerNewPlayer(username, email, password);
-
-    const newEmail = generateEmail(username);
+test("cannot register with duplicate username", async ({ registration }) => {
+    const newEmail = generateEmail();
     const newPassword = generatePassword();
-    const registration2 = await registerNewPlayer(username, newEmail, newPassword);
+    const registration2 = await registerNewPlayer(registration.input.username, newEmail, newPassword);
 
     expect(registration2.response.status()).toBe(403);
     expect((await registration2.response.json())).toEqual({
         error: "UNIQUE constraint failed: players.username",
     });
-
-    await deletePlayer({
-        usernameOrEmail: registration1.input.username,
-        password: registration1.input.password
-    });
 })
 
-test("cannot register with duplicate email", async () => {
-    const username = generateUsername();
-    const email = generateEmail(username);
-    const password = generatePassword();
-    const registration1 = await registerNewPlayer(username, email, password);
-
+test("cannot register with duplicate email", async ({ registration }) => {
     const newUsername = generateUsername();
     const newPassword = generatePassword();
-    const registration2 = await registerNewPlayer(newUsername, email, newPassword);
+    const registration2 = await registerNewPlayer(newUsername, registration.input.email, newPassword);
 
     expect(registration2.response.status()).toBe(403);
     expect((await registration2.response.json())).toEqual({
         error: "UNIQUE constraint failed: players.email",
-    });
-
-    await deletePlayer({
-        usernameOrEmail: registration1.input.username,
-        password: registration1.input.password
     });
 })
 
