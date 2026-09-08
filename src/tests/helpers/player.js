@@ -19,6 +19,8 @@ export async function registerNewPlayer(username, email, password) {
         }
     });
 
+    expect(response.ok()).toBeTruthy();
+
     return {
         input : { username, email, password },
         response

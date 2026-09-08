@@ -33,8 +33,6 @@ const test = base.extend({
 });
 
 test("update all player information", async ({ registration }) => {
-    expect(registration.response.ok()).toBeTruthy();
-
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
     let login = await (await loginPlayer(registration.input.username,
                                          registration.input.password)).json();
@@ -74,8 +72,6 @@ test("update all player information", async ({ registration }) => {
 })
 
 test("update full name", async ({ registration }) => {
-    expect(registration.response.ok()).toBeTruthy();
-
     let login = await (await loginPlayer(registration.input.username,
         registration.input.password)).json();
 
@@ -97,8 +93,6 @@ test("update full name", async ({ registration }) => {
 })
 
 test("player can login with new password", async ({ registration }) => {
-    expect(registration.response.ok()).toBeTruthy();
-
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
     let login = await (await loginPlayer(registration.input.username,
                                          registration.input.password)).json();
@@ -122,8 +116,6 @@ test("player can login with new password", async ({ registration }) => {
 })
 
 test("player can login with new username", async ({ registration }) => {
-    expect(registration.response.ok()).toBeTruthy();
-
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
     let login = await (await loginPlayer(registration.input.username,
                                          registration.input.password)).json();
@@ -147,8 +139,6 @@ test("player can login with new username", async ({ registration }) => {
 })
 
 test("player cannot update without authentication", async ({ registration }) => {
-    expect(registration.response.ok()).toBeTruthy();
-
     let login = await (await loginPlayer(registration.input.username,
                                          registration.input.password)).json();
 
@@ -170,9 +160,6 @@ test("player cannot update without authentication", async ({ registration }) => 
 })
 
 test("player cannot update another player", async ({ registration1, registration2 }) => {
-    expect(registration1.response.ok()).toBeTruthy();
-    expect(registration2.response.ok()).toBeTruthy();
-
     let login1 = await (await loginPlayer(registration1.input.username,
                                           registration1.input.password)).json();
     let login2 = await (await loginPlayer(registration2.input.username,
@@ -202,8 +189,6 @@ test("player cannot update another player", async ({ registration1, registration
 })
 
 test("cannot update with invalid data", async ({ registration }) => {
-    expect(registration.response.ok()).toBeTruthy();
-
     const api = await request.newContext({baseURL: 'http://localhost:8080'});
     let login = await (await loginPlayer(registration.input.username,
                                          registration.input.password)).json();
