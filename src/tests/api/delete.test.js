@@ -1,3 +1,5 @@
+// noinspection JSCheckFunctionSignatures, JSUnusedGlobalSymbols
+
 import { expect, test as base } from "@playwright/test";
 import { deletePlayer, loginPlayer, registerNewPlayer } from "../helpers/player.js";
 
