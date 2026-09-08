@@ -1,11 +1,31 @@
-import { test, expect } from "@playwright/test";
+import { expect, test as base } from "@playwright/test";
 import { deletePlayer, loginPlayer, registerNewPlayer } from "../helpers/player.js";
 
 
-test("player can delete his account", async () => {
-    const registration = await registerNewPlayer();
-    let loginResponse = await loginPlayer(registration.input.username,
-                                                      registration.input.password);
+const test = base.extend({
+    // eslint-disable-next-line no-empty-pattern
+    player: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+    },
+
+    // eslint-disable-next-line no-empty-pattern
+    player1: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    },
+
+    // eslint-disable-next-line no-empty-pattern
+    player2: async ({}, use) => {
+        const registration = await registerNewPlayer();
+        await use(registration.input);
+        await deletePlayer({ usernameOrEmail: registration.input.username, password: registration.input.password });
+    }
+});
+
+test("player can delete his account", async ({ player }) => {
+    let loginResponse = await loginPlayer(player.username, player.password);
     loginResponse = await loginResponse.json();
     const deleteResponse = await deletePlayer({
                                             token: loginResponse.password,
@@ -14,17 +34,14 @@ test("player can delete his account", async () => {
 
     expect(deleteResponse.ok()).toBeTruthy();
 
-    loginResponse = await loginPlayer(registration.input.username,
-                                      registration.input.password);
+    loginResponse = await loginPlayer(player.username, player.password);
 
     expect(loginResponse.status()).toBe(403);
     expect(await loginResponse.json()).toEqual({ error: "Invalid username or password" });
 })
 
-test("always get status ok on deletion if a valid token is used", async () => {
-    const registration = await registerNewPlayer();
-    let loginResponse = await loginPlayer(registration.input.username,
-                                                      registration.input.password);
+test("always get status ok on deletion if a valid token is used", async ({ player1 }) => {
+    let loginResponse = await loginPlayer(player1.username, player1.password);
     loginResponse = await loginResponse.json();
     const deleteResponse = await deletePlayer({
                                             id: Math.floor((Math.random() * 99)),
@@ -32,8 +49,6 @@ test("always get status ok on deletion if a valid token is used", async () => {
                                        });
 
     expect(deleteResponse.ok()).toBeTruthy();
-
-    await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
 })
 
 test("cannot delete without authentication", async () => {
@@ -51,10 +66,8 @@ test("cannot delete without authentication", async () => {
     await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
 })
 
-test("re-delete a player account", async () => {
-    const registration = await registerNewPlayer();
-    let loginResponse = await loginPlayer(registration.input.username,
-        registration.input.password);
+test("re-delete a player account", async ({ player }) => {
+    let loginResponse = await loginPlayer(player.username, player.password);
     loginResponse = await loginResponse.json();
     await deletePlayer({ id: loginResponse.id, token: loginResponse.password })
 
@@ -66,15 +79,11 @@ test("re-delete a player account", async () => {
     expect(deleteResponse.status()).toBe(200);
 })
 
-test("cannot delete another player's account", async () => {
-    const registration1 = await registerNewPlayer();
-    let loginResponse1 = await loginPlayer(registration1.input.username,
-                                                       registration1.input.password);
+test("cannot delete another player's account", async ({ player1, player2 }) => {
+    let loginResponse1 = await loginPlayer(player1.username, player1.password);
     loginResponse1 = await loginResponse1.json();
 
-    const registration2 = await registerNewPlayer();
-    let loginResponse2 = await loginPlayer(registration2.input.username,
-                                                       registration2.input.password);
+    let loginResponse2 = await loginPlayer(player2.username, player2.password);
     loginResponse2 = await loginResponse2.json();
 
     await deletePlayer({
@@ -82,15 +91,8 @@ test("cannot delete another player's account", async () => {
         token: loginResponse1.password
     });
 
-    loginResponse1 = await loginPlayer(registration1.input.username,
-        registration1.input.password);
+    loginResponse1 = await loginPlayer(player1.username, player1.password);
     expect(loginResponse1.ok()).toBeTruthy();
-    loginResponse2 = await loginPlayer(registration2.input.username,
-        registration2.input.password);
+    loginResponse2 = await loginPlayer(player2.username, player2.password);
     expect(loginResponse2.ok()).toBeTruthy();
-
-    loginResponse1 = await loginResponse1.json();
-    loginResponse2 = await loginResponse2.json();
-    await deletePlayer({ id: loginResponse1.id, token: loginResponse1.password });
-    await deletePlayer({ id: loginResponse2.id, token: loginResponse2.password });
 })
