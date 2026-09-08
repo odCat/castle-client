@@ -4,10 +4,6 @@ import { expect, test as base } from "@playwright/test";
 import { deletePlayer, generatePlayer } from "../helpers/player.js";
 
 
-test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:5173/register")
-})
-
 const test = base.extend({
     // eslint-disable-next-line no-empty-pattern
     player: async ({}, use) => {
@@ -16,6 +12,10 @@ const test = base.extend({
         await deletePlayer({ usernameOrEmail: player.username, password: player.password });
     }
 });
+
+test.beforeEach(async ({ page }) => {
+    await page.goto("http://localhost:5173/register")
+})
 
 test("has components", async ({ page }) => {
     await expect(page).toHaveTitle("chess-client");
