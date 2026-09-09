@@ -1,4 +1,4 @@
-import {Box, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Alert, Box, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
@@ -19,6 +19,7 @@ export default function Settings() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [snackbar, setSnackbar] = useState(null);
     const [username, setUsername] = useState(player.username);
     const [usernameError, setUsernameError] = useState(false);
     const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
@@ -78,6 +79,7 @@ export default function Settings() {
                 dispatch(update(json));
                 setPassword("");
                 setRetypedPassword("");
+                setSnackbar({ severity: "success", message: "Changes saved" })
             } else {
                 if (json.username) {
                     setUsernameError(true);
@@ -93,6 +95,7 @@ export default function Settings() {
                 }
             }
         } catch(error) {
+            setSnackbar({ severity: "error", message: "Something went wrong" })
             console.error(error.message);
         } finally {
             const elapsed = Date.now() - start;
@@ -259,6 +262,20 @@ export default function Settings() {
                     <Button onClick={handleClose} variant="outlined">Cancel</Button>
                 </DialogActions>
             </Dialog>
+
+            { snackbar ? (
+                    <Snackbar
+                        open
+                        autoHideDuration={2500}
+                        onClose={() => setSnackbar(null)}
+                        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                    >
+                            <Alert severity={ snackbar.severity } variant="filled" onClose={() => setSnackbar(null)}>
+                                { snackbar.message }
+                            </Alert>
+                    </Snackbar>
+                ) : null
+            }
         </Box>
     )
 }

@@ -84,6 +84,9 @@ test("can login with new password", async ({ page, player }) => {
     await page.getByRole("textbox", { name: "(again)" }).fill(newPassword);
     await page.getByRole("button", { name: "Save changes" }).click();
 
+    await expect(page.getByText("Changes Saved")).toBeVisible();
+    await expect(page.getByText("Changes Saved")).not.toBeVisible();
+
     await expect(page.locator("#username")).toHaveValue(player.username);
     await expect(page.getByRole("textbox", { name: "Enter the new password" })).toBeVisible();
     await expect(page.getByRole("textbox", { name: "(again)" })).toBeVisible();
@@ -104,6 +107,9 @@ test("can login with new username", async ({ page, player }) => {
     await page.locator("#username").fill(newUsername);
     await page.getByRole("button", { name: "Save changes" }).click();
 
+    await expect(page.getByText("Changes Saved")).toBeVisible();
+    await expect(page.getByText("Changes Saved")).not.toBeVisible();
+
     await expect(page.getByRole("textbox", { name: "Enter the new password" })).toBeVisible();
     await expect(page.getByRole("textbox", { name: "(again)" })).toBeVisible();
     await expect(page.locator("#email")).toHaveValue(player.email);
@@ -122,6 +128,9 @@ test("can login with new email", async ({ page, player }) => {
     const newEmail = generateEmail();
     await page.locator("#email").fill(newEmail);
     await page.getByRole("button", { name: "Save changes" }).click();
+
+    await expect(page.getByText("Changes Saved")).toBeVisible();
+    await expect(page.getByText("Changes Saved")).not.toBeVisible();
 
     await expect(page.locator("#username")).toHaveValue(player.username);
     await expect(page.getByRole("textbox", { name: "Enter the new password" })).toBeVisible();
@@ -179,6 +188,9 @@ test("update full name", async ({ page, player }) => {
     const newFullName = "John Doe";
     await page.locator("#full_name").fill(newFullName);
     await page.getByRole("button", { name: "Save changes" }).click();
+
+    await expect(page.getByText("Changes Saved")).toBeVisible();
+    await expect(page.getByText("Changes Saved")).not.toBeVisible();
 
     let login = await loginPlayer(player.username, player.password);
     expect(login.status()).toBe(200);

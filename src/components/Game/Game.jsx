@@ -1,12 +1,12 @@
 import "./Game.css"
-import {Box, Card, Typography} from "@mui/material";
-import {Chessboard, defaultPieces} from "react-chessboard";
-import {Chess} from "chess.js";
+import { Box, Card, Typography } from "@mui/material";
+import { Chessboard, defaultPieces } from "react-chessboard";
+import { Chess } from "chess.js";
 import { Client } from "@stomp/stompjs";
-import {useLocation, useParams} from "react-router";
-import {useEffect, useRef, useState} from "react";
-import {styled} from "@mui/material/styles";
-import {useSelector} from "react-redux";
+import { useLocation, useParams } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 import Divider from "@mui/material/Divider";
 
 
