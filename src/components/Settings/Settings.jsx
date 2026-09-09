@@ -1,12 +1,12 @@
-import {Alert, Box, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar} from "@mui/material";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {logout, update} from "../../store/actions/actions.js";
-import {useNavigate} from "react-router";
-import {useState} from "react";
+import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { Alert, Box, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar } from "@mui/material";
+import { logout, update } from "../../store/actions/actions.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 
 const SectionTitle = ({ children, ...props }) => (
@@ -267,10 +267,10 @@ export default function Settings() {
                     <Snackbar
                         open
                         autoHideDuration={2500}
-                        onClose={() => setSnackbar(null)}
+                        onClose={ () => setSnackbar(null) }
                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                     >
-                            <Alert severity={ snackbar.severity } variant="filled" onClose={() => setSnackbar(null)}>
+                            <Alert severity={ snackbar.severity } variant="filled" onClose={ () => setSnackbar(null) }>
                                 { snackbar.message }
                             </Alert>
                     </Snackbar>
