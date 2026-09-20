@@ -162,13 +162,13 @@ export default function RegisterCard() {
                 <FormControl>
                     <FormLabel htmlFor="username">User name</FormLabel>
                     <TextField
-                        autoComplete="username"
-                        name="username"
-                        fullWidth
                         id="username"
+                        name="username"
                         placeholder="john_snow"
                         error={usernameError}
                         helperText={usernameErrorMessage}
+                        autoComplete="username"
+                        fullWidth
                         // color={nameError ? 'error' : 'primary'}
                     />
                 </FormControl>
@@ -176,25 +176,25 @@ export default function RegisterCard() {
                 <FormControl>
                     <FormLabel htmlFor="fullname">Full name</FormLabel>
                     <TextField
-                        autoComplete="name"
-                        name="fullName"
-                        fullWidth
                         id="fullname"
+                        name="fullName"
                         placeholder="John Snow"
+                        autoComplete="name"
+                        fullWidth
                     />
                 </FormControl>
 
                 <FormControl>
                     <FormLabel htmlFor="email">Email</FormLabel>
                     <TextField
-                        fullWidth
                         id="email"
-                        placeholder="your@email.com"
                         name="email"
-                        autoComplete="email"
-                        variant="outlined"
+                        placeholder="your@email.com"
                         error={emailError}
                         helperText={emailErrorMessage}
+                        autoComplete="email"
+                        variant="outlined"
+                        fullWidth
                     />
                 </FormControl>
 
@@ -204,9 +204,9 @@ export default function RegisterCard() {
                         id="password"
                         name="password"
                         type={ showPassword ? "text" : "password" }
+                        placeholder="••••••"
                         error={passwordError}
                         helperText={passwordErrorMessage}
-                        placeholder="••••••"
                         autoComplete="new-password"
                         variant="outlined"
                         fullWidth
@@ -230,9 +230,9 @@ export default function RegisterCard() {
 
                 <Button
                     type="submit"
-                    fullWidth
-                    variant="contained"
                     onClick={validateInputs}
+                    variant="contained"
+                    fullWidth
                 >
                     Register
                 </Button>

@@ -9,9 +9,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { login } from "../store/actions/actions.js";
 import { styled } from '@mui/material/styles';
 import { useDispatch } from "react-redux";
-import { login } from "../store/actions/actions.js";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
@@ -116,17 +116,17 @@ export default function LoginCard() {
                 <FormControl>
                     <FormLabel htmlFor="emailusername">Email/Username</FormLabel>
                     <TextField
+                        id="emailusername"
+                        name="emailOrUsername"
+                        type="email"
+                        placeholder="your@email.com"
                         error={usernameOrMail}
                         helperText={usernameOrEmailErrorMessage}
-                        id="emailusername"
-                        type="email"
-                        name="emailOrUsername"
-                        placeholder="your@email.com"
                         autoComplete="email"
+                        variant="outlined"
                         autoFocus
                         required
                         fullWidth
-                        variant="outlined"
                     />
                 </FormControl>
                 <FormControl>
@@ -135,13 +135,13 @@ export default function LoginCard() {
                         id="password"
                         name="password"
                         type={ showPassword ? "text" : "password" }
+                        placeholder="••••••"
                         error={passwordError}
                         helperText={passwordErrorMessage}
-                        placeholder="••••••"
                         autoComplete="current-password"
+                        variant="outlined"
                         required
                         fullWidth
-                        variant="outlined"
                         slotProps={{
                             input: {
                                 endAdornment: (
