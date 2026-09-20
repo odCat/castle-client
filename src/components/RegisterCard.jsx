@@ -119,6 +119,7 @@ export default function RegisterCard() {
                     }
                 }
 
+                //noinspection ExceptionCaughtLocallyJS
                 throw new Error();
             }
 
