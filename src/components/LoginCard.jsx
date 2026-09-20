@@ -76,6 +76,7 @@ export default function LoginCard() {
                     }
                 }
 
+                //noinspection ExceptionCaughtLocallyJS
                 throw new Error();
             }
 
