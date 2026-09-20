@@ -132,12 +132,12 @@ export default function LoginCard() {
                 <FormControl>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <TextField
+                        id="password"
+                        name="password"
+                        type={ showPassword ? "text" : "password" }
                         error={passwordError}
                         helperText={passwordErrorMessage}
-                        name="password"
                         placeholder="••••••"
-                        type={ showPassword ? "text" : "password" }
-                        id="password"
                         autoComplete="current-password"
                         required
                         fullWidth

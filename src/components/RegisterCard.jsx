@@ -5,9 +5,13 @@ import FormLabel from '@mui/material/FormLabel';
 import MuiCard from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import {styled} from "@mui/material/styles";
-import {useState} from "react";
-import {useNavigate} from "react-router";
+import { styled } from "@mui/material/styles";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 const SignCard = styled(MuiCard)(({ theme }) => ({
@@ -36,6 +40,7 @@ export default function RegisterCard() {
     const [emailErrorMessage, setEmailErrorMessage] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     function validateForm() {
@@ -196,15 +201,30 @@ export default function RegisterCard() {
                 <FormControl>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <TextField
-                        fullWidth
-                        name="password"
-                        placeholder="••••••"
-                        type="password"
                         id="password"
-                        autoComplete="new-password"
-                        variant="outlined"
+                        name="password"
+                        type={ showPassword ? "text" : "password" }
                         error={passwordError}
                         helperText={passwordErrorMessage}
+                        placeholder="••••••"
+                        autoComplete="new-password"
+                        variant="outlined"
+                        fullWidth
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="Toggle password visibility"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }
+                        }}
                     />
                 </FormControl>
 
