@@ -2,14 +2,18 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import MuiCard from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { styled } from '@mui/material/styles';
-import {useDispatch} from "react-redux";
-import {login} from "../store/actions/actions.js";
-import {useNavigate} from "react-router";
-import {useState} from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../store/actions/actions.js";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -34,6 +38,7 @@ export default function LoginCard() {
 
     const [usernameOrMail, setUsernameOrMail] = useState(false);
     const [usernameOrEmailErrorMessage, setUsernameOrEmailErrorMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
@@ -131,12 +136,27 @@ export default function LoginCard() {
                         helperText={passwordErrorMessage}
                         name="password"
                         placeholder="••••••"
-                        type="password"
+                        type={ showPassword ? "text" : "password" }
                         id="password"
                         autoComplete="current-password"
                         required
                         fullWidth
                         variant="outlined"
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="Toggle password visibility"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }
+                        }}
                     />
                 </FormControl>
 
